@@ -1,0 +1,20 @@
+name: Bug
+description: Something went wrong in game or with the tools
+labels: ["bug"]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: Game and engine version
+      placeholder: "Mineclonia 0.115, Luanti 5.17.0"
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log or command output
+      render: text

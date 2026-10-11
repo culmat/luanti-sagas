@@ -1,0 +1,59 @@
+name: Model found
+description: Suggest a free 3D model that would make a good saga
+title: "Model: "
+labels: ["model-found"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks! Only free licences work: CC0, CC-BY, CC-BY-SA or MIT. No "NC" or "ND".
+        See docs/sources.md for good places to look.
+  - type: input
+    id: url
+    attributes:
+      label: Model URL
+      placeholder: https://sketchfab.com/3d-models/...
+    validations:
+      required: true
+  - type: input
+    id: author
+    attributes:
+      label: Author (name and profile URL)
+    validations:
+      required: true
+  - type: dropdown
+    id: license
+    attributes:
+      label: Licence
+      options: ["CC0", "CC-BY 4.0", "CC-BY 3.0", "CC-BY-SA 4.0", "CC-BY-SA 3.0", "MIT", "not sure"]
+    validations:
+      required: true
+  - type: input
+    id: evidence
+    attributes:
+      label: Where is the licence shown?
+      description: e.g. "licence box on the Sketchfab page", "LICENSE.txt in the zip"
+  - type: dropdown
+    id: theme
+    attributes:
+      label: Theme
+      options: [medieval, viking, asian, egyptian, antique, prehistoric, gothic, nautical, dwarven, elven, alpine, creatures, ruins, other]
+  - type: textarea
+    id: hints
+    attributes:
+      label: Where should it appear?
+      description: In your own words, e.g. "on sea cliffs, built from the local stone, rare".
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is it?
+      options: ["photogrammetry scan", "modelled", "game art", "AI-generated (name the tool below)", "not sure"]
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Checks
+      options:
+        - label: The licence is not non-commercial (NC) or no-derivatives (ND)
+          required: true
+        - label: It does not show a trademarked character or brand
+          required: true

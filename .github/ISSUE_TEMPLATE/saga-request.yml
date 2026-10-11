@@ -1,0 +1,17 @@
+name: Saga idea
+description: A landmark you would love to find in the world
+title: "Idea: "
+labels: ["model wanted"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What and where
+      description: e.g. "a watchtower on a coastal cliff", "a giant tree, very rare, in jungles"
+    validations:
+      required: true
+  - type: textarea
+    id: refs
+    attributes:
+      label: References
+      description: Pictures, real places, or models you found (with licences if you know them)

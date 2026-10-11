@@ -1,0 +1,73 @@
+# Release a mod of this monorepo to ContentDB.
+#
+# Push a tag <package>-v<version>, e.g. sagas-v0.1.0 or sagas_ruins-v0.2.0 (sagas_pack-v... for the
+# modpack). The zip is built and attached to a GitHub release; the upload to ContentDB waits for a
+# maintainer's approval in the "contentdb" environment (Settings > Environments: required reviewers,
+# secret CONTENTDB_TOKEN scoped to that package). Nothing reaches ContentDB without that approval.
+name: Release
+on:
+  push:
+    tags: ["sagas*-v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    outputs:
+      pkg: ${{ steps.tag.outputs.pkg }}
+      version: ${{ steps.tag.outputs.version }}
+    steps:
+      - id: tag
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          echo "pkg=${TAG%-v*}" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG##*-v}" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.0
+      - run: uv sync --locked --project tools
+      - run: uv run --project tools sagas lint --strict
+      - run: uv run --project tools sagas build --check
+      - name: Build the zip
+        env:
+          PKG: ${{ steps.tag.outputs.pkg }}
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: |
+          if [ "$PKG" = sagas_pack ]; then name=pack; else name="$PKG"; fi
+          uv run --project tools sagas package "$name" --version "$VERSION" --out dist
+          ls -l dist
+      - uses: softprops/action-gh-release@v3
+        with:
+          files: dist/*.zip
+          generate_release_notes: true
+      - uses: actions/upload-artifact@v7
+        with:
+          name: zip
+          path: dist/*.zip
+
+  contentdb:
+    needs: package
+    runs-on: ubuntu-latest
+    environment: contentdb
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        with:
+          repository: culmat/avanti-luanti
+          ref: main
+          path: .avanti
+      - uses: actions/download-artifact@v8
+        with:
+          name: zip
+          path: dist
+      - name: Upload to ContentDB
+        env:
+          CONTENTDB_TOKEN: ${{ secrets.CONTENTDB_TOKEN }}
+          AVANTI_CONTENTDB_USER: ${{ vars.CONTENTDB_USER || 'culmat' }}
+          PKG: ${{ needs.package.outputs.pkg }}
+          VERSION: ${{ needs.package.outputs.version }}
+        run: |
+          if [ "$PKG" = sagas_pack ]; then dir=mods; else dir="mods/$PKG"; fi
+          .avanti/plugins/avanti/bin/avanti cdb release "$VERSION" "$dir" --zip "dist/$PKG-$VERSION.zip"

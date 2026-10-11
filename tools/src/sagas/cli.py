@@ -360,15 +360,42 @@ def lint_cmd(
 
 @app.command("catalog")
 @guarded
-def catalog_cmd(cdb: Annotated[str, typer.Option(help="Print the ContentDB long description of this theme")] = ""):
-    """Write docs/gallery/ (index.md, catalog.json)."""
+def catalog_cmd(
+    cdb: Annotated[str, typer.Option(help="Print the ContentDB long description of this theme")] = "",
+    site: Annotated[Path | None, typer.Option(help="Also write a static gallery site into this folder")] = None,
+):
+    """Write docs/gallery/ (index.md, catalog.json) and optionally a static site."""
     r = repo()
     results = [buildmod.build(s, voxels.read(s.vx_path)) for s in r.sagas() if s.vx_path.exists()]
     if cdb:
         typer.echo(catalog.cdb_long_description(r.theme(cdb), [x for x in results if x.saga.theme == cdb]))
         return
+    if site:
+        typer.echo(f"wrote {catalog.write_site(r, results, site)}")
     for p in catalog.write(r, results):
         typer.echo(f"wrote {p.relative_to(r.root)}")
+
+
+@app.command("package")
+@guarded
+def package_cmd(
+    name: Annotated[str, typer.Argument(help="Mod folder in mods/ (sagas, sagas_ruins, ...) or 'pack' for all")],
+    version: Annotated[str, typer.Option(help="Version, used in the zip name")] = "dev",
+    out: Annotated[Path, typer.Option(help="Output folder")] = Path("dist"),
+):
+    """Build a ContentDB release zip (one top-level folder, export-ignore files left out)."""
+    from . import package
+
+    r = repo()
+    if name == "pack":
+        src, folder = r.mods, "sagas_pack"
+    else:
+        src, folder = r.mods / name, name
+        if not (src / "mod.conf").exists():
+            raise SagasError(f"no mod named {name} in {r.mods}")
+    target = out / f"{folder}-{version}.zip"
+    files = package.build_zip(src, target, folder)
+    typer.echo(f"{target} ({len(files)} files)")
 
 
 @app.command("sync-core")

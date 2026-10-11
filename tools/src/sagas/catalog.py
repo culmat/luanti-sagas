@@ -66,6 +66,71 @@ def write(repo: Repo, results: list[BuildResult], out_dir: Path | None = None) -
     return [out_dir / "catalog.json", out_dir / "index.md"]
 
 
+PAGE = """<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sagas gallery</title>
+<style>
+:root {{ --bg: #f6f4ef; --fg: #24221f; --muted: #6b665d; --card: #ffffff; --line: #e2ddd2; --accent: #7a4b22; }}
+@media (prefers-color-scheme: dark) {{ :root {{ --bg: #1c1b19; --fg: #ece8df; --muted: #a59f93; --card: #262421;
+  --line: #3a3732; --accent: #d9a46c; }} }}
+body {{ margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, sans-serif; }}
+header, main {{ max-width: 1100px; margin: 0 auto; padding: 16px; }}
+h1 {{ margin: 24px 0 4px; }} h2 {{ margin-top: 40px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }}
+p.lead {{ color: var(--muted); margin-top: 0; }}
+.grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }}
+.card {{ background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }}
+.card img {{ width: 100%; aspect-ratio: 1; object-fit: cover; object-position: right bottom; display: block;
+  image-rendering: pixelated; background: #ecece8; }}
+.card div {{ padding: 10px 12px 14px; }} .card h3 {{ margin: 0 0 4px; font-size: 17px; }}
+.meta {{ color: var(--muted); font-size: 14px; }} a {{ color: var(--accent); }}
+</style></head><body>
+<header><h1>Sagas</h1><p class="lead">Landmarks from real 3D models for Luanti, placed by terrain and biome hints.
+{count} sagas in {themes} themes.
+<a href="https://github.com/culmat/luanti-sagas">Source and contributing</a></p></header>
+<main>{sections}</main></body></html>
+"""
+
+
+def _esc(s: str) -> str:
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+
+
+def write_site(repo: Repo, results: list[BuildResult], out: Path) -> Path:
+    """Static gallery page (GitHub Pages): index.html plus copies of the preview sheets."""
+    import shutil
+
+    (out / "previews").mkdir(parents=True, exist_ok=True)
+    themes = {t.name: t for t in repo.themes()}
+    by_theme: dict[str, list[BuildResult]] = {}
+    for r in sorted(results, key=lambda r: r.saga.qualified_id):
+        by_theme.setdefault(r.saga.theme, []).append(r)
+    sections = []
+    for name, items in by_theme.items():
+        t = themes.get(name)
+        cards = []
+        for r in items:
+            s = r.saga
+            img = ""
+            if s.preview_path.exists():
+                fname = f"{s.theme}_{s.id}.png"
+                shutil.copyfile(s.preview_path, out / "previews" / fname)
+                img = f'<img src="previews/{fname}" alt="{_esc(s.title)}" loading="lazy">'
+            x, y, z = r.size
+            src = f'<a href="{_esc(s.source.url)}">{_esc(s.source.author or "source")}</a>' if s.source.url else ""
+            cards.append(
+                f'<article class="card">{img}<div><h3>{_esc(s.title)}</h3>'
+                f'<div class="meta">{x} x {y} x {z} nodes · {_esc(" or ".join(s.placement.site))}<br>'
+                f"{_esc(', '.join(s.placement.biomes))} · 1 per {s.placement.rarity} chunks<br>"
+                f"{src} · {_esc(s.source.license)}</div></div></article>"
+            )
+        title = _esc(t.title if t else name)
+        desc = f"<p>{_esc(t.description)}</p>" if t else ""
+        sections.append(f'<h2>{title}</h2>{desc}<div class="grid">{"".join(cards)}</div>')
+    html = PAGE.format(count=len(results), themes=len(by_theme), sections="".join(sections))
+    (out / "index.html").write_text(html, encoding="utf-8")
+    return out / "index.html"
+
+
 def cdb_long_description(theme: Theme, results: list[BuildResult]) -> str:
     lines = [
         theme.description,

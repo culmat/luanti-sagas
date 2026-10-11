@@ -1,0 +1,558 @@
+[
+  {
+    "id": "sagas_antiquity:greek_temple",
+    "title": "Temple on the hill",
+    "theme": "antiquity",
+    "size": [
+      39,
+      35,
+      57
+    ],
+    "nodes": 8274,
+    "materials": "classes",
+    "site": [
+      "peak",
+      "ridge",
+      "plain"
+    ],
+    "exposure": "prominent",
+    "biomes": [
+      "grassland",
+      "savanna",
+      "mountain",
+      "forest"
+    ],
+    "rarity": 1300,
+    "large": false,
+    "author": "Wildfire Games (0 A.D.)",
+    "license": "CC-BY-SA-3.0",
+    "source_url": "https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/athen_temple_struct.dae",
+    "ai": "none",
+    "lore": "Built for a goddess of wisdom, on the highest rock of the city.",
+    "preview": "../../content/antiquity/greek_temple/preview.png"
+  },
+  {
+    "id": "sagas_antiquity:han_temple",
+    "title": "Temple of the Han",
+    "theme": "antiquity",
+    "size": [
+      33,
+      36,
+      41
+    ],
+    "nodes": 7963,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "slope",
+      "ridge"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "forest",
+      "jungle",
+      "mountain",
+      "taiga",
+      "grassland"
+    ],
+    "rarity": 1300,
+    "large": false,
+    "author": "Wildfire Games (0 A.D.)",
+    "license": "CC-BY-SA-3.0",
+    "source_url": "https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/han_temple.dae",
+    "ai": "none",
+    "lore": "Incense still lingers in the halls.",
+    "preview": "../../content/antiquity/han_temple/preview.png"
+  },
+  {
+    "id": "sagas_antiquity:lighthouse",
+    "title": "Lighthouse of the harbour",
+    "theme": "antiquity",
+    "size": [
+      15,
+      43,
+      27
+    ],
+    "nodes": 2817,
+    "materials": "classes",
+    "site": [
+      "cliff+coast",
+      "coast"
+    ],
+    "exposure": "prominent",
+    "biomes": [
+      "desert",
+      "savanna",
+      "grassland",
+      "beach"
+    ],
+    "rarity": 1500,
+    "large": false,
+    "author": "Wildfire Games (0 A.D.)",
+    "license": "CC-BY-SA-3.0",
+    "source_url": "https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/ptol_lighthouse.dae",
+    "ai": "none",
+    "lore": "Its fire went out centuries ago, yet ships still steer by it.",
+    "preview": "../../content/antiquity/lighthouse/preview.png"
+  },
+  {
+    "id": "sagas_antiquity:ptolemaic_temple",
+    "title": "Temple by the river",
+    "theme": "antiquity",
+    "size": [
+      34,
+      40,
+      45
+    ],
+    "nodes": 11599,
+    "materials": "classes",
+    "site": [
+      "plain+river",
+      "plain"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "desert",
+      "savanna"
+    ],
+    "rarity": 1600,
+    "large": false,
+    "author": "Wildfire Games (0 A.D.)",
+    "license": "CC-BY-SA-3.0",
+    "source_url": "https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/ptol_temple.dae",
+    "ai": "none",
+    "lore": "Greek columns, Egyptian gods.",
+    "preview": "../../content/antiquity/ptolemaic_temple/preview.png"
+  },
+  {
+    "id": "sagas_antiquity:pyramid",
+    "title": "Pyramid of Meroe",
+    "theme": "antiquity",
+    "size": [
+      16,
+      35,
+      28
+    ],
+    "nodes": 4312,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "slope"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "desert",
+      "savanna"
+    ],
+    "rarity": 900,
+    "large": false,
+    "author": "Wildfire Games (0 A.D.)",
+    "license": "CC-BY-SA-3.0",
+    "source_url": "https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/kush_pyramid_1.dae",
+    "ai": "none",
+    "lore": "Steep and narrow, as the Kushite kings built them.",
+    "preview": "../../content/antiquity/pyramid/preview.png"
+  },
+  {
+    "id": "sagas_antiquity:pyramid_small",
+    "title": "Small pyramid",
+    "theme": "antiquity",
+    "size": [
+      8,
+      19,
+      11
+    ],
+    "nodes": 707,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "slope"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "desert",
+      "savanna"
+    ],
+    "rarity": 350,
+    "large": false,
+    "author": "Wildfire Games (0 A.D.)",
+    "license": "CC-BY-SA-3.0",
+    "source_url": "https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/kush_pyramid_small_1.dae",
+    "ai": "none",
+    "lore": "",
+    "preview": "../../content/antiquity/pyramid_small/preview.png"
+  },
+  {
+    "id": "sagas_antiquity:roundhouse",
+    "title": "Roundhouse",
+    "theme": "antiquity",
+    "size": [
+      12,
+      14,
+      15
+    ],
+    "nodes": 705,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "slope"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "grassland",
+      "forest",
+      "taiga"
+    ],
+    "rarity": 220,
+    "large": false,
+    "author": "Wildfire Games (0 A.D.)",
+    "license": "CC-BY-SA-3.0",
+    "source_url": "https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/brit_house_01.dae",
+    "ai": "none",
+    "lore": "",
+    "preview": "../../content/antiquity/roundhouse/preview.png"
+  },
+  {
+    "id": "sagas_antiquity:temple_of_amun",
+    "title": "Temple of Amun",
+    "theme": "antiquity",
+    "size": [
+      48,
+      41,
+      59
+    ],
+    "nodes": 26225,
+    "materials": "classes",
+    "site": [
+      "plain+river",
+      "plain"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "desert",
+      "savanna"
+    ],
+    "rarity": 2500,
+    "large": false,
+    "author": "Wildfire Games (0 A.D.)",
+    "license": "CC-BY-SA-3.0",
+    "source_url": "https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/kush_temple_amun.dae",
+    "ai": "none",
+    "lore": "The god's house had a hundred columns. Some still stand.",
+    "preview": "../../content/antiquity/temple_of_amun/preview.png"
+  },
+  {
+    "id": "sagas_ruins:cathedral",
+    "title": "Ruined cathedral",
+    "theme": "ruins",
+    "size": [
+      29,
+      20,
+      45
+    ],
+    "nodes": 4269,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "slope"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "grassland",
+      "forest",
+      "taiga",
+      "mountain"
+    ],
+    "rarity": 2500,
+    "large": false,
+    "author": "Ron Kapaun / 3TD Studios",
+    "license": "CC0-1.0",
+    "source_url": "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip",
+    "ai": "none",
+    "lore": "Only the walls still stand. Nobody remembers whose name was sung here.",
+    "preview": "../../content/ruins/cathedral/preview.png"
+  },
+  {
+    "id": "sagas_ruins:foundation_ruin",
+    "title": "Old foundation",
+    "theme": "ruins",
+    "size": [
+      15,
+      8,
+      11
+    ],
+    "nodes": 223,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "slope"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "grassland",
+      "forest",
+      "taiga",
+      "savanna"
+    ],
+    "rarity": 160,
+    "large": false,
+    "author": "Ron Kapaun / 3TD Studios",
+    "license": "CC0-1.0",
+    "source_url": "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip",
+    "ai": "none",
+    "lore": "",
+    "preview": "../../content/ruins/foundation_ruin/preview.png"
+  },
+  {
+    "id": "sagas_ruins:mammoth_skeleton",
+    "title": "Mammoth skeleton",
+    "theme": "ruins",
+    "size": [
+      20,
+      36,
+      53
+    ],
+    "nodes": 2949,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "slope"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "tundra",
+      "snow",
+      "taiga"
+    ],
+    "rarity": 1500,
+    "large": false,
+    "author": "Smithsonian Institution",
+    "license": "CC0-1.0",
+    "source_url": "https://sketchfab.com/3d-models/mammuthus-primigenius-blumbach-229976b3db4646b39c44e57a7e3d8744",
+    "ai": "none",
+    "lore": "Bones of a woolly mammoth, bleached by a hundred winters.",
+    "preview": "../../content/ruins/mammoth_skeleton/preview.png"
+  },
+  {
+    "id": "sagas_ruins:menlo_gate",
+    "title": "Gates of Menlo Castle",
+    "theme": "ruins",
+    "size": [
+      47,
+      20,
+      12
+    ],
+    "nodes": 2287,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "plain+river",
+      "slope"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "grassland",
+      "forest",
+      "swamp"
+    ],
+    "rarity": 900,
+    "large": false,
+    "author": "galway3d",
+    "license": "CC0-1.0",
+    "source_url": "https://sketchfab.com/3d-models/entrance-gates-to-menlo-castle-co-galway-03786e366204470c92655c2889a93ee6",
+    "ai": "none",
+    "lore": "The gates of a castle that burned long ago. The ivy keeps them standing.",
+    "preview": "../../content/ruins/menlo_gate/preview.png"
+  },
+  {
+    "id": "sagas_ruins:pillar",
+    "title": "Fallen pillar",
+    "theme": "ruins",
+    "size": [
+      3,
+      10,
+      3
+    ],
+    "nodes": 74,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "slope"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "grassland",
+      "savanna",
+      "desert",
+      "forest"
+    ],
+    "rarity": 120,
+    "large": false,
+    "author": "Ron Kapaun / 3TD Studios",
+    "license": "CC0-1.0",
+    "source_url": "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip",
+    "ai": "none",
+    "lore": "",
+    "preview": "../../content/ruins/pillar/preview.png"
+  },
+  {
+    "id": "sagas_ruins:ruin_arch",
+    "title": "Broken aqueduct arch",
+    "theme": "ruins",
+    "size": [
+      27,
+      18,
+      13
+    ],
+    "nodes": 1161,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "slope",
+      "river"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "grassland",
+      "savanna",
+      "desert",
+      "forest"
+    ],
+    "rarity": 450,
+    "large": false,
+    "author": "Ron Kapaun / 3TD Studios",
+    "license": "CC0-1.0",
+    "source_url": "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip",
+    "ai": "none",
+    "lore": "",
+    "preview": "../../content/ruins/ruin_arch/preview.png"
+  },
+  {
+    "id": "sagas_ruins:speaking_stones",
+    "title": "Speaking stones",
+    "theme": "ruins",
+    "size": [
+      21,
+      9,
+      19
+    ],
+    "nodes": 921,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "ridge"
+    ],
+    "exposure": "prominent",
+    "biomes": [
+      "grassland",
+      "tundra",
+      "taiga",
+      "snow",
+      "mountain"
+    ],
+    "rarity": 600,
+    "large": false,
+    "author": "Ron Kapaun / 3TD Studios",
+    "license": "CC0-1.0",
+    "source_url": "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip",
+    "ai": "none",
+    "lore": "On still nights the stones answer, if you ask in the old tongue.",
+    "preview": "../../content/ruins/speaking_stones/preview.png"
+  },
+  {
+    "id": "sagas_ruins:temple_ruin_01",
+    "title": "Overgrown temple",
+    "theme": "ruins",
+    "size": [
+      27,
+      15,
+      26
+    ],
+    "nodes": 1762,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "ridge",
+      "peak"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "forest",
+      "jungle",
+      "grassland",
+      "savanna"
+    ],
+    "rarity": 700,
+    "large": false,
+    "author": "Ron Kapaun / 3TD Studios",
+    "license": "CC0-1.0",
+    "source_url": "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip",
+    "ai": "none",
+    "lore": "Vines hold the columns together now.",
+    "preview": "../../content/ruins/temple_ruin_01/preview.png"
+  },
+  {
+    "id": "sagas_ruins:temple_ruin_02",
+    "title": "Temple of the four arches",
+    "theme": "ruins",
+    "size": [
+      30,
+      24,
+      31
+    ],
+    "nodes": 3911,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "ridge",
+      "peak"
+    ],
+    "exposure": "prominent",
+    "biomes": [
+      "forest",
+      "jungle",
+      "grassland",
+      "savanna",
+      "mountain"
+    ],
+    "rarity": 700,
+    "large": false,
+    "author": "Ron Kapaun / 3TD Studios",
+    "license": "CC0-1.0",
+    "source_url": "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip",
+    "ai": "none",
+    "lore": "Four arches over a dry well. Pilgrims used to leave coins here.",
+    "preview": "../../content/ruins/temple_ruin_02/preview.png"
+  },
+  {
+    "id": "sagas_ruins:wall_segment",
+    "title": "Ruined wall",
+    "theme": "ruins",
+    "size": [
+      21,
+      9,
+      2
+    ],
+    "nodes": 354,
+    "materials": "classes",
+    "site": [
+      "plain",
+      "slope"
+    ],
+    "exposure": "any",
+    "biomes": [
+      "grassland",
+      "forest",
+      "taiga",
+      "mountain"
+    ],
+    "rarity": 140,
+    "large": false,
+    "author": "Ron Kapaun / 3TD Studios",
+    "license": "CC0-1.0",
+    "source_url": "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip",
+    "ai": "none",
+    "lore": "",
+    "preview": "../../content/ruins/wall_segment/preview.png"
+  }
+]

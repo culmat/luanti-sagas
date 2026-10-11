@@ -1,0 +1,66 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tools:
+    name: tools (ruff, pytest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.0
+      - run: uv sync --locked
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run pytest -q
+
+  content:
+    name: content (lint, reproducible build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v10.3.0
+      - run: uv sync --locked --project tools
+      - name: Licences, attribution, size and value budget
+        run: uv run --project tools sagas lint --strict
+      - name: Committed packs match a fresh build
+        run: uv run --project tools sagas build --check
+      - name: Core mod has the tools' vocabulary and palette
+        run: uv run --project tools sagas sync-core --check
+      - run: uv run --project tools sagas palette
+      - name: Previews of changed sagas
+        if: github.event_name == 'pull_request'
+        env:
+          BASE: origin/${{ github.base_ref }}
+        run: |
+          mkdir -p previews
+          git diff --name-only "$BASE"...HEAD -- content \
+            | awk -F/ 'NF >= 4 { print $2 "/" $3 }' | sort -u \
+            | while read -r saga; do
+                if [ -f "content/$saga/saga.toml" ] && [ -f "content/$saga/voxels.vx.gz" ]; then
+                  uv run --project tools sagas preview "$saga" --out "previews/${saga%%/*}_${saga##*/}.png"
+                fi
+              done
+      - uses: actions/upload-artifact@v7
+        if: github.event_name == 'pull_request'
+        with:
+          name: previews
+          path: previews/
+          if-no-files-found: ignore
+
+  mods:
+    name: mods
+    # luacheck, ldg lint and headless runs of the sagas_pack modpack in every game x engine
+    uses: culmat/avanti-luanti/.github/workflows/mod-ci.yml@v1
+    with:
+      path: mods
+      games: minetest,mineclonia,mineclone2
