@@ -42,6 +42,17 @@ core.register_on_joinplayer(function(player)
 			)
 		end
 		core.set_timeofday(0.5)
+		player:set_clouds({ density = 0 })
+		player:hud_set_flags({
+			hotbar = false,
+			healthbar = false,
+			crosshair = false,
+			wielditem = false,
+			breathbar = false,
+			minimap = false,
+			basic_debug = false,
+			chat = false,
+		})
 		player:set_pos({ x = layout.min[1] - 6, y = layout.max[2] + 4, z = layout.min[3] - 12 })
 		local camera = rawget(_G, "avanti_camera")
 		if camera then

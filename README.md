@@ -7,6 +7,16 @@ into a schematic and placed by the game where its story fits.
 
 The world stops feeling anonymous when you stumble upon something somebody built.
 
+| | |
+|---|---|
+| ![Ruined cathedral in Minetest Game](docs/screenshots/minetest_game-ruins-cathedral.jpg) | ![Temple of Amun in Minetest Game](docs/screenshots/minetest_game-antiquity-temple_of_amun.jpg) |
+| ![Gates of Menlo Castle](docs/screenshots/minetest_game-ruins-menlo_gate.jpg) | ![Temple of the Han in Mineclonia](docs/screenshots/mineclonia-antiquity-han_temple.jpg) |
+
+The same saga adapts to the game and the site: the Temple of Amun in
+[Minetest Game](docs/screenshots/minetest_game-antiquity-temple_of_amun.jpg) and in
+[Mineclonia](docs/screenshots/mineclonia-antiquity-temple_of_amun.jpg).
+More in the [gallery](https://culmat.github.io/luanti-sagas/).
+
 ## How it works
 
 ```

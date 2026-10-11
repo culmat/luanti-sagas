@@ -1,21 +1,21 @@
 {
  "min": [
-  0,
+  -65,
   179,
-  0
+  -65
  ],
  "max": [
-  615,
+  455,
   223,
-  59
+  585
  ],
  "sagas": [
   {
    "id": "sagas_antiquity:greek_temple",
    "anchor": [
-    19,
+    0,
     180,
-    28
+    0
    ],
    "size": [
     39,
@@ -26,9 +26,9 @@
   {
    "id": "sagas_antiquity:han_temple",
    "anchor": [
-    65,
+    130,
     180,
-    20
+    0
    ],
    "size": [
     33,
@@ -39,9 +39,9 @@
   {
    "id": "sagas_antiquity:lighthouse",
    "anchor": [
-    99,
+    260,
     180,
-    13
+    0
    ],
    "size": [
     15,
@@ -52,9 +52,9 @@
   {
    "id": "sagas_antiquity:ptolemaic_temple",
    "anchor": [
-    134,
+    390,
     180,
-    22
+    0
    ],
    "size": [
     34,
@@ -65,9 +65,9 @@
   {
    "id": "sagas_antiquity:pyramid",
    "anchor": [
-    169,
+    0,
     180,
-    14
+    130
    ],
    "size": [
     16,
@@ -78,9 +78,9 @@
   {
    "id": "sagas_antiquity:pyramid_small",
    "anchor": [
-    191,
+    130,
     180,
-    5
+    130
    ],
    "size": [
     8,
@@ -91,9 +91,9 @@
   {
    "id": "sagas_antiquity:roundhouse",
    "anchor": [
-    211,
+    260,
     180,
-    7
+    130
    ],
    "size": [
     12,
@@ -104,9 +104,9 @@
   {
    "id": "sagas_antiquity:temple_of_amun",
    "anchor": [
-    251,
+    390,
     180,
-    29
+    130
    ],
    "size": [
     48,
@@ -117,9 +117,9 @@
   {
    "id": "sagas_ruins:cathedral",
    "anchor": [
-    299,
+    0,
     180,
-    22
+    260
    ],
    "size": [
     29,
@@ -130,9 +130,9 @@
   {
    "id": "sagas_ruins:foundation_ruin",
    "anchor": [
-    331,
+    130,
     180,
-    5
+    260
    ],
    "size": [
     15,
@@ -143,9 +143,9 @@
   {
    "id": "sagas_ruins:mammoth_skeleton",
    "anchor": [
-    359,
+    260,
     180,
-    26
+    260
    ],
    "size": [
     20,
@@ -156,9 +156,9 @@
   {
    "id": "sagas_ruins:menlo_gate",
    "anchor": [
-    402,
+    390,
     180,
-    6
+    260
    ],
    "size": [
     47,
@@ -169,9 +169,9 @@
   {
    "id": "sagas_ruins:pillar",
    "anchor": [
-    437,
+    0,
     180,
-    1
+    390
    ],
    "size": [
     3,
@@ -182,9 +182,9 @@
   {
    "id": "sagas_ruins:ruin_arch",
    "anchor": [
-    462,
+    130,
     180,
-    6
+    390
    ],
    "size": [
     27,
@@ -195,9 +195,9 @@
   {
    "id": "sagas_ruins:speaking_stones",
    "anchor": [
-    496,
+    260,
     180,
-    9
+    390
    ],
    "size": [
     21,
@@ -208,9 +208,9 @@
   {
    "id": "sagas_ruins:temple_ruin_01",
    "anchor": [
-    530,
+    390,
     180,
-    13
+    390
    ],
    "size": [
     27,
@@ -221,9 +221,9 @@
   {
    "id": "sagas_ruins:temple_ruin_02",
    "anchor": [
-    569,
+    0,
     180,
-    15
+    520
    ],
    "size": [
     30,
@@ -234,9 +234,9 @@
   {
    "id": "sagas_ruins:wall_segment",
    "anchor": [
-    604,
+    130,
     180,
-    1
+    520
    ],
    "size": [
     21,

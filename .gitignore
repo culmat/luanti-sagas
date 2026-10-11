@@ -12,3 +12,6 @@ __pycache__/
 .DS_Store
 *.swp
 .luarc.json
+
+# full-size screenshots for ContentDB uploads (avanti screenshot mods); curated JPEGs live in docs/screenshots
+/mods/screenshots/*.png
