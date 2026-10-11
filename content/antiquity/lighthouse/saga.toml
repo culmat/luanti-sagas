@@ -1,0 +1,53 @@
+schema = 1
+id = "lighthouse"
+theme = "antiquity"
+title = "Lighthouse of the harbour"
+tags = ["0ad", "antiquity"]
+lore = "Its fire went out centuries ago, yet ships still steer by it."
+
+[source]
+kind = "mesh"
+url = "https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/ptol_lighthouse.dae"
+file = "ptol_lighthouse.dae"
+sha256 = "1f98ab9ec9f9535006189893b3a0ce5c519d716c5a4b1931fa3e4e85bdcc768f"
+extra_files = [{ url = "https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/textures/skins/structural/ptol_struct.png", file = "ptol_struct.png", sha256 = "5381a9f592e156f4caecf5071e85497d16f9593d86ac10ca8b96fbde1467ab54" }]
+author = "Wildfire Games (0 A.D.)"
+author_url = "https://play0ad.com"
+license = "CC-BY-SA-3.0"
+license_url = "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/LICENSE.txt"
+ai = "none"
+notes = "0 A.D. game art: mesh art/meshes/structural/ptol_lighthouse.dae, texture art/textures/skins/structural/ptol_struct.png (actor texture)."
+
+[transform]
+up = "auto"
+target_size = 42
+anchor = "bottom-center"
+
+[voxel]
+mode = "shell"
+texture = "ptol_struct.png"
+alpha = "ignore"
+
+[materials]
+mode = "classes"
+default = "sandstone"
+context = "surroundings"
+
+[[materials.rules]]
+match = { y_frac = [0.92, 1.0] }
+class = "metal"
+
+[[materials.rules]]
+match = { y = [0, 2] }
+class = "stone"
+
+[[materials.rules]]
+match = { color = "#6e4a2c", tol = 18 }
+class = "wood"
+
+[placement]
+site = ["cliff+coast", "coast"]
+exposure = "prominent"
+biomes = ["desert", "savanna", "grassland", "beach"]
+rarity = 1500
+hints = "On a sea cliff or a coast, visible from afar. Warm lands."

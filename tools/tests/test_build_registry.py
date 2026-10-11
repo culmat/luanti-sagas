@@ -28,7 +28,7 @@ def test_pack_files_and_check(repo, tmp_path):
     pack = repo.pack_dir("test")
     assert (pack / "schematics" / "box.mts").exists() and (pack / "registry.lua").exists()
     reg = (pack / "registry.lua").read_text()
-    assert 'id = "test:box"' in reg and 'schematic = P .. "hut.mts"' in reg
+    assert 'id = "sagas_test:box"' in reg and 'schematic = P .. "hut.mts"' in reg
     assert "depends = sagas" in (pack / "mod.conf").read_text()
     assert "CC0-1.0" in (pack / "LICENSE").read_text()
     assert len(tb.results) == 2

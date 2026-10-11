@@ -1,0 +1,54 @@
+schema = 1
+id = "menlo_gate"
+theme = "ruins"
+title = "Gates of Menlo Castle"
+tags = ["ruin", "medieval", "scan", "ireland"]
+lore = "The gates of a castle that burned long ago. The ivy keeps them standing."
+
+[source]
+kind = "mesh"
+url = "https://sketchfab.com/3d-models/entrance-gates-to-menlo-castle-co-galway-03786e366204470c92655c2889a93ee6"
+manual = true
+instructions = "Sketchfab needs a login: download the model as glTF (zip) from the URL"
+file = "entrance-gates-to-menlo-castle-co-galway.zip"
+member = "scene.gltf"
+sha256 = ""
+author = "galway3d"
+author_url = "https://sketchfab.com/galway3d"
+license = "CC0-1.0"
+license_url = "http://creativecommons.org/publicdomain/zero/1.0/"
+ai = "none"
+notes = "Photogrammetry scan of the entrance gates to Menlo Castle, Co. Galway, Ireland."
+
+[transform]
+up = "auto"
+target_size = 46
+anchor = "bottom-center"
+
+[voxel]
+mode = "shell"
+close_radius = 1
+
+[materials]
+mode = "classes"
+default = "stone"
+context = "surroundings"
+
+[[materials.rules]]
+match = { color = "#5b6b3a", tol = 18 }
+class = "moss"
+
+[[materials.rules]]
+match = { color = "#3f5a35", tol = 16 }
+class = "leaves"
+
+[[materials.rules]]
+match = { y = [0, 0] }
+class = "cobble"
+
+[placement]
+site = ["plain", "plain+river", "slope"]
+exposure = "any"
+biomes = ["grassland", "forest", "swamp"]
+rarity = 900
+hints = "A gateway ruin in green, wet land; near a river is best. Stone of the surroundings, ivy as leaves."

@@ -1,0 +1,57 @@
+schema = 1
+id = "pyramid"
+theme = "antiquity"
+title = "Pyramid of Meroe"
+tags = ["0ad", "antiquity"]
+lore = "Steep and narrow, as the Kushite kings built them."
+
+[source]
+kind = "mesh"
+url = "https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/kush_pyramid_1.dae"
+file = "kush_pyramid_1.dae"
+sha256 = "f95d4e719e45a4da48098bbef031646f177471edd2390080f0726f9b43ee1b3b"
+extra_files = [{ url = "https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/textures/skins/structural/kush_struct_02.png", file = "kush_struct_02.png", sha256 = "42cc2bdf4ada3ed4391de63c6b96651188478e54ac01b5c64dbcaeb93aaf61fb" }]
+author = "Wildfire Games (0 A.D.)"
+author_url = "https://play0ad.com"
+license = "CC-BY-SA-3.0"
+license_url = "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/LICENSE.txt"
+ai = "none"
+notes = "0 A.D. game art: mesh art/meshes/structural/kush_pyramid_1.dae, texture art/textures/skins/structural/kush_struct_02.png (actor texture)."
+
+[transform]
+up = "auto"
+target_size = 34
+anchor = "bottom-center"
+
+[voxel]
+mode = "shell"
+texture = "kush_struct_02.png"
+alpha = "ignore"
+
+[materials]
+mode = "classes"
+default = "stone"
+context = "surroundings"
+
+[[materials.rules]]
+match = { color = "#a0442c", tol = 26 }
+class = "roof_red"
+
+[[materials.rules]]
+match = { color = "#4f6b32", tol = 22 }
+class = "leaves"
+
+[[materials.rules]]
+match = { color = "#6e4a2c", tol = 20 }
+class = "wood"
+
+[[materials.rules]]
+match = { color = "#ebe6dc", tol = 10 }
+class = "marble"
+
+[placement]
+site = ["plain", "slope"]
+exposure = "any"
+biomes = ["desert", "savanna"]
+rarity = 900
+hints = "Deserts and dry savanna; built from the stone of the site."

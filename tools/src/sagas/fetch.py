@@ -35,8 +35,22 @@ def target_name(saga: Saga) -> str:
     return name
 
 
+def cache_path(saga: Saga, sources: Path) -> Path:
+    """Where a source file lives: shared per URL (several sagas can use one archive), else per saga."""
+    if saga.source.url:
+        key = hashlib.sha1(saga.source.url.encode()).hexdigest()[:16]
+        return sources / "_url" / key / target_name(saga)
+    return sources / saga.id / target_name(saga)
+
+
+def extract_dir(archive: Path, member: str) -> Path:
+    """Per-member extraction folder (textures with equal names in different folders must not collide)."""
+    key = hashlib.sha1(str(PurePosixPath(member.replace("\\", "/")).parent).encode()).hexdigest()[:12]
+    return archive.parent / "extracted" / key
+
+
 def fetch(saga: Saga, sources: Path, src: Path | None = None, force: bool = False) -> tuple[Path, str]:
-    dest = sources / saga.id / target_name(saga)
+    dest = cache_path(saga, sources)
     dest.parent.mkdir(parents=True, exist_ok=True)
     local = saga.dir / target_name(saga)
     if local.exists() and src is None:
@@ -53,9 +67,28 @@ def fetch(saga: Saga, sources: Path, src: Path | None = None, force: bool = Fals
     else:
         _download(saga.source.url, dest)
     digest = sha256_file(dest)
-    if saga.source.sha256 and digest != saga.source.sha256:
+    # manual downloads (e.g. Sketchfab zips) differ per download, so their checksum is not verified
+    if saga.source.sha256 and not saga.source.manual and digest != saga.source.sha256:
         raise SagasError(f"{dest.name}: sha256 {digest} does not match source.sha256 {saga.source.sha256}")
     return dest, digest
+
+
+def fetch_extras(saga: Saga, sources: Path, force: bool = False) -> list[tuple[Path, str]]:
+    """Download source.extra_files next to the main file; verify sha256 when given."""
+    out = []
+    base = cache_path(saga, sources).parent
+    base.mkdir(parents=True, exist_ok=True)
+    for extra in saga.source.extra_files:
+        dest = base / extra["file"]
+        if not dest.exists() or force:
+            if not extra.get("url"):
+                raise SourceMissing(f"{saga.qualified_id}: extra file {extra['file']} has no url; copy it to {dest}")
+            _download(extra["url"], dest)
+        digest = sha256_file(dest)
+        if extra.get("sha256") and digest != extra["sha256"]:
+            raise SagasError(f"{dest.name}: sha256 {digest} does not match {extra['sha256']}")
+        out.append((dest, digest))
+    return out
 
 
 def _download(url: str, dest: Path) -> None:
@@ -78,24 +111,41 @@ def _safe(name: str) -> PurePosixPath:
     return p
 
 
+def _under(p: PurePosixPath, folder: PurePosixPath) -> PurePosixPath | None:
+    """Path of p relative to folder, or None if p is not inside folder."""
+    if str(folder) in ("", "."):
+        return p
+    try:
+        return p.relative_to(folder)
+    except ValueError:
+        return None
+
+
 def extract_member(archive: Path, member: str, dest_dir: Path) -> Path:
-    """Extract `member` and the other files of its directory (textures) into dest_dir; return its path."""
+    """Extract `member` and every file below its folder (textures, buffers) into dest_dir, keeping
+    relative paths; return the extracted member."""
     want = _safe(member)
     folder = want.parent
     dest_dir.mkdir(parents=True, exist_ok=True)
+
+    def write(rel: PurePosixPath, src) -> None:
+        out = dest_dir.joinpath(*rel.parts)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        with open(out, "wb") as dst:
+            shutil.copyfileobj(src, dst)
+
     if zipfile.is_zipfile(archive):
         with zipfile.ZipFile(archive) as z:
             infos = z.infolist()
             if len(infos) > MAX_MEMBERS or sum(i.file_size for i in infos) > MAX_TOTAL:
                 raise SagasError(f"{archive.name}: archive too large")
             for info in infos:
-                if info.is_dir():
+                if info.is_dir() or (info.external_attr >> 16) & 0o170000 == 0o120000:
                     continue
-                p = _safe(info.filename)
-                if p.parent == folder and not (info.external_attr >> 16) & 0o170000 == 0o120000:
-                    out = dest_dir / p.name
-                    with z.open(info) as src, open(out, "wb") as dst:
-                        shutil.copyfileobj(src, dst)
+                rel = _under(_safe(info.filename), folder)
+                if rel is not None:
+                    with z.open(info) as src:
+                        write(rel, src)
     elif tarfile.is_tarfile(archive):
         with tarfile.open(archive) as t:
             members = t.getmembers()
@@ -104,18 +154,26 @@ def extract_member(archive: Path, member: str, dest_dir: Path) -> Path:
             for info in members:
                 if not info.isfile():
                     continue
-                p = _safe(info.name)
-                if p.parent == folder:
-                    f = t.extractfile(info)
-                    if f is not None:
-                        with open(dest_dir / p.name, "wb") as dst:
-                            shutil.copyfileobj(f, dst)
+                rel = _under(_safe(info.name), folder)
+                f = t.extractfile(info) if rel is not None else None
+                if f is not None and rel is not None:
+                    write(rel, f)
     else:
         raise SagasError(f"{archive.name} is not a zip or tar archive, but source.member is set")
     out = dest_dir / want.name
     if not out.exists():
         raise SagasError(f"{member!r} not found in {archive.name}")
     return out
+
+
+def record_extra_sha256(saga: Saga, file: str, digest: str) -> bool:
+    """Fill sha256 = "" of the extra_files entry for `file` (inline-table form written by sagas new)."""
+    text = saga.path.read_text(encoding="utf-8")
+    pat = re.compile(r'(file\s*=\s*"' + re.escape(file) + r'"\s*,\s*sha256\s*=\s*)""')
+    new, n = pat.subn(lambda m: m.group(1) + f'"{digest}"', text, count=1)
+    if n:
+        saga.path.write_text(new, encoding="utf-8")
+    return bool(n)
 
 
 _SOURCE = re.compile(r"(?ms)^\[source\]\s*$(.*?)(?=^\[|\Z)")

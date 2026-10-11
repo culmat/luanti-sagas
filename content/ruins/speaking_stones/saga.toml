@@ -1,0 +1,75 @@
+schema = 1
+id = "speaking_stones"
+theme = "ruins"
+title = "Speaking stones"
+tags = ["ruin", "3td"]
+lore = "On still nights the stones answer, if you ask in the old tongue."
+
+[source]
+kind = "mesh"
+url = "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip"
+file = "Fantasy Ruins Pack.zip"
+member = "FantasyRuins_Ready/game/art/shapes/Ruins/SpeakingStones_01/SpeakingStones_01.dae"
+sha256 = "12dad8708181bef31ac5e688fb61dc3232138206a6f004407044215f5fd64dfd"
+author = "Ron Kapaun / 3TD Studios"
+author_url = "https://opengameart.org/content/3td-fantasy-ruins-pack"
+license = "CC0-1.0"
+license_url = "https://opengameart.org/content/3td-fantasy-ruins-pack"
+ai = "none"
+notes = "3TD Fantasy Ruins Pack on OpenGameArt. Attribution not required; credit Ron Kapaun / 3TD Studios."
+
+[transform]
+up = "auto"
+target_size = 22
+anchor = "bottom-center"
+
+[voxel]
+mode = "shell"
+exclude = ["*collision*", "*col-*", "*100*"]
+
+[materials]
+mode = "classes"
+default = "stone"
+context = "surroundings"
+
+[[materials.rules]]
+match = { material = "*vino*" }
+class = "leaves"
+
+[[materials.rules]]
+match = { material = "*mossy*" }
+class = "moss"
+
+[[materials.rules]]
+match = { material = "*debris*" }
+class = "debris"
+
+[[materials.rules]]
+match = { material = "*wood*" }
+class = "wood"
+
+[[materials.rules]]
+match = { material = "*floor*" }
+class = "marble"
+
+[[materials.rules]]
+match = { material = "*column*" }
+class = "marble"
+
+[[materials.rules]]
+match = { material = "*concrete*" }
+class = "cobble"
+
+[[materials.rules]]
+match = { material = "*brick*" }
+class = "stone"
+
+[ruin]
+enabled = false
+
+[placement]
+site = ["plain", "ridge"]
+exposure = "prominent"
+biomes = ["grassland", "tundra", "taiga", "snow", "mountain"]
+rarity = 600
+hints = "A stone circle on open, windswept land."

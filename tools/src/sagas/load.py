@@ -120,6 +120,10 @@ def _load_dae(path: Path) -> Model:
             verts = np.asarray(tri.vertex, np.float64)[vi].reshape(-1, 3)
             faces = np.arange(len(verts), dtype=np.int64).reshape(-1, 3)
             part = MeshPart(name=str(gname), material="", vertices=verts, faces=faces)
+            ts, tis = tri.texcoordset, tri.texcoord_indexset
+            if len(ts) and len(tis) and tis[0] is not None and len(tis[0]):
+                ti = np.asarray(tis[0], np.int64).reshape(-1, 3)
+                part.uv = np.asarray(ts[0], np.float64)[ti].reshape(-1, 2)
             mat = tri.material
             matname, texname = "", ""
             if mat is not None and not isinstance(mat, str):
@@ -137,12 +141,7 @@ def _load_dae(path: Path) -> Model:
                         if ref not in images:
                             images[ref] = _image_array(_resolve_image(path.parent, ref))
                         part.texture = images[ref]
-                        ts = tri.texcoordset
-                        tis = tri.texcoord_indexset
-                        if part.texture is not None and len(ts) and len(tis):
-                            ti = np.asarray(tis[0], np.int64).reshape(-1, 3)
-                            part.uv = np.asarray(ts[0], np.float64)[ti].reshape(-1, 2)
-                        else:
+                        if part.uv is None:
                             part.texture = None
             elif isinstance(mat, str):
                 matname = mat
@@ -202,6 +201,25 @@ def _load_trimesh(path: Path) -> Model:
                 part.vertex_rgb = vc[:, :3]
         model.parts.append(part)
     return model
+
+
+def apply_texture(model: Model, image_path: Path, alpha: str = "cutout") -> int:
+    """Give every UV-mapped part without a texture this image (0 A.D. actors define textures outside
+    the mesh). With alpha == "ignore" the alpha channel of all textures is dropped. Returns parts changed."""
+    from PIL import Image
+
+    changed = 0
+    tex = None
+    if image_path:
+        with Image.open(image_path) as img:
+            tex = _image_array(img)
+    for p in model.parts:
+        if tex is not None and p.texture is None and p.uv is not None:
+            p.texture = tex
+            changed += 1
+        if alpha == "ignore" and p.texture is not None and p.texture.shape[-1] == 4:
+            p.texture = np.ascontiguousarray(p.texture[..., :3])
+    return changed
 
 
 def inspect(model: Model) -> dict:

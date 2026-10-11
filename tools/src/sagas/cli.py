@@ -199,7 +199,13 @@ def fetch(
             missing += 1
             typer.secho(f"{saga.qualified_id}: {e}", fg="yellow", err=True)
             continue
-        if not saga.source.sha256:
+        for extra_path, extra_digest in fetchmod.fetch_extras(saga, r.sources, force=force):
+            recorded = fetchmod.record_extra_sha256(saga, extra_path.name, extra_digest)
+            note = "sha256 recorded" if recorded else "sha256 ok"
+            typer.echo(f"{saga.qualified_id}: {extra_path.name} ({note})")
+        if saga.source.manual:
+            typer.echo(f"{saga.qualified_id}: {path} (manual download, sha256 not recorded)")
+        elif not saga.source.sha256:
             fetchmod.record_sha256(saga, digest)
             typer.echo(f"{saga.qualified_id}: {path} (sha256 recorded)")
         else:
@@ -223,7 +229,7 @@ def inspect(target: str, as_json: Annotated[bool, typer.Option("--json")] = Fals
         if saga.source.member:
             from . import fetch as fetchmod
 
-            p = fetchmod.extract_member(p, saga.source.member, r.sources / saga.id / "extracted")
+            p = fetchmod.extract_member(p, saga.source.member, fetchmod.extract_dir(p, saga.source.member))
     info = load.inspect(load.load_model(p))
     if as_json:
         typer.echo(json.dumps(info, indent=2))
@@ -245,7 +251,7 @@ def inspect(target: str, as_json: Annotated[bool, typer.Option("--json")] = Fals
 def voxelize(selector: Annotated[str, typer.Argument()] = "all", force: Annotated[bool, typer.Option()] = False):
     """Source model -> content/<theme>/<id>/voxels.vx.gz."""
     r = repo()
-    missing = 0
+    missing = failed = 0
     for saga in r.select(selector):
         if saga.vx_path.exists() and not force:
             typer.echo(f"{saga.qualified_id}: {saga.vx_path.name} exists (use --force)")
@@ -258,9 +264,15 @@ def voxelize(selector: Annotated[str, typer.Argument()] = "all", force: Annotate
                 typer.secho(str(e), fg="yellow", err=True)
                 continue
             raise
+        except (ValueError, OSError, KeyError) as e:
+            failed += 1
+            typer.secho(f"{saga.qualified_id}: {e}", fg="red", err=True)
+            continue
         voxels.write(model, saga.vx_path)
         x, y, z = model.size
         typer.echo(f"{saga.qualified_id}: {x}x{y}x{z}, {model.count} voxels")
+    if failed:
+        raise typer.Exit(1)
     if missing:
         raise typer.Exit(4)
 
@@ -329,9 +341,11 @@ def lint_cmd(
     """Check licences, attribution, size limits, value budget and core sync."""
     r = repo()
     findings: list[lint.Finding] = []
-    for saga in r.select(selector):
+    chosen = r.select(selector)
+    for saga in chosen:
         built = buildmod.build(saga, voxels.read(saga.vx_path)) if saga.vx_path.exists() else None
         findings += lint.check_saga(saga, built, strict=strict)
+    findings += lint.check_packs(chosen)
     if selector == "all":
         findings += lint.check_core(r)
     if as_json:

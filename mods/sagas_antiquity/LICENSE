@@ -1,0 +1,44 @@
+Sagas: Antiquity
+Copyright (C) 2026 Matthias Cullmann and contributors
+
+== Code (init.lua, registry.lua) ==
+
+SPDX-License-Identifier: MIT
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+== Media (schematics/*.mts) ==
+
+SPDX-License-Identifier: CC-BY-SA-3.0
+Each schematic is an adaptation of the work listed below and is licensed under that work's
+licence; the pack as a whole is distributed under CC-BY-SA-3.0 (https://creativecommons.org/licenses/by-sa/3.0/).
+
+Attribution (file, title, author, licence, source):
+- schematics/greek_temple.mts: "Temple on the hill" by Wildfire Games (0 A.D.), CC-BY-SA-3.0, https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/athen_temple_struct.dae. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/han_temple.mts: "Temple of the Han" by Wildfire Games (0 A.D.), CC-BY-SA-3.0, https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/han_temple.dae. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/lighthouse.mts: "Lighthouse of the harbour" by Wildfire Games (0 A.D.), CC-BY-SA-3.0, https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/ptol_lighthouse.dae. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/ptolemaic_temple.mts: "Temple by the river" by Wildfire Games (0 A.D.), CC-BY-SA-3.0, https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/ptol_temple.dae. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/pyramid.mts: "Pyramid of Meroe" by Wildfire Games (0 A.D.), CC-BY-SA-3.0, https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/kush_pyramid_1.dae. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/pyramid_small.mts: "Small pyramid" by Wildfire Games (0 A.D.), CC-BY-SA-3.0, https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/kush_pyramid_small_1.dae. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/roundhouse.mts: "Roundhouse" by Wildfire Games (0 A.D.), CC-BY-SA-3.0, https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/brit_house_01.dae. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/temple_of_amun.mts: "Temple of Amun" by Wildfire Games (0 A.D.), CC-BY-SA-3.0, https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/kush_temple_amun.dae. Changes: voxelized and recoloured with luanti-sagas.
+
+== AI-generated assets ==
+
+None. The tooling and this pack's code were written with AI assistance.

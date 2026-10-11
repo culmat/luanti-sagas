@@ -5,7 +5,7 @@ local expected = core.parse_json(util.read_file(FIX .. "expected.json"))
 
 -- Test sagas: disabled for mapgen except where a test enables them.
 assert(sagas.register({
-	id = "sagastest:box",
+	id = "sagas:test_box",
 	title = "Test box",
 	schematic = FIX .. "box.mts",
 	size = { x = 7, y = 5, z = 7 },
@@ -17,7 +17,7 @@ assert(sagas.register({
 	materials = { context = "fixed" },
 }))
 assert(sagas.register({
-	id = "sagastest:arrow",
+	id = "sagas:test_arrow",
 	schematic = FIX .. "arrow.mts",
 	size = { x = 3, y = 1, z = 2 },
 	anchor = { x = 0, y = 0, z = 0 },
@@ -27,8 +27,8 @@ assert(sagas.register({
 	clear_above = false,
 	materials = { context = "fixed" },
 }))
-sagas.registered["sagastest:box"].enabled = false
-sagas.registered["sagastest:arrow"].enabled = false
+sagas.registered["sagas:test_box"].enabled = false
+sagas.registered["sagas:test_arrow"].enabled = false
 
 local function name_at(pos)
 	return core.get_node(pos).name
@@ -50,21 +50,23 @@ end
 mtt.register("sagas: invalid definitions are rejected, not fatal", function(callback)
 	util.reject_level = "action"
 	assert(
-		sagas.register({ id = "sagastest:missing", schematic = FIX .. "nope.mts", size = vector.new(1, 1, 1) }) == false
+		sagas.register({ id = "sagas:test_missing", schematic = FIX .. "nope.mts", size = vector.new(1, 1, 1) })
+			== false
 	)
 	assert(sagas.register({
-		id = "sagastest:huge",
+		id = "sagas:test_huge",
 		schematic = FIX .. "box.mts",
 		size = { x = 200, y = 5, z = 7 },
 	}) == false, "a saga larger than a mapchunk needs large = true")
 	assert(sagas.register({
-		id = "sagastest:badsite",
+		id = "sagas:test_badsite",
 		schematic = FIX .. "box.mts",
 		size = { x = 7, y = 5, z = 7 },
 		site = { "volcano" },
 	}) == false)
 	assert(sagas.register({ id = "bad id" }) == false)
 	util.reject_level = "error"
+	assert(sagas.resolve_id("test_box") == "sagas:test_box", "short names resolve")
 	callback()
 end)
 
@@ -95,7 +97,7 @@ mtt.register("sagas: stone and wood families follow the site", function(callback
 	local remap = sagas.materials.remap
 	local stone_cid = core.get_content_id("sagas:m_stone")
 	local function stone_name(ctx)
-		local t = remap({ id = "sagastest:fam" .. (ctx.family or "") .. (ctx.wood or ""), materials = {} }, ctx)
+		local t = remap({ id = "sagas:test_fam" .. (ctx.family or "") .. (ctx.wood or ""), materials = {} }, ctx)
 		return core.get_name_from_content_id(t[stone_cid].cid)
 	end
 	if game == "minetest_game" then
@@ -113,7 +115,7 @@ mtt.register("sagas: stone and wood families follow the site", function(callback
 		assert(stone_name({ family = "sandstone" }) == "mcl_core:sandstonesmooth")
 	end
 	-- fixed context ignores the site
-	local fixed = remap({ id = "sagastest:fixed", materials = { context = "fixed" } }, { family = "nonsense" })
+	local fixed = remap({ id = "sagas:test_fixed", materials = { context = "fixed" } }, { family = "nonsense" })
 	assert(fixed[stone_cid].name == sagas.materials.resolved.fixed.stone.name)
 	callback()
 end)
@@ -146,13 +148,13 @@ mtt.register_with_area(
 	{ size = { x = 16, y = 4, z = 16 }, emerged = true },
 	function(pos1, pos2, callback)
 		fill(pos1, pos2, "air")
-		local def = sagas.registered["sagastest:arrow"]
+		local def = sagas.registered["sagas:test_arrow"]
 		local stone = sagas.materials.resolved.fixed.stone.name
 		local brick = sagas.materials.resolved.fixed.brick.name
 		for i, rot in ipairs({ 0, 90, 180, 270 }) do
 			local anchor = { x = pos1.x + 1 + (i - 1) * 4, y = pos1.y + 1, z = pos1.z + 4 }
 			local p1 = util.bbox(def, anchor, rot)
-			sagas.place("sagastest:arrow", anchor, { rot = rot, record = false })
+			sagas.place("sagas:test_arrow", anchor, { rot = rot, record = false })
 			local function at(lx, lz)
 				local r = util.rotate_local({ x = lx, y = 0, z = lz }, def.size, rot)
 				return name_at({ x = p1.x + r.x, y = p1.y, z = p1.z + r.z })
@@ -174,17 +176,17 @@ mtt.register_with_area(
 		local ground = pos1.y + 8
 		fill(pos1, { x = pos2.x, y = ground, z = pos2.z }, rock)
 		local anchor = { x = pos1.x + 8, y = ground, z = pos1.z + 8 }
-		local def = sagas.registered["sagastest:box"]
+		local def = sagas.registered["sagas:test_box"]
 		local p1, p2 = util.bbox(def, anchor, 0)
 		-- a hole under one corner: the foundation has to fill it
 		fill({ x = p1.x, y = ground - 4, z = p1.z }, { x = p1.x + 1, y = ground, z = p1.z + 1 }, "air")
 		local placed_cb
 		sagas.register_on_placed(function(id)
-			if id == "sagastest:box" then
+			if id == "sagas:test_box" then
 				placed_cb = true
 			end
 		end)
-		local q1, q2 = sagas.place("sagastest:box", anchor, { rot = 0, record = false })
+		local q1, q2 = sagas.place("sagas:test_box", anchor, { rot = 0, record = false })
 		assert(q1 and q2 and vector.equals(q1, p1), "sagas.place returns the box")
 		assert(placed_cb, "on_placed callback ran")
 		local left = core.find_nodes_in_area(p1, p2, { "group:sagas_placeholder" })
@@ -293,9 +295,9 @@ mtt.register("sagas: mapgen places sagas", {
 			core.log("action", "[sagas] mapgen test skipped (mode " .. sagas.engine.mode .. ")")
 			return callback()
 		end
-		local def = sagas.registered["sagastest:box"]
+		local def = sagas.registered["sagas:test_box"]
 		def.enabled = true
-		sagas.engine.configure({ rarity_scale = 1, only = { "sagastest:box" } })
+		sagas.engine.configure({ rarity_scale = 1, only = { "sagas:test_box" } })
 		local before = sagas.engine.placed
 		local c = { x = 3000, y = 0, z = 3000 }
 		core.emerge_area(

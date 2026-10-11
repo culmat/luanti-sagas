@@ -15,10 +15,12 @@ from .repo import Repo
 
 def source_file(saga: Saga, repo: Repo) -> Path:
     """Where the source file of a saga is: next to saga.toml, or in sources/<id>/."""
+    from . import fetch
+
     name = saga.source.file
     if not name:
         raise SagasError(f"{saga.qualified_id}: source.file is not set")
-    for cand in (saga.dir / name, repo.sources / saga.id / name):
+    for cand in (saga.dir / name, fetch.cache_path(saga, repo.sources), repo.sources / saga.id / name):
         if cand.exists():
             return cand
     hint = saga.source.instructions or (f"run: sagas fetch {saga.qualified_id}" if saga.source.url else "")
@@ -39,8 +41,22 @@ def voxelize(saga: Saga, repo: Repo) -> voxels.VoxelModel:
 
         path = source_file(saga, repo)
         if saga.source.member:
-            path = fetch.extract_member(path, saga.source.member, repo.sources / saga.id / "extracted")
+            path = fetch.extract_member(path, saga.source.member, fetch.extract_dir(path, saga.source.member))
         mesh = load.load_model(path)
+        if saga.voxel.texture or saga.voxel.alpha == "ignore":
+            tex = None
+            if saga.voxel.texture:
+                for cand in (
+                    path.parent / saga.voxel.texture,
+                    source_file(saga, repo).parent / saga.voxel.texture,
+                    saga.dir / saga.voxel.texture,
+                ):
+                    if cand.exists():
+                        tex = cand
+                        break
+                if tex is None:
+                    raise SourceMissing(f"{saga.qualified_id}: texture {saga.voxel.texture} not found (sagas fetch)")
+            load.apply_texture(mesh, tex, saga.voxel.alpha)
         model = vz.voxelize(mesh, saga.transform, saga.voxel)
     else:
         raise SagasError(f"{saga.qualified_id}: source.kind {kind!r} cannot be voxelized")

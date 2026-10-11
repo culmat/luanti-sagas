@@ -48,6 +48,7 @@ class Source:
     license_url: str = ""
     ai: str = "none"
     notes: str = ""
+    extra_files: list[dict] = field(default_factory=list)  # [{url, file, sha256}] fetched next to `file`
 
 
 @dataclass
@@ -71,6 +72,8 @@ class Voxel:
     interior: str = "carve"  # carve: enclosed air replaces terrain; keep: leave terrain
     interior_close: int = 2  # per-layer closing radius used to find rooms behind doors/windows
     exclude: list[str] = field(default_factory=list)  # globs on part or material names (collision meshes, LODs)
+    texture: str = ""  # image applied to UV-mapped parts without a texture (e.g. 0 A.D. actor textures)
+    alpha: str = "cutout"  # cutout: transparent texels are holes; ignore: alpha is not transparency
 
 
 @dataclass
@@ -137,8 +140,13 @@ class Saga:
         return self.path.parent
 
     @property
+    def pack(self) -> str:
+        return f"sagas_{self.theme}"
+
+    @property
     def qualified_id(self) -> str:
-        return f"{self.theme}:{self.id}"
+        """Luanti-style name owned by the pack mod, e.g. sagas_ruins:cathedral."""
+        return f"{self.pack}:{self.id}"
 
     @property
     def vx_path(self) -> Path:
@@ -290,6 +298,11 @@ def validate(s: Saga) -> None:
         raise ConfigError(f"{w}: voxel.mode must be one of {', '.join(VOXEL_MODES)}")
     if v.interior not in ("carve", "keep"):
         raise ConfigError(f"{w}: voxel.interior must be 'carve' or 'keep'")
+    if v.alpha not in ("cutout", "ignore"):
+        raise ConfigError(f"{w}: voxel.alpha must be 'cutout' or 'ignore'")
+    for i, extra in enumerate(src.extra_files):
+        if not isinstance(extra, dict) or not extra.get("file") or set(extra) - {"url", "file", "sha256"}:
+            raise ConfigError(f"{w}: source.extra_files[{i}] needs file (and url, sha256) only")
     if not 1 <= v.supersample <= 8:
         raise ConfigError(f"{w}: voxel.supersample must be between 1 and 8")
     m = s.materials

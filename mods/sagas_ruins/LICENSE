@@ -1,0 +1,46 @@
+Sagas: Ruins
+Copyright (C) 2026 Matthias Cullmann and contributors
+
+== Code (init.lua, registry.lua) ==
+
+SPDX-License-Identifier: MIT
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+== Media (schematics/*.mts) ==
+
+SPDX-License-Identifier: CC0-1.0
+Each schematic is an adaptation of the work listed below and is licensed under that work's
+licence; the pack as a whole is distributed under CC0-1.0 (https://creativecommons.org/publicdomain/zero/1.0/).
+
+Attribution (file, title, author, licence, source):
+- schematics/cathedral.mts: "Ruined cathedral" by Ron Kapaun / 3TD Studios, CC0-1.0, https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/foundation_ruin.mts: "Old foundation" by Ron Kapaun / 3TD Studios, CC0-1.0, https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/mammoth_skeleton.mts: "Mammoth skeleton" by Smithsonian Institution, CC0-1.0, https://sketchfab.com/3d-models/mammuthus-primigenius-blumbach-229976b3db4646b39c44e57a7e3d8744. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/menlo_gate.mts: "Gates of Menlo Castle" by galway3d, CC0-1.0, https://sketchfab.com/3d-models/entrance-gates-to-menlo-castle-co-galway-03786e366204470c92655c2889a93ee6. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/pillar.mts: "Fallen pillar" by Ron Kapaun / 3TD Studios, CC0-1.0, https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/ruin_arch.mts: "Broken aqueduct arch" by Ron Kapaun / 3TD Studios, CC0-1.0, https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/speaking_stones.mts: "Speaking stones" by Ron Kapaun / 3TD Studios, CC0-1.0, https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/temple_ruin_01.mts: "Overgrown temple" by Ron Kapaun / 3TD Studios, CC0-1.0, https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/temple_ruin_02.mts: "Temple of the four arches" by Ron Kapaun / 3TD Studios, CC0-1.0, https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip. Changes: voxelized and recoloured with luanti-sagas.
+- schematics/wall_segment.mts: "Ruined wall" by Ron Kapaun / 3TD Studios, CC0-1.0, https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip. Changes: voxelized and recoloured with luanti-sagas.
+
+== AI-generated assets ==
+
+None. The tooling and this pack's code were written with AI assistance.

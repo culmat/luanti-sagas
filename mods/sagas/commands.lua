@@ -75,6 +75,7 @@ local function cmd_place(name, args)
 		return false, S("Only players can place sagas.")
 	end
 	local id, rot, nofound = parse_place(args)
+	id = sagas.resolve_id(id)
 	local def = id and sagas.registered[id]
 	if not def then
 		return false, S("Unknown saga. Try /saga list")
@@ -140,6 +141,7 @@ end
 local function cmd_sites(name, args)
 	local player = core.get_player_by_name(name)
 	local id, radius = args:match("^(%S+)%s*(%d*)")
+	id = sagas.resolve_id(id)
 	local def = id and sagas.registered[id]
 	if not player or not def then
 		return false, S("Usage: /saga sites <id> [radius]")
@@ -294,7 +296,7 @@ core.register_chatcommand("saga", {
 		elseif sub == "export" then
 			return cmd_export(name, rest)
 		elseif sub == "info" then
-			local def = sagas.registered[rest]
+			local def = sagas.registered[sagas.resolve_id(rest) or ""]
 			if not def then
 				return false, S("Unknown saga.")
 			end

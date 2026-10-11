@@ -14,7 +14,7 @@ def parse(**data):
 
 def test_defaults():
     s = parse()
-    assert s.qualified_id == "medieval:tower"
+    assert s.qualified_id == "sagas_medieval:tower"
     assert s.placement.site == ["plain"] and s.placement.biomes == ["any"]
     assert s.materials.context == "surroundings" and s.voxel.interior == "carve"
 

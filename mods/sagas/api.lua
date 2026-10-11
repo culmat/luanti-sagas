@@ -18,7 +18,7 @@ end
 function sagas.register(def)
 	local id = def.id
 	if type(id) ~= "string" or not id:match("^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$") then
-		return fail(id, "id must look like theme:name")
+		return fail(id, "id must look like modname:name (e.g. sagas_ruins:cathedral)")
 	end
 	if sagas.registered[id] then
 		return fail(id, "duplicate id")
@@ -89,7 +89,7 @@ function sagas.register(def)
 	if def.min_distance == nil or def.min_distance <= 0 then
 		def.min_distance = def.rarity >= 400 and 3 * math.max(def.size.x, def.size.z) or 0
 	end
-	def.theme = def.theme or id:match("^([^:]+)")
+	def.theme = def.theme or id:match("^([^:]+)"):gsub("^sagas_", "")
 	def.salt = util.hash32(id) % 16777216
 	def.enabled = not (util.settings.disabled[id] or util.settings.disabled[def.theme])
 	sagas.registered[id] = def
@@ -104,9 +104,34 @@ function sagas.register_on_placed(fn)
 	sagas.registered_on_placed[#sagas.registered_on_placed + 1] = fn
 end
 
+-- Full id for a name typed by a player: the full id, theme:name, or a unique short name.
+function sagas.resolve_id(name)
+	if not name or name == "" then
+		return nil
+	end
+	if sagas.registered[name] then
+		return name
+	end
+	local theme, short = name:match("^([^:]+):(.+)$")
+	if theme and sagas.registered["sagas_" .. theme .. ":" .. short] then
+		return "sagas_" .. theme .. ":" .. short
+	end
+	local found
+	for id in pairs(sagas.registered) do
+		if id:match(":(.+)$") == name then
+			if found then
+				return nil -- ambiguous
+			end
+			found = id
+		end
+	end
+	return found
+end
+
 -- Place saga `id` with its anchor at `pos`. opts: rot (0/90/180/270), foundation (depth),
 -- clear_above (bool). Returns p1, p2 or nil, error.
 function sagas.place(id, pos, opts)
+	id = sagas.resolve_id(id) or id
 	local def = sagas.registered[id]
 	if not def then
 		return nil, "unknown saga " .. tostring(id)

@@ -1,0 +1,42 @@
+schema = 1
+id = "mammoth_skeleton"
+theme = "ruins"
+title = "Mammoth skeleton"
+tags = ["relic", "prehistoric", "scan"]
+lore = "Bones of a woolly mammoth, bleached by a hundred winters."
+
+[source]
+kind = "mesh"
+url = "https://sketchfab.com/3d-models/mammuthus-primigenius-blumbach-229976b3db4646b39c44e57a7e3d8744"
+manual = true
+instructions = "Sketchfab needs a login: download the model as glTF (zip) from the URL"
+file = "mammuthus-primigenius-blumbach.zip"
+member = "scene.gltf"
+sha256 = ""
+author = "Smithsonian Institution"
+author_url = "https://sketchfab.com/Smithsonian"
+license = "CC0-1.0"
+license_url = "http://creativecommons.org/publicdomain/zero/1.0/"
+ai = "none"
+notes = "Woolly mammoth skeleton, National Museum of Natural History; released CC0 by the Smithsonian on Sketchfab."
+
+[transform]
+up = "auto"
+target_size = 52
+anchor = "bottom-center"
+
+[voxel]
+mode = "shell"
+
+[materials]
+mode = "classes"
+default = "bone"
+context = "fixed"
+
+[placement]
+site = ["plain", "slope"]
+exposure = "any"
+biomes = ["tundra", "snow", "taiga"]
+rarity = 1500
+foundation = 3
+hints = "A skeleton lying in the cold north. Bone everywhere, so the material is fixed."

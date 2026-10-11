@@ -1,0 +1,15 @@
+{
+	"type": "MOD",
+	"title": "Sagas: Ruins",
+	"short_description": "Ruined temples, a cathedral, arches and stone circles from the CC0 3TD Fantasy Ruins Pack, the gates of Menlo Castle (Co. Galway, photogrammetry) and a mammoth skeleton from the Smithsonian.",
+	"license": "MIT",
+	"media_license": "CC0-1.0",
+	"ai_disclosure": "ASSISTED",
+	"dev_state": "WIP",
+	"tags": [
+		"mapgen",
+		"decorative"
+	],
+	"repo": "https://github.com/culmat/luanti-sagas",
+	"issue_tracker": "https://github.com/culmat/luanti-sagas/issues"
+}

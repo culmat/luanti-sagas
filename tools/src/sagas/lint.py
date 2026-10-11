@@ -23,7 +23,7 @@ CODES = {
     "L004": "too large for a mapchunk without large = true",
     "L005": "value budget exceeded",
     "L006": "AI-generated source without the tool named",
-    "L007": "share-alike licence makes the whole pack share-alike",
+    "L007": "pack mixes share-alike and other licences",
     "L008": "generated files are stale (run sagas build)",
     "L009": "directory does not match id/theme",
     "L010": "preview.png missing (run sagas preview)",
@@ -61,16 +61,17 @@ def check_saga(saga: Saga, built: BuildResult | None = None, strict: bool = Fals
         add("L001", "source.url is required (where the model can be found)")
     if src.license and src.license not in LICENSE_ALLOWLIST:
         add("L002", f"{src.license!r} is not one of {', '.join(LICENSE_ALLOWLIST)} (NC/ND licences are never allowed)")
-    if src.kind in ("mesh", "vox") and not SHA_RE.match(src.sha256 or ""):
+    if src.kind in ("mesh", "vox") and not src.manual and not SHA_RE.match(src.sha256 or ""):
         add(
             "L003",
             "source.sha256 must be the 64-hex sha256 of the downloaded file (sagas fetch fills it)",
             "error" if strict else "warn",
         )
+    for extra in src.extra_files:
+        if not SHA_RE.match(extra.get("sha256", "")):
+            add("L003", f"source.extra_files: {extra.get('file')} needs a sha256", "error" if strict else "warn")
     if src.ai == "generated" and not src.notes.strip():
         add("L006", "source.notes must name the AI tool used to generate the model")
-    if src.license in SHARE_ALIKE:
-        add("L007", f"{src.license}: the pack sagas_{saga.theme} will be share-alike", "warn")
     for text in (src.notes, src.license_url, src.instructions):
         if text and NC_ND.search(text):
             add("L013", f"check the licence: {text[:80]!r}")
@@ -96,6 +97,27 @@ def check_saga(saga: Saga, built: BuildResult | None = None, strict: bool = Fals
             )
         for msg in built.findings:
             add("L005", msg)
+    return out
+
+
+def check_packs(sagas: list[Saga]) -> list[Finding]:
+    """Pack-level checks: mixing share-alike and other licences makes the whole pack share-alike."""
+    out = []
+    by_theme: dict[str, set[str]] = {}
+    for s in sagas:
+        by_theme.setdefault(s.theme, set()).add(s.source.license)
+    for theme, lics in sorted(by_theme.items()):
+        sa = lics & set(SHARE_ALIKE)
+        if sa and lics - set(SHARE_ALIKE):
+            out.append(
+                Finding(
+                    "L007",
+                    "warn",
+                    f"sagas_{theme}",
+                    f"mixes {', '.join(sorted(sa))} with {', '.join(sorted(lics - sa))}: the whole pack "
+                    "becomes share-alike; consider a separate theme",
+                )
+            )
     return out
 
 
