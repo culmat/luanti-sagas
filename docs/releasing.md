@@ -30,8 +30,9 @@ declare `depends = sagas`.
 ## Why not a ContentDB webhook
 
 ContentDB imports a repository root and binds a webhook to one package, so it cannot tell which of
-several packages in this monorepo a tag is for. The workflow above needs no upstream change. A draft
-feature request for native subfolder support is in avanti-luanti `drafts/contentdb-subfolder-packages.md`.
+several packages in this monorepo a tag is for (checked in ContentDB's source, 2026-10-11). The workflow
+above needs no upstream change. Native support (a per-package subfolder and tag pattern) is a proposed
+upstream feature, tracked in avanti-luanti's [upstream backlog](https://github.com/culmat/avanti-luanti/blob/main/docs/upstream.md).
 
 If git import is unavailable, `avanti cdb release VERSION mods/<pkg> --zip dist/<pkg>-VERSION.zip`
 uploads the zip from the GitHub release instead.
