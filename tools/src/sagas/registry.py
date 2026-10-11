@@ -163,6 +163,7 @@ def pack_files(theme: Theme, results: list[BuildResult], owner: str = "culmat") 
                 "ai_disclosure": ai,
                 "dev_state": "WIP",
                 "tags": ["mapgen", "decorative"],
+                "long_description": long_description(theme, results),
                 "repo": f"https://github.com/{owner}/luanti-sagas",
                 "issue_tracker": f"https://github.com/{owner}/luanti-sagas/issues",
             },
@@ -171,6 +172,23 @@ def pack_files(theme: Theme, results: list[BuildResult], owner: str = "culmat") 
         + "\n"
     ).encode()
     return files
+
+
+def long_description(theme: Theme, results: list[BuildResult]) -> str:
+    lines = [
+        theme.description,
+        "",
+        "Requires the **sagas** mod, which places these landmarks during map generation",
+        "where their site fits and builds them from the materials of the game and the site.",
+        "",
+        "| Saga | Size | Where |",
+        "|---|---|---|",
+    ]
+    for r in results:
+        x, y, z = r.size
+        lines.append(f"| {r.saga.title} | {x} x {y} x {z} | {' or '.join(r.saga.placement.site)} |")
+    lines += ["", "Every schematic is an adaptation of a freely licensed model; see ATTRIBUTION.md for sources."]
+    return "\n".join(lines)
 
 
 def attribution_md(theme: Theme, results: list[BuildResult]) -> str:

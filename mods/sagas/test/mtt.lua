@@ -344,8 +344,20 @@ mtt.register("sagas: large sagas are emerged and placed", {
 		local cx, cz = 23, -17
 		local c = sagas.large.candidate(def, cx, cz)
 		assert(c, "rarity 1 gives every cell a candidate")
-		local waited = 0
-		local function poll()
+		local waited, tries = 0, 1
+		local poll
+		local function start()
+			core.emerge_area(
+				{ x = c.x - 8, y = -60, z = c.z - 8 },
+				{ x = c.x + 8, y = 100, z = c.z + 8 },
+				function(_, _, r)
+					if r == 0 then
+						core.after(1, poll)
+					end
+				end
+			)
+		end
+		function poll()
 			local st = sagas.large.state(def, cx, cz)
 			if st and st.state == "placed" then
 				def.enabled = false
@@ -362,6 +374,13 @@ mtt.register("sagas: large sagas are emerged and placed", {
 				return callback()
 			end
 			if st and st.state == "rejected" then
+				-- the random test world may put this cell in impossible terrain: try the next cell
+				if tries < 4 then
+					tries = tries + 1
+					cx = cx + 1
+					c = sagas.large.candidate(def, cx, cz)
+					return start()
+				end
 				return callback("large saga rejected: " .. tostring(st.reason))
 			end
 			waited = waited + 1
@@ -370,11 +389,7 @@ mtt.register("sagas: large sagas are emerged and placed", {
 			end
 			core.after(1, poll)
 		end
-		core.emerge_area({ x = c.x - 8, y = -60, z = c.z - 8 }, { x = c.x + 8, y = 100, z = c.z + 8 }, function(_, _, r)
-			if r == 0 then
-				core.after(1, poll)
-			end
-		end)
+		start()
 	end,
 })
 

@@ -291,8 +291,13 @@ function P.underwater(ctx, def, p1, p2, s)
 	return s.max <= ctx.water_level - def.size.y - 2, s.median
 end
 
+-- anywhere the surface at the anchor column is known (the rest of the footprint may be unknown)
 function P.any(ctx, def, p1, p2, s)
-	return s ~= nil, s and s.median
+	if s then
+		return true, s.median
+	end
+	local h = ctx.H(floor((p1.x + p2.x) / 2), floor((p1.z + p2.z) / 2))
+	return h ~= nil, h
 end
 
 -- Layer sites do not need the surface: they scan the loaded nodes.
