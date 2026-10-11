@@ -1,0 +1,14 @@
+# downloaded source models are never committed (see docs/sources.md)
+/sources/
+*.part
+# python
+tools/.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+/dist/
+# editors / OS
+.DS_Store
+*.swp
+.luarc.json

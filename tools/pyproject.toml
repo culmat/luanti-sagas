@@ -1,0 +1,59 @@
+[project]
+name = "luanti-sagas"
+version = "0.1.0"
+description = "Turn 3D models into Luanti landmark schematics (sagas): voxelize, classify materials, build mod packs."
+readme = "README.md"
+authors = [{ name = "Matthias Cullmann", email = "matthias.cullmann@gmail.com" }]
+requires-python = ">=3.12"
+license = "MIT"
+keywords = ["luanti", "minetest", "voxel", "schematic", "3d"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Programming Language :: Python :: 3",
+    "Topic :: Games/Entertainment",
+    "Topic :: Multimedia :: Graphics :: 3D Modeling",
+]
+dependencies = [
+    "httpx>=0.28",
+    "numpy>=2.0",
+    "pillow>=11.0",
+    "pycollada>=0.8",
+    "scipy>=1.14",
+    "trimesh>=4.5",
+    "typer>=0.15",
+]
+
+[project.scripts]
+sagas = "sagas.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/culmat/luanti-sagas"
+Issues = "https://github.com/culmat/luanti-sagas/issues"
+
+[build-system]
+requires = ["uv_build>=0.11.8,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "sagas"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.8",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["B008", "E741"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["sagas", "conftest"]

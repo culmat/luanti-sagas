@@ -1,0 +1,36 @@
+luanti-sagas
+Copyright (C) 2026 Matthias Cullmann and contributors
+
+== Code (tools/, mods/*/ Lua files, CI) ==
+
+SPDX-License-Identifier: MIT
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+== Content (content/*, mods/sagas_*/schematics) ==
+
+Every saga is an adaptation of a third-party 3D model and keeps that model's licence.
+content/<theme>/<id>/saga.toml names the source, author and licence; each pack's
+LICENSE and ATTRIBUTION.md list them. Only free licences are accepted (CC0, CC-BY,
+CC-BY-SA, MIT); see CONTRIBUTING.md.
+
+== AI disclosure ==
+
+The tooling and mod code were written with AI assistance and reviewed by a human
+maintainer. AI-generated models, if any, are flagged per saga (source.ai).

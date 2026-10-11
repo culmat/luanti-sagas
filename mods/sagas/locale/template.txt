@@ -1,0 +1,25 @@
+# textdomain: sagas
+Can place, inspect and export sagas=
+No sagas registered.=
+Only players can place sagas.=
+Unknown saga. Try /saga list=
+Point at a node (within 64 nodes) to place the saga there.=
+Placed @1 at @2 (rotation @3).=
+Too large to undo.=
+Nothing to undo.=
+Undone.=
+No saga here.=
+Usage: /saga sites <id> [radius]=
+@1 candidate anchor(s) marked.=
+Punch two nodes to mark the corners of the area to export.=
+Corner 1: @1=
+Corner 2: @1. Now: /saga export <name>=
+Usage: /saga export <name> (lowercase letters, digits, _)=
+Mark the area first: /saga mark=
+Exported to @1=
+Usage: /saga list [theme] | place <id> [0|90|180|270] [--no-foundation] | undo | here | sites <id> [radius] | mark | export <name> | info <id>=
+Place and inspect sagas (landmarks)=
+Unknown saga.=
+Saga placeholder (@1)=
+Saga stone=
+Still water=

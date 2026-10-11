@@ -1,0 +1,42 @@
+{
+  "arrow": {
+    "counts": {
+      "sagas:color": 1,
+      "sagas:m_brick": 1,
+      "sagas:m_stone": 1
+    },
+    "names": [
+      "air",
+      "sagas:color",
+      "sagas:m_brick",
+      "sagas:m_stone"
+    ],
+    "size": [
+      3,
+      1,
+      2
+    ]
+  },
+  "box": {
+    "anchor": [
+      3,
+      0,
+      3
+    ],
+    "counts": {
+      "air": 76,
+      "sagas:m_debris": 26,
+      "sagas:m_stone": 143
+    },
+    "names": [
+      "air",
+      "sagas:m_debris",
+      "sagas:m_stone"
+    ],
+    "size": [
+      7,
+      5,
+      7
+    ]
+  }
+}
