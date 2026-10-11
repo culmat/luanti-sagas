@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-import os
 import re
 from collections.abc import Iterator
 from html import unescape
 
+from .. import secrets
 from .base import Candidate, Http, RateLimited, check_text, spdx
 
 SKETCHFAB_LICENCES = {"cc0": "CC0-1.0", "by": "CC-BY-4.0", "by-sa": "CC-BY-SA-4.0"}
@@ -20,7 +20,7 @@ def sketchfab(http: Http, theme: str, term: str, limit: int, licences: list[str]
     """Sketchfab v3 search. Sketchfab challenges anonymous scripted clients, so set SKETCHFAB_TOKEN
     (your API token from https://sketchfab.com/settings/password). Downloads need a login anyway,
     so promoted sagas are manual."""
-    token = os.environ.get("SKETCHFAB_TOKEN", "")
+    token = secrets.get("SKETCHFAB_TOKEN")
     headers = {"Authorization": f"Token {token}"} if token else None
     for lic in licences:
         if lic not in SKETCHFAB_LICENCES:
@@ -36,7 +36,11 @@ def sketchfab(http: Http, theme: str, term: str, limit: int, licences: list[str]
         try:
             data = http.get_json("https://api.sketchfab.com/v3/search", params, headers=headers)
         except RateLimited as e:
-            hint = "" if token else " (set SKETCHFAB_TOKEN: Sketchfab challenges anonymous scripts)"
+            hint = (
+                ""
+                if token
+                else " (run 'avanti secrets setup' or set SKETCHFAB_TOKEN: anonymous scripts are challenged)"
+            )
             raise RateLimited(str(e) + hint) from None
         for r in data.get("results", [])[:limit]:
             user = r.get("user") or {}
@@ -162,7 +166,7 @@ def smithsonian(http: Http, theme: str, term: str, limit: int, licences: list[st
     """Smithsonian Open Access records with a 3D package and usage CC0 (api.data.gov key, DEMO_KEY works)."""
     if "cc0" not in licences:
         return
-    key = os.environ.get("SI_API_KEY", "DEMO_KEY")
+    key = secrets.get("SI_API_KEY", "DEMO_KEY")
     data = http.get_json("https://api.si.edu/openaccess/api/v1.0/search", {"q": term, "rows": 100, "api_key": key})
     n = 0
     for row in data.get("response", {}).get("rows", []):

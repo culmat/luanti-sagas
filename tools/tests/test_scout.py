@@ -46,6 +46,18 @@ SKETCHFAB = {
 }
 
 
+def test_token_from_secrets_file(monkeypatch, tmp_path):
+    from sagas import secrets
+
+    f = tmp_path / "secrets.env"
+    f.write_text("SKETCHFAB_TOKEN=fromfile\nX=$(rm -rf /)\n")
+    monkeypatch.setenv("AVANTI_SECRETS", str(f))
+    monkeypatch.delenv("SKETCHFAB_TOKEN", raising=False)
+    assert secrets.get("SKETCHFAB_TOKEN") == "fromfile"
+    monkeypatch.setenv("SKETCHFAB_TOKEN", "env")
+    assert secrets.get("SKETCHFAB_TOKEN") == "env"
+
+
 def test_sketchfab_adapter_uses_token(monkeypatch):
     monkeypatch.setenv("SKETCHFAB_TOKEN", "tok")
     http = FakeHttp({"api.sketchfab.com": SKETCHFAB})

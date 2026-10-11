@@ -8,7 +8,8 @@ Thank you for helping the Luanti world feel less anonymous. You don't need to co
    No "NC" (non-commercial) and no "ND" (no derivatives): ContentDB does not allow them.
    [docs/sources.md](docs/sources.md) lists good places to look, and
    [docs/scouting/](docs/scouting/) holds candidates others found; `sagas scout promote <id>` turns one
-   into a `saga.toml` for you (then continue at step 4).
+   into a `saga.toml` for you (then continue at step 4). To search Sketchfab and the Smithsonian yourself,
+   `avanti secrets setup` ([avanti-luanti](https://github.com/culmat/avanti-luanti)) stores your free tokens.
 2. **Set up the tools** (Python 3.12+ and [uv](https://docs.astral.sh/uv/); no Blender needed):
    ```sh
    git clone https://github.com/culmat/luanti-sagas && cd luanti-sagas/tools && uv sync && cd ..

@@ -75,6 +75,8 @@ uv run sagas lint              # licences, attribution, size and value checks
 avanti test mods               # Luanti headless tests (https://github.com/culmat/avanti-luanti)
 ```
 
+Maintainers release with a tag; see [docs/releasing.md](docs/releasing.md).
+
 ## Licence
 
 Code: MIT. Each saga keeps its source model's free licence; packs list every source in
