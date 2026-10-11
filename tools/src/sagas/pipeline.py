@@ -31,6 +31,17 @@ def voxelize(saga: Saga, repo: Repo) -> voxels.VoxelModel:
     kind = saga.source.kind
     if kind == "voxels":
         model = legacy.read_txt(source_file(saga, repo))
+    elif kind == "handbuilt":
+        from . import handbuilt
+
+        model, unknown = handbuilt.read_mts(source_file(saga, repo))
+        if unknown:
+            import sys
+
+            print(
+                f"{saga.qualified_id}: no class for {', '.join(unknown)} (default class used; add rules)",
+                file=sys.stderr,
+            )
     elif kind == "vox":
         from . import vox
 

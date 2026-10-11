@@ -57,7 +57,7 @@ def check_saga(saga: Saga, built: BuildResult | None = None, strict: bool = Fals
     for name in ("license", "author"):
         if not getattr(src, name):
             add("L001", f"source.{name} is required")
-    if src.kind in ("mesh", "vox", "voxels") and not src.url and not src.manual:
+    if src.kind in ("mesh", "vox", "voxels") and not src.url and not src.manual and not (saga.dir / src.file).is_file():
         add("L001", "source.url is required (where the model can be found)")
     if src.license and src.license not in LICENSE_ALLOWLIST:
         add("L002", f"{src.license!r} is not one of {', '.join(LICENSE_ALLOWLIST)} (NC/ND licences are never allowed)")

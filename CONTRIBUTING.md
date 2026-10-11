@@ -7,7 +7,8 @@ Thank you for helping the Luanti world feel less anonymous. You don't need to co
 1. **Find a model** you like that has a free licence: CC0, CC-BY or CC-BY-SA (or MIT).
    No "NC" (non-commercial) and no "ND" (no derivatives): ContentDB does not allow them.
    [docs/sources.md](docs/sources.md) lists good places to look, and
-   [docs/scouting/](docs/scouting/) holds candidates others found.
+   [docs/scouting/](docs/scouting/) holds candidates others found; `sagas scout promote <id>` turns one
+   into a `saga.toml` for you (then continue at step 4).
 2. **Set up the tools** (Python 3.12+ and [uv](https://docs.astral.sh/uv/); no Blender needed):
    ```sh
    git clone https://github.com/culmat/luanti-sagas && cd luanti-sagas/tools && uv sync && cd ..
@@ -16,7 +17,7 @@ Thank you for helping the Luanti world feel less anonymous. You don't need to co
 3. **Scaffold** `content/<theme>/<id>/saga.toml`:
    ```sh
    sagas new watchtower --theme medieval --url https://sketchfab.com/3d-models/... \
-       --license CC-BY-4.0 --author "Jane Doe" --file watchtower.zip --manual
+       --license CC-BY-4.0 --author "Jane Doe" --file watchtower.zip --member scene.gltf --manual
    ```
 4. **Get the model**: `sagas fetch medieval/watchtower` downloads it, or for sites that need a login
    (Sketchfab) download it yourself and run `sagas fetch medieval/watchtower --from ~/Downloads/watchtower.zip`.
@@ -43,8 +44,11 @@ for a creative world, and use `/saga place watchtower` while pointing at the gro
 | No install | a MagicaVoxel `.vox` or a voxel point list (`x, y, z[, r, g, b]`, e.g. from drububu.com) next to `saga.toml` | `vox`, `voxels` |
 | Curate | better materials, placement hints, lore for existing sagas | edit `saga.toml` |
 
-Hand-built sagas are licensed by you: choose CC0 or CC-BY-SA-4.0 in `saga.toml`.
-The `handbuilt` lane needs the class mapping of game nodes, which is planned; open an issue with your export meanwhile.
+Hand-built sagas are licensed by you: choose CC0 or CC-BY-SA-4.0 in `saga.toml`. Copy the exported
+`.mts` next to `saga.toml` and set `kind = "handbuilt"` and `file = "<name>.mts"`. The tools map the game's
+nodes back to material classes (stairs and slabs become their base material, wool and concrete keep
+their colour), so your build adapts to every game. `sagas voxelize` lists nodes it could not map;
+add a rule such as `match = { part = "mymod:roof_tile" }` with `class = "roof_red"`.
 
 ## Rules that keep the project publishable
 
