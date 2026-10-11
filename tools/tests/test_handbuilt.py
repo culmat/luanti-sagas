@@ -22,7 +22,15 @@ def test_exported_schematic_becomes_saga(tmp_path):
     model, unknown = handbuilt.read_mts(p)
     assert unknown == ["mymod:mystery"]
     assert model.count == 4
-    saga = config.parse({"id": "hut", "theme": "village", "title": "Hut", "source": {"kind": "handbuilt"},
-                         "materials": {"default": "planks"}}, tmp_path / "village" / "hut" / "saga.toml")
+    saga = config.parse(
+        {
+            "id": "hut",
+            "theme": "village",
+            "title": "Hut",
+            "source": {"kind": "handbuilt"},
+            "materials": {"default": "planks"},
+        },
+        tmp_path / "village" / "hut" / "saga.toml",
+    )
     res = build.build(saga, model)
     assert res.grid.counts() == {"sagas:m_stone": 2, "sagas:m_planks": 1, "sagas:color": 1}
