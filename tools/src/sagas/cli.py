@@ -199,10 +199,10 @@ def fetch(
             missing += 1
             typer.secho(f"{saga.qualified_id}: {e}", fg="yellow", err=True)
             continue
-        for extra_path, extra_digest in fetchmod.fetch_extras(saga, r.sources, force=force):
-            recorded = fetchmod.record_extra_sha256(saga, extra_path.name, extra_digest)
+        for extra_file, _, extra_digest in fetchmod.fetch_extras(saga, r.sources, force=force):
+            recorded = fetchmod.record_extra_sha256(saga, extra_file, extra_digest)
             note = "sha256 recorded" if recorded else "sha256 ok"
-            typer.echo(f"{saga.qualified_id}: {extra_path.name} ({note})")
+            typer.echo(f"{saga.qualified_id}: {extra_file} ({note})")
         if saga.source.manual:
             typer.echo(f"{saga.qualified_id}: {path} (manual download, sha256 not recorded)")
         elif not saga.source.sha256:
@@ -444,6 +444,86 @@ def check(selector: Annotated[str, typer.Argument()] = "all"):
     r = repo()
     sagas = r.select(selector)
     typer.echo(f"{len(sagas)} saga(s) ok")
+
+
+scout_app = typer.Typer(help="Find free 3D models for sagas (metadata only; nothing is downloaded).")
+app.add_typer(scout_app, name="scout")
+
+
+@scout_app.callback(invoke_without_command=True)
+@guarded
+def scout_run(
+    ctx: typer.Context,
+    theme: Annotated[list[str] | None, typer.Option(help="Theme(s); default all in scout/themes.py")] = None,
+    source: Annotated[list[str] | None, typer.Option(help="sketchfab, commons, polyhaven, smithsonian, zeroad")] = None,
+    limit: Annotated[int, typer.Option(help="Results per source, theme and search term")] = 6,
+    licence: Annotated[str, typer.Option(help="Comma list of cc0, by, by-sa")] = "cc0,by,by-sa",
+    refresh: Annotated[bool, typer.Option(help="Ignore the one-day HTTP cache")] = False,
+    write: Annotated[bool, typer.Option(help="Write docs/scouting/")] = True,
+):
+    """Search the sources for every theme and write docs/scouting/."""
+    if ctx.invoked_subcommand:
+        return
+    from .scout import base, report, sources, themes
+
+    r = repo()
+    http = base.Http(refresh=refresh)
+    lics = [x.strip() for x in licence.split(",") if x.strip()]
+    chosen = source or list(sources.SOURCES)
+    found: list = []
+    for t in theme or list(themes.THEMES):
+        terms = themes.THEMES.get(t, [t])
+        for src in chosen:
+            fn = sources.SOURCES.get(src)
+            if not fn:
+                raise SagasError(f"unknown source {src}")
+            for term in terms if src != "zeroad" else [""]:
+                try:
+                    for c in fn(http, t, term, limit, lics):
+                        c.suggested_site, c.suggested_biomes = themes.suggest(c.title, t)
+                        found.append(c)
+                except Exception as e:  # one failing source must not stop the others
+                    typer.secho(f"{src} '{term}': {e}", fg="yellow", err=True)
+    searched = {(src, t) for t in (theme or list(themes.THEMES)) for src in chosen}
+    merged = report.merge(r, found, searched=searched)
+    typer.echo(f"{len(found)} result(s), {len(merged)} candidate(s) after dedup")
+    if write:
+        for p in report.write(r, merged):
+            typer.echo(f"wrote {p.relative_to(r.root)}")
+
+
+@scout_app.command("promote")
+@guarded
+def scout_promote(
+    candidate: str,
+    theme: Annotated[str, typer.Option(help="Theme (default: the candidate's)")] = "",
+    id: Annotated[str, typer.Option(help="Saga id (default: from the title)")] = "",
+    force: Annotated[
+        bool, typer.Option(help="Promote despite licence-conflict/trademark flags (after checking)")
+    ] = False,
+):
+    """Create content/<theme>/<id>/saga.toml from a scouting candidate."""
+    from .scout import promote, report
+
+    r = repo()
+    cands = report.load(r)
+    if candidate not in cands:
+        raise SagasError(f"unknown candidate {candidate} (see docs/scouting/scouting.json)")
+    path = promote.promote(r, cands[candidate], theme or None, id or None, force=force)
+    config.load(path)
+    typer.echo(f"created {path.relative_to(r.root)}: now sagas fetch, voxelize, build")
+
+
+@scout_app.command("reject")
+@guarded
+def scout_reject(candidate: str, reason: Annotated[str, typer.Option()]):
+    """Hide a candidate from future reports."""
+    from .scout import report
+
+    r = repo()
+    report.reject(r, candidate, reason)
+    report.write(r, report.merge(r, []))
+    typer.echo(f"rejected {candidate}")
 
 
 def main() -> None:

@@ -73,13 +73,14 @@ def fetch(saga: Saga, sources: Path, src: Path | None = None, force: bool = Fals
     return dest, digest
 
 
-def fetch_extras(saga: Saga, sources: Path, force: bool = False) -> list[tuple[Path, str]]:
+def fetch_extras(saga: Saga, sources: Path, force: bool = False) -> list[tuple[str, Path, str]]:
     """Download source.extra_files next to the main file; verify sha256 when given."""
     out = []
     base = cache_path(saga, sources).parent
     base.mkdir(parents=True, exist_ok=True)
     for extra in saga.source.extra_files:
-        dest = base / extra["file"]
+        dest = base.joinpath(*_safe(extra["file"]).parts)  # may contain folders, e.g. textures/x.jpg
+        dest.parent.mkdir(parents=True, exist_ok=True)
         if not dest.exists() or force:
             if not extra.get("url"):
                 raise SourceMissing(f"{saga.qualified_id}: extra file {extra['file']} has no url; copy it to {dest}")
@@ -87,7 +88,7 @@ def fetch_extras(saga: Saga, sources: Path, force: bool = False) -> list[tuple[P
         digest = sha256_file(dest)
         if extra.get("sha256") and digest != extra["sha256"]:
             raise SagasError(f"{dest.name}: sha256 {digest} does not match {extra['sha256']}")
-        out.append((dest, digest))
+        out.append((extra["file"], dest, digest))
     return out
 
 

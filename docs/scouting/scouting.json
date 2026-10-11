@@ -1,0 +1,5870 @@
+[
+ {
+  "source": "commons",
+  "source_id": "2020-04-09-Burg-Glambek-3d-modell.stl",
+  "title": "2020-04-09-Burg-Glambek-3d-modell",
+  "url": "https://commons.wikimedia.org/wiki/File:2020-04-09-Burg-Glambek-3d-modell.stl",
+  "author": "Fabian Horst",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 9912434,
+  "thumbnail": "",
+  "theme": "alpine",
+  "query": "burg",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/3/3b/2020-04-09-Burg-Glambek-3d-modell.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "2020-04-09-Burg-Glambek-3d-modell.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:2020-04-09-Burg-Glambek-3d-modell.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Burg Berge.stl",
+  "title": "Burg Berge",
+  "url": "https://commons.wikimedia.org/wiki/File:Burg_Berge.stl",
+  "author": "Morty",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 7433384,
+  "thumbnail": "",
+  "theme": "alpine",
+  "query": "burg",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/90/Burg_Berge.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Burg_Berge.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Burg Berge.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Burg Hardenberg.stl",
+  "title": "Burg Hardenberg",
+  "url": "https://commons.wikimedia.org/wiki/File:Burg_Hardenberg.stl",
+  "author": "Morty",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 25300984,
+  "thumbnail": "",
+  "theme": "alpine",
+  "query": "burg",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/17/Burg_Hardenberg.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Burg_Hardenberg.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Burg Hardenberg.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Château de Bonaguil.stl",
+  "title": "Château de Bonaguil",
+  "url": "https://commons.wikimedia.org/wiki/File:Ch%C3%A2teau_de_Bonaguil.stl",
+  "author": "Rinaldum",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 933484,
+  "thumbnail": "",
+  "theme": "alpine",
+  "query": "schloss",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/56/Ch%C3%A2teau_de_Bonaguil.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Château_de_Bonaguil.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Château de Bonaguil.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Colonna Castle of Eboli.stl",
+  "title": "Colonna Castle of Eboli",
+  "url": "https://commons.wikimedia.org/wiki/File:Colonna_Castle_of_Eboli.stl",
+  "author": "TheDastanMR",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 1772484,
+  "thumbnail": "",
+  "theme": "alpine",
+  "query": "burg",
+  "suggested_site": [
+   "ridge",
+   "peak",
+   "plain"
+  ],
+  "suggested_biomes": [
+   "grassland",
+   "forest",
+   "mountain"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/72/Colonna_Castle_of_Eboli.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Colonna_Castle_of_Eboli.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Colonna Castle of Eboli.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Fontainebleau - Aigle se préparant à défendre sa proie.stl",
+  "title": "Fontainebleau - Aigle se préparant à défendre sa proie",
+  "url": "https://commons.wikimedia.org/wiki/File:Fontainebleau_-_Aigle_se_pr%C3%A9parant_%C3%A0_d%C3%A9fendre_sa_proie.stl",
+  "author": "KIRI Engine",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "Public domain",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 11334584,
+  "thumbnail": "",
+  "theme": "alpine",
+  "query": "schloss",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/53/Fontainebleau_-_Aigle_se_pr%C3%A9parant_%C3%A0_d%C3%A9fendre_sa_proie.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Fontainebleau_-_Aigle_se_préparant_à_défendre_sa_proie.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Fontainebleau - Aigle se préparant à défendre sa proie.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Schloss 20230620 001.stl",
+  "title": "Schloss 20230620 001",
+  "url": "https://commons.wikimedia.org/wiki/File:Schloss_20230620_001.stl",
+  "author": "PantheraLeo1359531",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 11945384,
+  "thumbnail": "",
+  "theme": "alpine",
+  "query": "schloss",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Schloss_20230620_001.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Schloss_20230620_001.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Schloss 20230620 001.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Second Château du Fleix (MH).stl",
+  "title": "Second Château du Fleix (MH)",
+  "url": "https://commons.wikimedia.org/wiki/File:Second_Ch%C3%A2teau_du_Fleix_(MH).stl",
+  "author": "-karlos-",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 17284,
+  "thumbnail": "",
+  "theme": "alpine",
+  "query": "schloss",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/1a/Second_Ch%C3%A2teau_du_Fleix_%28MH%29.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Second_Château_du_Fleix_(MH).stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Second Château du Fleix (MH).stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Skokloster-Hand.stl",
+  "title": "Skokloster-Hand",
+  "url": "https://commons.wikimedia.org/wiki/File:Skokloster-Hand.stl",
+  "author": "Skokloster Castle (Skoklosters slott)",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 50000084,
+  "thumbnail": "",
+  "theme": "alpine",
+  "query": "schloss",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Skokloster-Hand.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Skokloster-Hand.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Skokloster-Hand.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Wallanlage Alte Burg Erberich.stl",
+  "title": "Wallanlage Alte Burg Erberich",
+  "url": "https://commons.wikimedia.org/wiki/File:Wallanlage_Alte_Burg_Erberich.stl",
+  "author": "Morty",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 32951384,
+  "thumbnail": "",
+  "theme": "alpine",
+  "query": "burg",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Wallanlage_Alte_Burg_Erberich.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Wallanlage_Alte_Burg_Erberich.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Wallanlage Alte Burg Erberich.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. hele temple a base.stl",
+  "title": "0 A.D. hele temple a base",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._hele_temple_a_base.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 14084,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "greek temple",
+  "suggested_site": [
+   "plain",
+   "ridge"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/78/0_A.D._hele_temple_a_base.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._hele_temple_a_base.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. hele temple a base.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. hele temple a complete.stl",
+  "title": "0 A.D. hele temple a complete",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._hele_temple_a_complete.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 47184,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "greek temple",
+  "suggested_site": [
+   "plain",
+   "ridge"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/3/36/0_A.D._hele_temple_a_complete.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._hele_temple_a_complete.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. hele temple a complete.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. hele temple a props.stl",
+  "title": "0 A.D. hele temple a props",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._hele_temple_a_props.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 24384,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "greek temple",
+  "suggested_site": [
+   "plain",
+   "ridge"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/0_A.D._hele_temple_a_props.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._hele_temple_a_props.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. hele temple a props.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. hele temple a struct.stl",
+  "title": "0 A.D. hele temple a struct",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._hele_temple_a_struct.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 8884,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "greek temple",
+  "suggested_site": [
+   "plain",
+   "ridge"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/0_A.D._hele_temple_a_struct.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._hele_temple_a_struct.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. hele temple a struct.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. hele temple c base.stl",
+  "title": "0 A.D. hele temple c base",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._hele_temple_c_base.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 10084,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "greek temple",
+  "suggested_site": [
+   "plain",
+   "ridge"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f8/0_A.D._hele_temple_c_base.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._hele_temple_c_base.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. hele temple c base.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. rome amphitheater pompeii.stl",
+  "title": "0 A.D. rome amphitheater pompeii",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._rome_amphitheater_pompeii.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 644984,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "amphitheatre",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/6/62/0_A.D._rome_amphitheater_pompeii.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._rome_amphitheater_pompeii.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. rome amphitheater pompeii.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. rome temple big.stl",
+  "title": "0 A.D. rome temple big",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._rome_temple_big.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 344734,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "roman temple",
+  "suggested_site": [
+   "plain",
+   "ridge"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/1f/0_A.D._rome_temple_big.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._rome_temple_big.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. rome temple big.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Amphitheater20220517 0003 - Kopie.stl",
+  "title": "Amphitheater20220517 0003 - Kopie",
+  "url": "https://commons.wikimedia.org/wiki/File:Amphitheater20220517_0003_-_Kopie.stl",
+  "author": "PantheraLeo1359531",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 275269084,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "amphitheatre",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Amphitheater20220517_0003_-_Kopie.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Amphitheater20220517_0003_-_Kopie.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Amphitheater20220517 0003 - Kopie.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "House with Caryatids Sibiu no texture - 924e104e9cd243fe85fce06100bafdeb.stl",
+  "title": "House with Caryatids Sibiu no texture - 924e104e9cd243fe85fce06100bafdeb",
+  "url": "https://commons.wikimedia.org/wiki/File:House_with_Caryatids_Sibiu_no_texture_-_924e104e9cd243fe85fce06100bafdeb.stl",
+  "author": "Calin Suteu",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 50000084,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "caryatid",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/6/60/House_with_Caryatids_Sibiu_no_texture_-_924e104e9cd243fe85fce06100bafdeb.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "House_with_Caryatids_Sibiu_no_texture_-_924e104e9cd243fe85fce06100bafdeb.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:House with Caryatids Sibiu no texture - 924e104e9cd243fe85fce06100bafdeb.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Statue of Pen-Menkh the Governor of Dendara, 3D photogrammetry scan (STL).stl",
+  "title": "Statue of Pen-Menkh the Governor of Dendara, 3D photogrammetry scan (STL)",
+  "url": "https://commons.wikimedia.org/wiki/File:Statue_of_Pen-Menkh_the_Governor_of_Dendara,_3D_photogrammetry_scan_(STL).stl",
+  "author": "OmarElAtabany",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 3720684,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "roman temple",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/93/Statue_of_Pen-Menkh_the_Governor_of_Dendara%2C_3D_photogrammetry_scan_%28STL%29.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Statue_of_Pen-Menkh_the_Governor_of_Dendara,_3D_photogrammetry_scan_(STL).stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Statue of Pen-Menkh the Governor of Dendara, 3D photogrammetry scan (STL).stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "The Roman Amphitheatre at Ulpia Traiana (Ro). - 33daa2b0bea047b1816663d2bbe28216.stl",
+  "title": "The Roman Amphitheatre at Ulpia Traiana (Ro). - 33daa2b0bea047b1816663d2bbe28216",
+  "url": "https://commons.wikimedia.org/wiki/File:The_Roman_Amphitheatre_at_Ulpia_Traiana_(Ro)._-_33daa2b0bea047b1816663d2bbe28216.stl",
+  "author": "Institutul Național al Patrimoniului",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 123928684,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "amphitheatre",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/4/49/The_Roman_Amphitheatre_at_Ulpia_Traiana_%28Ro%29._-_33daa2b0bea047b1816663d2bbe28216.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "The_Roman_Amphitheatre_at_Ulpia_Traiana_(Ro)._-_33daa2b0bea047b1816663d2bbe28216.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:The Roman Amphitheatre at Ulpia Traiana (Ro). - 33daa2b0bea047b1816663d2bbe28216.stl"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "athenians/barracks",
+  "title": "0 A.D. athenians barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/athenians/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/athenians/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:athenians/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "athenians/civil_centre",
+  "title": "0 A.D. athenians civil centre",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/athenians/civil_centre.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/athenians/civil_centre.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:athenians/civil_centre"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "athenians/dock",
+  "title": "0 A.D. athenians dock",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/athenians/dock.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/athenians/dock.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:athenians/dock"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "athenians/fishing_boat",
+  "title": "0 A.D. athenians fishing boat",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/athenians/fishing_boat.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/athenians/fishing_boat.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:athenians/fishing_boat"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "athenians/fortress",
+  "title": "0 A.D. athenians fortress",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/athenians/fortress.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/athenians/fortress.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:athenians/fortress"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "carthaginians/apartment",
+  "title": "0 A.D. carthaginians apartment",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/carthaginians/apartment.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/carthaginians/apartment.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:carthaginians/apartment"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "carthaginians/barracks",
+  "title": "0 A.D. carthaginians barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/carthaginians/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/carthaginians/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:carthaginians/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "carthaginians/bireme",
+  "title": "0 A.D. carthaginians bireme",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/carthaginians/bireme.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/carthaginians/bireme.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:carthaginians/bireme"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "carthaginians/bireme_scout",
+  "title": "0 A.D. carthaginians bireme scout",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/carthaginians/bireme_scout.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/carthaginians/bireme_scout.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:carthaginians/bireme_scout"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "carthaginians/blacksmith",
+  "title": "0 A.D. carthaginians blacksmith",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/carthaginians/blacksmith.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/carthaginians/blacksmith.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:carthaginians/blacksmith"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "macedonians/barracks",
+  "title": "0 A.D. macedonians barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/macedonians/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/macedonians/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:macedonians/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "macedonians/civic_centre",
+  "title": "0 A.D. macedonians civic centre",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/macedonians/civic_centre.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/macedonians/civic_centre.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:macedonians/civic_centre"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "macedonians/dock",
+  "title": "0 A.D. macedonians dock",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/macedonians/dock.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/macedonians/dock.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:macedonians/dock"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "macedonians/fortress",
+  "title": "0 A.D. macedonians fortress",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/macedonians/fortress.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/macedonians/fortress.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:macedonians/fortress"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "macedonians/library",
+  "title": "0 A.D. macedonians library",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/macedonians/library.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/macedonians/library.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:macedonians/library"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "romans/amphitheater_pompeii",
+  "title": "0 A.D. romans amphitheater pompeii",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/romans/amphitheater_pompeii.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/romans/amphitheater_pompeii.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:romans/amphitheater_pompeii"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "romans/barracks",
+  "title": "0 A.D. romans barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/romans/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/romans/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:romans/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "romans/bireme",
+  "title": "0 A.D. romans bireme",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/romans/bireme.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/romans/bireme.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:romans/bireme"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "romans/bireme_scout",
+  "title": "0 A.D. romans bireme scout",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/romans/bireme_scout.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/romans/bireme_scout.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:romans/bireme_scout"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "romans/blacksmith",
+  "title": "0 A.D. romans blacksmith",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/romans/blacksmith.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/romans/blacksmith.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:romans/blacksmith"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "seleucids/barracks",
+  "title": "0 A.D. seleucids barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/seleucids/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/seleucids/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:seleucids/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "seleucids/blacksmith",
+  "title": "0 A.D. seleucids blacksmith",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/seleucids/blacksmith.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/seleucids/blacksmith.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:seleucids/blacksmith"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "seleucids/civic_center",
+  "title": "0 A.D. seleucids civic center",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/seleucids/civic_center.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/seleucids/civic_center.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:seleucids/civic_center"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "seleucids/civic_center_metropolitan",
+  "title": "0 A.D. seleucids civic center metropolitan",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/seleucids/civic_center_metropolitan.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/seleucids/civic_center_metropolitan.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:seleucids/civic_center_metropolitan"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "seleucids/corral",
+  "title": "0 A.D. seleucids corral",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/seleucids/corral.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/seleucids/corral.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:seleucids/corral"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "spartans/ballista_tower",
+  "title": "0 A.D. spartans ballista tower",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/spartans/ballista_tower.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "peak",
+   "ridge",
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/spartans/ballista_tower.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:spartans/ballista_tower"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "spartans/barracks",
+  "title": "0 A.D. spartans barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/spartans/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/spartans/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:spartans/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "spartans/blacksmith",
+  "title": "0 A.D. spartans blacksmith",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/spartans/blacksmith.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/spartans/blacksmith.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:spartans/blacksmith"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "spartans/civic_center",
+  "title": "0 A.D. spartans civic center",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/spartans/civic_center.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/spartans/civic_center.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:spartans/civic_center"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "spartans/civic_centre",
+  "title": "0 A.D. spartans civic centre",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/spartans/civic_centre.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "antique",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/spartans/civic_centre.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:spartans/civic_centre"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. Han shrine.stl",
+  "title": "0 A.D. Han shrine",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._Han_shrine.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 65284,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "shrine",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/a/ad/0_A.D._Han_shrine.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._Han_shrine.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. Han shrine.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. Han temple lantern.stl",
+  "title": "0 A.D. Han temple lantern",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._Han_temple_lantern.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 10134,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "stone lantern",
+  "suggested_site": [
+   "plain",
+   "ridge"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/7c/0_A.D._Han_temple_lantern.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._Han_temple_lantern.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. Han temple lantern.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. han pagoda.stl",
+  "title": "0 A.D. han pagoda",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._han_pagoda.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 47784,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "pagoda",
+  "suggested_site": [
+   "plain",
+   "ridge"
+  ],
+  "suggested_biomes": [
+   "forest",
+   "jungle",
+   "mountain"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/7f/0_A.D._han_pagoda.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._han_pagoda.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. han pagoda.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Nagasaki torii shrine.stl",
+  "title": "Nagasaki torii shrine",
+  "url": "https://commons.wikimedia.org/wiki/File:Nagasaki_torii_shrine.stl",
+  "author": "Microsoft",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 395584,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "shrine",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Nagasaki_torii_shrine.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Nagasaki_torii_shrine.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Nagasaki torii shrine.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Shinto-torii-3dfile.stl",
+  "title": "Shinto-torii-3dfile",
+  "url": "https://commons.wikimedia.org/wiki/File:Shinto-torii-3dfile.stl",
+  "author": "Nesnad",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 13880884,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "torii",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/2/24/Shinto-torii-3dfile.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Shinto-torii-3dfile.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Shinto-torii-3dfile.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "地神塔（神奈川県横浜市戸塚区川上町・熊野神社）1.stl",
+  "title": "地神塔（神奈川県横浜市戸塚区川上町・熊野神社）1",
+  "url": "https://commons.wikimedia.org/wiki/File:%E5%9C%B0%E7%A5%9E%E5%A1%94%EF%BC%88%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E6%A8%AA%E6%B5%9C%E5%B8%82%E6%88%B8%E5%A1%9A%E5%8C%BA%E5%B7%9D%E4%B8%8A%E7%94%BA%E3%83%BB%E7%86%8A%E9%87%8E%E7%A5%9E%E7%A4%BE%EF%BC%891.stl",
+  "author": "Kosuke Shinoda",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 63736134,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "shrine",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/1e/%E5%9C%B0%E7%A5%9E%E5%A1%94%EF%BC%88%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E6%A8%AA%E6%B5%9C%E5%B8%82%E6%88%B8%E5%A1%9A%E5%8C%BA%E5%B7%9D%E4%B8%8A%E7%94%BA%E3%83%BB%E7%86%8A%E9%87%8E%E7%A5%9E%E7%A4%BE%EF%BC%891.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "地神塔（神奈川県横浜市戸塚区川上町・熊野神社）1.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:地神塔（神奈川県横浜市戸塚区川上町・熊野神社）1.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "地神塔（神奈川県横浜市戸塚区川上町・熊野神社）2.stl",
+  "title": "地神塔（神奈川県横浜市戸塚区川上町・熊野神社）2",
+  "url": "https://commons.wikimedia.org/wiki/File:%E5%9C%B0%E7%A5%9E%E5%A1%94%EF%BC%88%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E6%A8%AA%E6%B5%9C%E5%B8%82%E6%88%B8%E5%A1%9A%E5%8C%BA%E5%B7%9D%E4%B8%8A%E7%94%BA%E3%83%BB%E7%86%8A%E9%87%8E%E7%A5%9E%E7%A4%BE%EF%BC%892.stl",
+  "author": "Kosuke Shinoda",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 69455484,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "shrine",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/e/e9/%E5%9C%B0%E7%A5%9E%E5%A1%94%EF%BC%88%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E6%A8%AA%E6%B5%9C%E5%B8%82%E6%88%B8%E5%A1%9A%E5%8C%BA%E5%B7%9D%E4%B8%8A%E7%94%BA%E3%83%BB%E7%86%8A%E9%87%8E%E7%A5%9E%E7%A4%BE%EF%BC%892.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "地神塔（神奈川県横浜市戸塚区川上町・熊野神社）2.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:地神塔（神奈川県横浜市戸塚区川上町・熊野神社）2.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "道祖神（神奈川県横浜市戸塚区川上町・熊野神社）.stl",
+  "title": "道祖神（神奈川県横浜市戸塚区川上町・熊野神社）",
+  "url": "https://commons.wikimedia.org/wiki/File:%E9%81%93%E7%A5%96%E7%A5%9E%EF%BC%88%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E6%A8%AA%E6%B5%9C%E5%B8%82%E6%88%B8%E5%A1%9A%E5%8C%BA%E5%B7%9D%E4%B8%8A%E7%94%BA%E3%83%BB%E7%86%8A%E9%87%8E%E7%A5%9E%E7%A4%BE%EF%BC%89.stl",
+  "author": "Kosuke Shinoda",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 58313734,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "shrine",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f8/%E9%81%93%E7%A5%96%E7%A5%9E%EF%BC%88%E7%A5%9E%E5%A5%88%E5%B7%9D%E7%9C%8C%E6%A8%AA%E6%B5%9C%E5%B8%82%E6%88%B8%E5%A1%9A%E5%8C%BA%E5%B7%9D%E4%B8%8A%E7%94%BA%E3%83%BB%E7%86%8A%E9%87%8E%E7%A5%9E%E7%A4%BE%EF%BC%89.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "道祖神（神奈川県横浜市戸塚区川上町・熊野神社）.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:道祖神（神奈川県横浜市戸塚区川上町・熊野神社）.stl"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "han/academy",
+  "title": "0 A.D. han academy",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/han/academy.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/han/academy.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:han/academy"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "han/arsenal",
+  "title": "0 A.D. han arsenal",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/han/arsenal.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/han/arsenal.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:han/arsenal"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "han/barracks",
+  "title": "0 A.D. han barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/han/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/han/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:han/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "han/bireme",
+  "title": "0 A.D. han bireme",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/han/bireme.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/han/bireme.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:han/bireme"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "han/civil_centre",
+  "title": "0 A.D. han civil centre",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/han/civil_centre.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/han/civil_centre.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:han/civil_centre"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "mauryas/barracks",
+  "title": "0 A.D. mauryas barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/mauryas/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/mauryas/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:mauryas/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "mauryas/big_stupa",
+  "title": "0 A.D. mauryas big stupa",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/mauryas/big_stupa.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/mauryas/big_stupa.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:mauryas/big_stupa"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "mauryas/bireme",
+  "title": "0 A.D. mauryas bireme",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/mauryas/bireme.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/mauryas/bireme.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:mauryas/bireme"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "mauryas/blacksmith",
+  "title": "0 A.D. mauryas blacksmith",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/mauryas/blacksmith.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/mauryas/blacksmith.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:mauryas/blacksmith"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "mauryas/civil_centre",
+  "title": "0 A.D. mauryas civil centre",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/mauryas/civil_centre.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "asian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/mauryas/civil_centre.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:mauryas/civil_centre"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. celt broch top.stl",
+  "title": "0 A.D. celt broch top",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._celt_broch_top.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 70634,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "broch",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f1/0_A.D._celt_broch_top.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._celt_broch_top.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. celt broch top.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. celt broch wall.stl",
+  "title": "0 A.D. celt broch wall",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._celt_broch_wall.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 327584,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "broch",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/9c/0_A.D._celt_broch_wall.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._celt_broch_wall.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. celt broch wall.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. celt broch.stl",
+  "title": "0 A.D. celt broch",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._celt_broch.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 17984,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "broch",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/cd/0_A.D._celt_broch.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._celt_broch.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. celt broch.stl"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "britons/barracks",
+  "title": "0 A.D. britons barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/britons/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/britons/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:britons/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "britons/blacksmith",
+  "title": "0 A.D. britons blacksmith",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/britons/blacksmith.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/britons/blacksmith.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:britons/blacksmith"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "britons/civic_centre",
+  "title": "0 A.D. britons civic centre",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/britons/civic_centre.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/britons/civic_centre.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:britons/civic_centre"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "britons/crannog",
+  "title": "0 A.D. britons crannog",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/britons/crannog.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/britons/crannog.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:britons/crannog"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "britons/dock",
+  "title": "0 A.D. britons dock",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/britons/dock.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/britons/dock.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:britons/dock"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "gauls/blacksmith",
+  "title": "0 A.D. gauls blacksmith",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/gauls/blacksmith.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/gauls/blacksmith.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:gauls/blacksmith"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "gauls/civic_centre",
+  "title": "0 A.D. gauls civic centre",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/gauls/civic_centre.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/gauls/civic_centre.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:gauls/civic_centre"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "gauls/cult_statue",
+  "title": "0 A.D. gauls cult statue",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/gauls/cult_statue.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/gauls/cult_statue.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:gauls/cult_statue"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "gauls/farmstead",
+  "title": "0 A.D. gauls farmstead",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/gauls/farmstead.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/gauls/farmstead.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:gauls/farmstead"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "gauls/fortress",
+  "title": "0 A.D. gauls fortress",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/gauls/fortress.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/gauls/fortress.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:gauls/fortress"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "iberians/barracks",
+  "title": "0 A.D. iberians barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/iberians/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/iberians/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:iberians/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "iberians/blacksmith",
+  "title": "0 A.D. iberians blacksmith",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/iberians/blacksmith.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/iberians/blacksmith.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:iberians/blacksmith"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "iberians/civic_center",
+  "title": "0 A.D. iberians civic center",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/iberians/civic_center.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/iberians/civic_center.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:iberians/civic_center"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "iberians/corral",
+  "title": "0 A.D. iberians corral",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/iberians/corral.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/iberians/corral.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:iberians/corral"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "iberians/dock",
+  "title": "0 A.D. iberians dock",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/iberians/dock.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "celtic",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/iberians/dock.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:iberians/dock"
+ },
+ {
+  "source": "commons",
+  "source_id": "ArkvilleMaze3D.stl",
+  "title": "ArkvilleMaze3D",
+  "url": "https://commons.wikimedia.org/wiki/File:ArkvilleMaze3D.stl",
+  "author": "A MINOTAUR",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 561784,
+  "thumbnail": "",
+  "theme": "creatures",
+  "query": "griffin",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/ArkvilleMaze3D.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "ArkvilleMaze3D.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:ArkvilleMaze3D.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "AtlasBone 3D.stl",
+  "title": "AtlasBone 3D",
+  "url": "https://commons.wikimedia.org/wiki/File:AtlasBone_3D.stl",
+  "author": "Jlabanimation",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 708684,
+  "thumbnail": "",
+  "theme": "creatures",
+  "query": "skeleton",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/8/86/AtlasBone_3D.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "AtlasBone_3D.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:AtlasBone 3D.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Macaca sinica 3d scan Natural History Museum University of Pisa C 1725 (skeleton) C1784 (skull).stl",
+  "title": "Macaca sinica 3d scan Natural History Museum University of Pisa C 1725 (skeleton) C1784 (skull)",
+  "url": "https://commons.wikimedia.org/wiki/File:Macaca_sinica_3d_scan_Natural_History_Museum_University_of_Pisa_C_1725_(skeleton)_C1784_(skull).stl",
+  "author": "Patrizia17",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 174661584,
+  "thumbnail": "",
+  "theme": "creatures",
+  "query": "skeleton",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/d/de/Macaca_sinica_3d_scan_Natural_History_Museum_University_of_Pisa_C_1725_%28skeleton%29_C1784_%28skull%29.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Macaca_sinica_3d_scan_Natural_History_Museum_University_of_Pisa_C_1725_(skeleton)_C1784_(skull).stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Macaca sinica 3d scan Natural History Museum University of Pisa C 1725 (skeleton) C1784 (skull).stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Moa skeleton (Auckland War Memorial Museum).stl",
+  "title": "Moa skeleton (Auckland War Memorial Museum)",
+  "url": "https://commons.wikimedia.org/wiki/File:Moa_skeleton_(Auckland_War_Memorial_Museum).stl",
+  "author": "Auckland War Memorial Museum and Daniel Thomas, Massey University",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 49276834,
+  "thumbnail": "",
+  "theme": "creatures",
+  "query": "skeleton",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Moa_skeleton_%28Auckland_War_Memorial_Museum%29.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Moa_skeleton_(Auckland_War_Memorial_Museum).stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Moa skeleton (Auckland War Memorial Museum).stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Triturus rudolfi skeletal 3d scan.stl",
+  "title": "Triturus rudolfi skeletal 3d scan",
+  "url": "https://commons.wikimedia.org/wiki/File:Triturus_rudolfi_skeletal_3d_scan.stl",
+  "author": "Dr. Tijana Vučić",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 88373034,
+  "thumbnail": "",
+  "theme": "creatures",
+  "query": "skeleton",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Triturus_rudolfi_skeletal_3d_scan.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Triturus_rudolfi_skeletal_3d_scan.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Triturus rudolfi skeletal 3d scan.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "肥前狛犬1（八龍社）.stl",
+  "title": "肥前狛犬1（八龍社）",
+  "url": "https://commons.wikimedia.org/wiki/File:%E8%82%A5%E5%89%8D%E7%8B%9B%E7%8A%AC1%EF%BC%88%E5%85%AB%E9%BE%8D%E7%A4%BE%EF%BC%89.stl",
+  "author": "Kosuke Shinoda",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 99924934,
+  "thumbnail": "",
+  "theme": "creatures",
+  "query": "komainu",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b1/%E8%82%A5%E5%89%8D%E7%8B%9B%E7%8A%AC1%EF%BC%88%E5%85%AB%E9%BE%8D%E7%A4%BE%EF%BC%89.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "肥前狛犬1（八龍社）.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:肥前狛犬1（八龍社）.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "肥前狛犬2（八龍社）.stl",
+  "title": "肥前狛犬2（八龍社）",
+  "url": "https://commons.wikimedia.org/wiki/File:%E8%82%A5%E5%89%8D%E7%8B%9B%E7%8A%AC2%EF%BC%88%E5%85%AB%E9%BE%8D%E7%A4%BE%EF%BC%89.stl",
+  "author": "Kosuke Shinoda",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 99945384,
+  "thumbnail": "",
+  "theme": "creatures",
+  "query": "komainu",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/2/26/%E8%82%A5%E5%89%8D%E7%8B%9B%E7%8A%AC2%EF%BC%88%E5%85%AB%E9%BE%8D%E7%A4%BE%EF%BC%89.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "肥前狛犬2（八龍社）.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:肥前狛犬2（八龍社）.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Palmenti di Pietragalla.stl",
+  "title": "Palmenti di Pietragalla",
+  "url": "https://commons.wikimedia.org/wiki/File:Palmenti_di_Pietragalla.stl",
+  "author": "Mngon (Giuseppe Cillis)",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 179881884,
+  "thumbnail": "",
+  "theme": "dwarven",
+  "query": "cave",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/98/Palmenti_di_Pietragalla.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Palmenti_di_Pietragalla.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Palmenti di Pietragalla.stl"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "boulder_01",
+  "title": "Boulder 01",
+  "url": "https://polyhaven.com/a/boulder_01",
+  "author": "Rico Cilliers",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 123976,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/boulder_01.png?height=256",
+  "theme": "dwarven",
+  "query": "rock face",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "boulder_01"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:boulder_01"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "coast_land_rocks_04",
+  "title": "Coast Land Rocks 04",
+  "url": "https://polyhaven.com/a/coast_land_rocks_04",
+  "author": "Rob Tuytel, Rico Cilliers",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 2037497,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/coast_land_rocks_04.png?height=256",
+  "theme": "dwarven",
+  "query": "rock face",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "coast_land_rocks_04"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:coast_land_rocks_04"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "coastal_cliff_01",
+  "title": "Coastal Cliff 01",
+  "url": "https://polyhaven.com/a/coastal_cliff_01",
+  "author": "Rob Tuytel, Rico Cilliers",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 865917,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/coastal_cliff_01.png?height=256",
+  "theme": "dwarven",
+  "query": "rock face",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "coastal_cliff_01"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:coastal_cliff_01"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "coastal_cliff_02",
+  "title": "Coastal Cliff 02",
+  "url": "https://polyhaven.com/a/coastal_cliff_02",
+  "author": "Rob Tuytel",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 1768655,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/coastal_cliff_02.png?height=256",
+  "theme": "dwarven",
+  "query": "rock face",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "coastal_cliff_02"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:coastal_cliff_02"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "coastal_cliff_04",
+  "title": "Coastal Cliff 04",
+  "url": "https://polyhaven.com/a/coastal_cliff_04",
+  "author": "Rob Tuytel, Rico Cilliers",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 2883111,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/coastal_cliff_04.png?height=256",
+  "theme": "dwarven",
+  "query": "rock face",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "coastal_cliff_04"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:coastal_cliff_04"
+ },
+ {
+  "source": "commons",
+  "source_id": "Colossal sculpture of Ramesses II.stl",
+  "title": "Colossal sculpture of Ramesses II",
+  "url": "https://commons.wikimedia.org/wiki/File:Colossal_sculpture_of_Ramesses_II.stl",
+  "author": "Dejp3",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 25029384,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "colossus",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Colossal_sculpture_of_Ramesses_II.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Colossal_sculpture_of_Ramesses_II.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Colossal sculpture of Ramesses II.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Giza3D.stl",
+  "title": "Giza3D",
+  "url": "https://commons.wikimedia.org/wiki/File:Giza3D.stl",
+  "author": "Drummyfish",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 280934,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "sphinx",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Giza3D.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Giza3D.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Giza3D.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Obelisk 20221209.stl",
+  "title": "Obelisk 20221209",
+  "url": "https://commons.wikimedia.org/wiki/File:Obelisk_20221209.stl",
+  "author": "PantheraLeo1359531",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 110046684,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "obelisk",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Obelisk_20221209.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Obelisk_20221209.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Obelisk 20221209.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Pyramid of Khafre.stl",
+  "title": "Pyramid of Khafre",
+  "url": "https://commons.wikimedia.org/wiki/File:Pyramid_of_Khafre.stl",
+  "author": "Drummyfish",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 10384,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "pyramid",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Pyramid_of_Khafre.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Pyramid_of_Khafre.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Pyramid of Khafre.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Pyramid of Khufu.stl",
+  "title": "Pyramid of Khufu",
+  "url": "https://commons.wikimedia.org/wiki/File:Pyramid_of_Khufu.stl",
+  "author": "Drummyfish",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 84984,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "pyramid",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Pyramid_of_Khufu.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Pyramid_of_Khufu.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Pyramid of Khufu.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Pyramid of Menkaure.stl",
+  "title": "Pyramid of Menkaure",
+  "url": "https://commons.wikimedia.org/wiki/File:Pyramid_of_Menkaure.stl",
+  "author": "Drummyfish",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 19584,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "pyramid",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Pyramid_of_Menkaure.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Pyramid_of_Menkaure.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Pyramid of Menkaure.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Pyramid stop.stl",
+  "title": "Pyramid stop",
+  "url": "https://commons.wikimedia.org/wiki/File:Pyramid_stop.stl",
+  "author": "A.-K. D.",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 1084,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "pyramid",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Pyramid_stop.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Pyramid_stop.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Pyramid stop.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Pyramiden aus Pyramiden 20230416 001.stl",
+  "title": "Pyramiden aus Pyramiden 20230416 001",
+  "url": "https://commons.wikimedia.org/wiki/File:Pyramiden_aus_Pyramiden_20230416_001.stl",
+  "author": "PantheraLeo1359531",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 235284,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "pyramid",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Pyramiden_aus_Pyramiden_20230416_001.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Pyramiden_aus_Pyramiden_20230416_001.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Pyramiden aus Pyramiden 20230416 001.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Statue of Amun-Ra King of the Gods, 3D photogrammetry scan (STL).stl",
+  "title": "Statue of Amun-Ra King of the Gods, 3D photogrammetry scan (STL)",
+  "url": "https://commons.wikimedia.org/wiki/File:Statue_of_Amun-Ra_King_of_the_Gods,_3D_photogrammetry_scan_(STL).stl",
+  "author": "OmarElAtabany",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 3663484,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "egyptian temple",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Statue_of_Amun-Ra_King_of_the_Gods%2C_3D_photogrammetry_scan_%28STL%29.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Statue_of_Amun-Ra_King_of_the_Gods,_3D_photogrammetry_scan_(STL).stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Statue of Amun-Ra King of the Gods, 3D photogrammetry scan (STL).stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Statue of Hapi the Scribe, 3D photogrammetry scan (STL).stl",
+  "title": "Statue of Hapi the Scribe, 3D photogrammetry scan (STL)",
+  "url": "https://commons.wikimedia.org/wiki/File:Statue_of_Hapi_the_Scribe,_3D_photogrammetry_scan_(STL).stl",
+  "author": "OmarElAtabany",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 7995084,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "egyptian temple",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Statue_of_Hapi_the_Scribe%2C_3D_photogrammetry_scan_%28STL%29.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Statue_of_Hapi_the_Scribe,_3D_photogrammetry_scan_(STL).stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Statue of Hapi the Scribe, 3D photogrammetry scan (STL).stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Statue of Khonsu, 3D photogrammetry scan (STL).stl",
+  "title": "Statue of Khonsu, 3D photogrammetry scan (STL)",
+  "url": "https://commons.wikimedia.org/wiki/File:Statue_of_Khonsu,_3D_photogrammetry_scan_(STL).stl",
+  "author": "OmarElAtabany",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 4739084,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "egyptian temple",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/4/43/Statue_of_Khonsu%2C_3D_photogrammetry_scan_%28STL%29.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Statue_of_Khonsu,_3D_photogrammetry_scan_(STL).stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Statue of Khonsu, 3D photogrammetry scan (STL).stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Statue of King Thutmose III, 3D photogrammetry scan (STL).stl",
+  "title": "Statue of King Thutmose III, 3D photogrammetry scan (STL)",
+  "url": "https://commons.wikimedia.org/wiki/File:Statue_of_King_Thutmose_III,_3D_photogrammetry_scan_(STL).stl",
+  "author": "OmarElAtabany",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 6928284,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "egyptian temple",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Statue_of_King_Thutmose_III%2C_3D_photogrammetry_scan_%28STL%29.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Statue_of_King_Thutmose_III,_3D_photogrammetry_scan_(STL).stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Statue of King Thutmose III, 3D photogrammetry scan (STL).stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "U+2020 Noto Sans 20230523.stl",
+  "title": "U+2020 Noto Sans 20230523",
+  "url": "https://commons.wikimedia.org/wiki/File:U%2B2020_Noto_Sans_20230523.stl",
+  "author": "3D-Modell: PantheraLeo1359531 😺\nFont: Google",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 5884,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "obelisk",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/1d/U%2B2020_Noto_Sans_20230523.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "U+2020_Noto_Sans_20230523.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:U+2020 Noto Sans 20230523.stl"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "kushites/barracks",
+  "title": "0 A.D. kushites barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/kushites/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/kushites/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:kushites/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "kushites/bireme",
+  "title": "0 A.D. kushites bireme",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/kushites/bireme.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/kushites/bireme.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:kushites/bireme"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "kushites/blacksmith",
+  "title": "0 A.D. kushites blacksmith",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/kushites/blacksmith.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/kushites/blacksmith.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:kushites/blacksmith"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "kushites/civic_centre_egyptian",
+  "title": "0 A.D. kushites civic centre egyptian",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/kushites/civic_centre_egyptian.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/kushites/civic_centre_egyptian.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:kushites/civic_centre_egyptian"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "kushites/civic_centre_kush",
+  "title": "0 A.D. kushites civic centre kush",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/kushites/civic_centre_kush.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/kushites/civic_centre_kush.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:kushites/civic_centre_kush"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "ptolemies/barracks",
+  "title": "0 A.D. ptolemies barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/ptolemies/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/ptolemies/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:ptolemies/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "ptolemies/bireme",
+  "title": "0 A.D. ptolemies bireme",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/ptolemies/bireme.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/ptolemies/bireme.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:ptolemies/bireme"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "ptolemies/blacksmith",
+  "title": "0 A.D. ptolemies blacksmith",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/ptolemies/blacksmith.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/ptolemies/blacksmith.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:ptolemies/blacksmith"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "ptolemies/civic_centre",
+  "title": "0 A.D. ptolemies civic centre",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/ptolemies/civic_centre.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/ptolemies/civic_centre.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:ptolemies/civic_centre"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "ptolemies/corral",
+  "title": "0 A.D. ptolemies corral",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/ptolemies/corral.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "egyptian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "desert",
+   "savanna"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/ptolemies/corral.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:ptolemies/corral"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. pers gardens log b.stl",
+  "title": "0 A.D. pers gardens log b",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._pers_gardens_log_b.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 27534,
+  "thumbnail": "",
+  "theme": "elven",
+  "query": "tree trunk",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/bc/0_A.D._pers_gardens_log_b.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._pers_gardens_log_b.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. pers gardens log b.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. pers gardens tree baobab a.stl",
+  "title": "0 A.D. pers gardens tree baobab a",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._pers_gardens_tree_baobab_a.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 43584,
+  "thumbnail": "",
+  "theme": "elven",
+  "query": "tree trunk",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "forest",
+   "jungle"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/0_A.D._pers_gardens_tree_baobab_a.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._pers_gardens_tree_baobab_a.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. pers gardens tree baobab a.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. pers gardens tree lumbardypoplar a.stl",
+  "title": "0 A.D. pers gardens tree lumbardypoplar a",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._pers_gardens_tree_lumbardypoplar_a.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 14484,
+  "thumbnail": "",
+  "theme": "elven",
+  "query": "tree trunk",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "forest",
+   "jungle"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/c8/0_A.D._pers_gardens_tree_lumbardypoplar_a.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._pers_gardens_tree_lumbardypoplar_a.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. pers gardens tree lumbardypoplar a.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. pers gardens trunk baobab.stl",
+  "title": "0 A.D. pers gardens trunk baobab",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._pers_gardens_trunk_baobab.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 6384,
+  "thumbnail": "",
+  "theme": "elven",
+  "query": "tree trunk",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/a/a7/0_A.D._pers_gardens_trunk_baobab.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._pers_gardens_trunk_baobab.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. pers gardens trunk baobab.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. pers gardens trunk deciduous b.stl",
+  "title": "0 A.D. pers gardens trunk deciduous b",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._pers_gardens_trunk_deciduous_b.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 34134,
+  "thumbnail": "",
+  "theme": "elven",
+  "query": "tree trunk",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/c0/0_A.D._pers_gardens_trunk_deciduous_b.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._pers_gardens_trunk_deciduous_b.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. pers gardens trunk deciduous b.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Spinal cord and nerves.stl",
+  "title": "Spinal cord and nerves",
+  "url": "https://commons.wikimedia.org/wiki/File:Spinal_cord_and_nerves.stl",
+  "author": "Athikhun.suw",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 895484,
+  "thumbnail": "",
+  "theme": "elven",
+  "query": "roots",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Spinal_cord_and_nerves.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Spinal_cord_and_nerves.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Spinal cord and nerves.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "SuperTuxKart – Cart textured.stl",
+  "title": "SuperTuxKart – Cart textured",
+  "url": "https://commons.wikimedia.org/wiki/File:SuperTuxKart_%E2%80%93_Cart_textured.stl",
+  "author": "SuperTux Kart-Autoren",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 119340884,
+  "thumbnail": "",
+  "theme": "elven",
+  "query": "roots",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/SuperTuxKart_%E2%80%93_Cart_textured.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "SuperTuxKart_–_Cart_textured.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:SuperTuxKart – Cart textured.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Zahn 20230620 001.stl",
+  "title": "Zahn 20230620 001",
+  "url": "https://commons.wikimedia.org/wiki/File:Zahn_20230620_001.stl",
+  "author": "PantheraLeo1359531",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 1228884,
+  "thumbnail": "",
+  "theme": "elven",
+  "query": "roots",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b4/Zahn_20230620_001.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Zahn_20230620_001.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Zahn 20230620 001.stl"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "dead_quiver_trunk",
+  "title": "Dead Quiver Trunk",
+  "url": "https://polyhaven.com/a/dead_quiver_trunk",
+  "author": "James Ray Cock, Dario Barresi, Rico Cilliers",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 33706,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/dead_quiver_trunk.png?height=256",
+  "theme": "elven",
+  "query": "tree trunk",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "dead_quiver_trunk"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:dead_quiver_trunk"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "dead_tree_trunk",
+  "title": "Dead Tree Trunk",
+  "url": "https://polyhaven.com/a/dead_tree_trunk",
+  "author": "Rob Tuytel",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 101802,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/dead_tree_trunk.png?height=256",
+  "theme": "elven",
+  "query": "tree trunk",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "forest",
+   "jungle"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "dead_tree_trunk"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:dead_tree_trunk"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "dead_tree_trunk_02",
+  "title": "Dead Tree Trunk 02",
+  "url": "https://polyhaven.com/a/dead_tree_trunk_02",
+  "author": "Jenelle van Heerden, Rico Cilliers",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 155864,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/dead_tree_trunk_02.png?height=256",
+  "theme": "elven",
+  "query": "tree trunk",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "forest",
+   "jungle"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "dead_tree_trunk_02"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:dead_tree_trunk_02"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "fir_tree_01",
+  "title": "Fir Tree 01",
+  "url": "https://polyhaven.com/a/fir_tree_01",
+  "author": "Rob Tuytel, Rico Cilliers",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 7853731,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/fir_tree_01.png?height=256",
+  "theme": "elven",
+  "query": "tree trunk",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "forest",
+   "jungle"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "fir_tree_01"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:fir_tree_01"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "island_tree_01",
+  "title": "Island Tree 01",
+  "url": "https://polyhaven.com/a/island_tree_01",
+  "author": "Rob Tuytel, Rico Cilliers",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 3729692,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/island_tree_01.png?height=256",
+  "theme": "elven",
+  "query": "tree trunk",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "forest",
+   "jungle"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "island_tree_01"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:island_tree_01"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "pine_roots",
+  "title": "Pine Roots",
+  "url": "https://polyhaven.com/a/pine_roots",
+  "author": "Rob Tuytel",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 162693,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/pine_roots.png?height=256",
+  "theme": "elven",
+  "query": "roots",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "pine_roots"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:pine_roots"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "root_cluster_02",
+  "title": "Root Cluster 02",
+  "url": "https://polyhaven.com/a/root_cluster_02",
+  "author": "Jenelle van Heerden",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 339641,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/root_cluster_02.png?height=256",
+  "theme": "elven",
+  "query": "roots",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "root_cluster_02"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:root_cluster_02"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "single_root",
+  "title": "Single Root",
+  "url": "https://polyhaven.com/a/single_root",
+  "author": "Jenelle van Heerden",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 114424,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/single_root.png?height=256",
+  "theme": "elven",
+  "query": "roots",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "single_root"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:single_root"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "sweet_potato",
+  "title": "Sweet Potato",
+  "url": "https://polyhaven.com/a/sweet_potato",
+  "author": "Jan Martens",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 2042,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/sweet_potato.png?height=256",
+  "theme": "elven",
+  "query": "roots",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "sweet_potato"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:sweet_potato"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "tree_stump_01",
+  "title": "Tree Stump 01",
+  "url": "https://polyhaven.com/a/tree_stump_01",
+  "author": "Rob Tuytel",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 41046,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/tree_stump_01.png?height=256",
+  "theme": "elven",
+  "query": "roots",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "forest",
+   "jungle"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "tree_stump_01"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:tree_stump_01"
+ },
+ {
+  "source": "commons",
+  "source_id": "Inistioge cloister arcade set.stl",
+  "title": "Inistioge cloister arcade set",
+  "url": "https://commons.wikimedia.org/wiki/File:Inistioge_cloister_arcade_set.stl",
+  "author": "A.-K. D.",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 4084184,
+  "thumbnail": "",
+  "theme": "gothic",
+  "query": "cloister",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Inistioge_cloister_arcade_set.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Inistioge_cloister_arcade_set.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Inistioge cloister arcade set.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. gaul fortress b.stl",
+  "title": "0 A.D. gaul fortress b",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._gaul_fortress_b.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 199384,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "fortress",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/3/3f/0_A.D._gaul_fortress_b.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._gaul_fortress_b.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. gaul fortress b.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. han fortress old.stl",
+  "title": "0 A.D. han fortress old",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._han_fortress_old.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 561784,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "fortress",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/e/ee/0_A.D._han_fortress_old.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._han_fortress_old.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. han fortress old.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. han great tower.stl",
+  "title": "0 A.D. han great tower",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._han_great_tower.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 179684,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "keep",
+  "suggested_site": [
+   "peak",
+   "ridge",
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/0/08/0_A.D._han_great_tower.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._han_great_tower.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. han great tower.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. hele fortress up.stl",
+  "title": "0 A.D. hele fortress up",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._hele_fortress_up.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 157984,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "fortress",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/8/8b/0_A.D._hele_fortress_up.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._hele_fortress_up.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. hele fortress up.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. pers fortress b.stl",
+  "title": "0 A.D. pers fortress b",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._pers_fortress_b.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 251484,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "fortress",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/94/0_A.D._pers_fortress_b.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._pers_fortress_b.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. pers fortress b.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Alcázar de Segovia.stl",
+  "title": "Alcázar de Segovia",
+  "url": "https://commons.wikimedia.org/wiki/File:Alc%C3%A1zar_de_Segovia.stl",
+  "author": "Alcázar de Segovia",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 15000084,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "castle",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Alc%C3%A1zar_de_Segovia.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Alcázar_de_Segovia.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Alcázar de Segovia.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Cornell Box (flipped) and camera parameters.stl",
+  "title": "Cornell Box (flipped) and camera parameters",
+  "url": "https://commons.wikimedia.org/wiki/File:Cornell_Box_(flipped)_and_camera_parameters.stl",
+  "author": "Czerniawskimc",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 2184,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "keep",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [
+   "licence-conflict"
+  ],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Cornell_Box_%28flipped%29_and_camera_parameters.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Cornell_Box_(flipped)_and_camera_parameters.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Cornell Box (flipped) and camera parameters.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Prislop Pass - WW I - II fortification - a30cf33801fa4d308d3450b149e53d12.stl",
+  "title": "Prislop Pass - WW I - II fortification - a30cf33801fa4d308d3450b149e53d12",
+  "url": "https://commons.wikimedia.org/wiki/File:Prislop_Pass_-_WW_I_-_II_fortification_-_a30cf33801fa4d308d3450b149e53d12.stl",
+  "author": "Calin Suteu",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 45405434,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "fortress",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Prislop_Pass_-_WW_I_-_II_fortification_-_a30cf33801fa4d308d3450b149e53d12.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Prislop_Pass_-_WW_I_-_II_fortification_-_a30cf33801fa4d308d3450b149e53d12.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Prislop Pass - WW I - II fortification - a30cf33801fa4d308d3450b149e53d12.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Schachturm 20221011 001.stl",
+  "title": "Schachturm 20221011 001",
+  "url": "https://commons.wikimedia.org/wiki/File:Schachturm_20221011_001.stl",
+  "author": "PantheraLeo1359531",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 150436184,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "castle",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Schachturm_20221011_001.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Schachturm_20221011_001.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Schachturm 20221011 001.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Schachturm 20221011 002.stl",
+  "title": "Schachturm 20221011 002",
+  "url": "https://commons.wikimedia.org/wiki/File:Schachturm_20221011_002.stl",
+  "author": "PantheraLeo1359531",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 210479284,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "castle",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/79/Schachturm_20221011_002.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Schachturm_20221011_002.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Schachturm 20221011 002.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Sugarloaf Mound.stl",
+  "title": "Sugarloaf Mound",
+  "url": "https://commons.wikimedia.org/wiki/File:Sugarloaf_Mound.stl",
+  "author": "Teeks99",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 15401584,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "keep",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/8/89/Sugarloaf_Mound.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Sugarloaf_Mound.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Sugarloaf Mound.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "We Are Beautiful – 352392-PLNN-1 – solid.stl",
+  "title": "We Are Beautiful – 352392-PLNN-1 – solid",
+  "url": "https://commons.wikimedia.org/wiki/File:We_Are_Beautiful_%E2%80%93_352392-PLNN-1_%E2%80%93_solid.stl",
+  "author": "We Are Beautiful",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 6102784,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "keep",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/3/38/We_Are_Beautiful_%E2%80%93_352392-PLNN-1_%E2%80%93_solid.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "We_Are_Beautiful_–_352392-PLNN-1_–_solid.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:We Are Beautiful – 352392-PLNN-1 – solid.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "We Are Beautiful – 352392-PLNN-1 – surface.stl",
+  "title": "We Are Beautiful – 352392-PLNN-1 – surface",
+  "url": "https://commons.wikimedia.org/wiki/File:We_Are_Beautiful_%E2%80%93_352392-PLNN-1_%E2%80%93_surface.stl",
+  "author": "We Are Beautiful",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 3041034,
+  "thumbnail": "",
+  "theme": "medieval",
+  "query": "keep",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/91/We_Are_Beautiful_%E2%80%93_352392-PLNN-1_%E2%80%93_surface.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "We_Are_Beautiful_–_352392-PLNN-1_–_surface.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:We Are Beautiful – 352392-PLNN-1 – surface.stl"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "large_castle_door",
+  "title": "Large Castle Door",
+  "url": "https://polyhaven.com/a/large_castle_door",
+  "author": "Tina",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 12640,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/large_castle_door.png?height=256",
+  "theme": "medieval",
+  "query": "castle",
+  "suggested_site": [
+   "ridge",
+   "peak",
+   "plain"
+  ],
+  "suggested_biomes": [
+   "grassland",
+   "forest",
+   "mountain"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "large_castle_door"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:large_castle_door"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "modular_fort_01",
+  "title": "Modular Fort 01",
+  "url": "https://polyhaven.com/a/modular_fort_01",
+  "author": "Rico Cilliers",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 28218,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/modular_fort_01.png?height=256",
+  "theme": "medieval",
+  "query": "castle",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "modular_fort_01"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:modular_fort_01"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. ptol lighthouse.stl",
+  "title": "0 A.D. ptol lighthouse",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._ptol_lighthouse.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 118684,
+  "thumbnail": "",
+  "theme": "nautical",
+  "query": "lighthouse",
+  "suggested_site": [
+   "cliff+coast",
+   "coast"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/fa/0_A.D._ptol_lighthouse.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._ptol_lighthouse.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. ptol lighthouse.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "3D Printable Files- Omega Centauri (2023-spiders-more-2).stl",
+  "title": "3D Printable Files- Omega Centauri (2023-spiders-more-2)",
+  "url": "https://commons.wikimedia.org/wiki/File:3D_Printable_Files-_Omega_Centauri_(2023-spiders-more-2).stl",
+  "author": "(3D Print Credit: NASA/CXC/A. Jubett, using software by Tactile Universe/N. Bonne & C. Krawczyk & Blender)",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "Public domain",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 16646484,
+  "thumbnail": "",
+  "theme": "nautical",
+  "query": "lighthouse",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/3D_Printable_Files-_Omega_Centauri_%282023-spiders-more-2%29.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "3D_Printable_Files-_Omega_Centauri_(2023-spiders-more-2).stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:3D Printable Files- Omega Centauri (2023-spiders-more-2).stl"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "adjustable_wrench",
+  "title": "Adjustable Wrench",
+  "url": "https://polyhaven.com/a/adjustable_wrench",
+  "author": "Mateusz Sadek",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 5390,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/adjustable_wrench.png?height=256",
+  "theme": "nautical",
+  "query": "lighthouse",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "adjustable_wrench"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:adjustable_wrench"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "ammo_box",
+  "title": "Ammo Box",
+  "url": "https://polyhaven.com/a/ammo_box",
+  "author": "DanKit",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 4382,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/ammo_box.png?height=256",
+  "theme": "nautical",
+  "query": "lighthouse",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "ammo_box"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:ammo_box"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "bananas",
+  "title": "Bananas",
+  "url": "https://polyhaven.com/a/bananas",
+  "author": "Alexander Shulha",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 46868,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/bananas.png?height=256",
+  "theme": "nautical",
+  "query": "lighthouse",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "bananas"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:bananas"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "binder_notebook",
+  "title": "Binder Notebook",
+  "url": "https://polyhaven.com/a/binder_notebook",
+  "author": "DaDrood",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 18077,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/binder_notebook.png?height=256",
+  "theme": "nautical",
+  "query": "lighthouse",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "binder_notebook"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:binder_notebook"
+ },
+ {
+  "source": "polyhaven",
+  "source_id": "binoculars",
+  "title": "Binoculars",
+  "url": "https://polyhaven.com/a/binoculars",
+  "author": "Derek Wight",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": 19248,
+  "formats": [
+   "gltf"
+  ],
+  "download_size": null,
+  "thumbnail": "https://cdn.polyhaven.com/asset_img/thumbs/binoculars.png?height=256",
+  "theme": "nautical",
+  "query": "lighthouse",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "polyhaven": "binoculars"
+  },
+  "notes": "",
+  "first_seen": "2026-10-11",
+  "id": "polyhaven:binoculars"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. pers palace.stl",
+  "title": "0 A.D. pers palace",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._pers_palace.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 454284,
+  "thumbnail": "",
+  "theme": "persian",
+  "query": "persian palace",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/7/75/0_A.D._pers_palace.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._pers_palace.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. pers palace.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Mayan temple.stl",
+  "title": "Mayan temple",
+  "url": "https://commons.wikimedia.org/wiki/File:Mayan_temple.stl",
+  "author": "https://sketchfab.com/microsoft",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 481684,
+  "thumbnail": "",
+  "theme": "persian",
+  "query": "ziggurat",
+  "suggested_site": [
+   "plain",
+   "ridge"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/6/60/Mayan_temple.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Mayan_temple.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Mayan temple.stl"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "persians/apadana",
+  "title": "0 A.D. persians apadana",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/persians/apadana.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "persian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/persians/apadana.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:persians/apadana"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "persians/babylonian_tower",
+  "title": "0 A.D. persians babylonian tower",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/persians/babylonian_tower.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "persian",
+  "query": "",
+  "suggested_site": [
+   "peak",
+   "ridge",
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/persians/babylonian_tower.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:persians/babylonian_tower"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "persians/ballista_tower",
+  "title": "0 A.D. persians ballista tower",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/persians/ballista_tower.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "persian",
+  "query": "",
+  "suggested_site": [
+   "peak",
+   "ridge",
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/persians/ballista_tower.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:persians/ballista_tower"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "persians/barracks",
+  "title": "0 A.D. persians barracks",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/persians/barracks.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "persian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/persians/barracks.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:persians/barracks"
+ },
+ {
+  "source": "zeroad",
+  "source_id": "persians/bireme",
+  "title": "0 A.D. persians bireme",
+  "url": "https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/persians/bireme.xml",
+  "author": "Wildfire Games (0 A.D.)",
+  "author_url": "https://play0ad.com",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC-BY-SA 3.0 (0 A.D. art)",
+  "faces": null,
+  "formats": [
+   "dae"
+  ],
+  "download_size": null,
+  "thumbnail": "",
+  "theme": "persian",
+  "query": "",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "zeroad_actor": "art/actors/structures/persians/bireme.xml"
+  },
+  "notes": "Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",
+  "first_seen": "2026-10-11",
+  "id": "zeroad:persians/bireme"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. celt stonehenge new smooth.stl",
+  "title": "0 A.D. celt stonehenge new smooth",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._celt_stonehenge_new_smooth.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)\nsmoothed/edited by PantheraLeo1359531 😺 (talk)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 134246484,
+  "thumbnail": "",
+  "theme": "prehistoric",
+  "query": "henge",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "grassland",
+   "tundra"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/5e/0_A.D._celt_stonehenge_new_smooth.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._celt_stonehenge_new_smooth.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. celt stonehenge new smooth.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Aitzetako txabala 2018-07-20-1.stl",
+  "title": "Aitzetako txabala 2018-07-20-1",
+  "url": "https://commons.wikimedia.org/wiki/File:Aitzetako_txabala_2018-07-20-1.stl",
+  "author": "Suna no onna",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 4741134,
+  "thumbnail": "",
+  "theme": "prehistoric",
+  "query": "dolmen",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Aitzetako_txabala_2018-07-20-1.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Aitzetako_txabala_2018-07-20-1.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Aitzetako txabala 2018-07-20-1.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Anta do Paço 1 - 3D model by Morbase - Museu Virtual - Sketchfab.stl",
+  "title": "Anta do Paço 1 - 3D model by Morbase - Museu Virtual - Sketchfab",
+  "url": "https://commons.wikimedia.org/wiki/File:Anta_do_Pa%C3%A7o_1_-_3D_model_by_Morbase_-_Museu_Virtual_-_Sketchfab.stl",
+  "author": "Morbase - Museu Virtual",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 31913884,
+  "thumbnail": "",
+  "theme": "prehistoric",
+  "query": "dolmen",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Anta_do_Pa%C3%A7o_1_-_3D_model_by_Morbase_-_Museu_Virtual_-_Sketchfab.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Anta_do_Paço_1_-_3D_model_by_Morbase_-_Museu_Virtual_-_Sketchfab.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Anta do Paço 1 - 3D model by Morbase - Museu Virtual - Sketchfab.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Dolmen de la Grotte, Cournols, France.stl",
+  "title": "Dolmen de la Grotte, Cournols, France",
+  "url": "https://commons.wikimedia.org/wiki/File:Dolmen_de_la_Grotte,_Cournols,_France.stl",
+  "author": "Renaud Toussaint",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 10776684,
+  "thumbnail": "",
+  "theme": "prehistoric",
+  "query": "dolmen",
+  "suggested_site": [
+   "plain",
+   "ridge"
+  ],
+  "suggested_biomes": [
+   "grassland",
+   "tundra",
+   "taiga"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/f/fc/Dolmen_de_la_Grotte%2C_Cournols%2C_France.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Dolmen_de_la_Grotte,_Cournols,_France.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Dolmen de la Grotte, Cournols, France.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. stone monument.stl",
+  "title": "0 A.D. stone monument",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._stone_monument.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 147084,
+  "thumbnail": "",
+  "theme": "viking",
+  "query": "rune stone",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/6/6a/0_A.D._stone_monument.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._stone_monument.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. stone monument.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. viking longship smooth.stl",
+  "title": "0 A.D. viking longship smooth",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._viking_longship_smooth.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 640614484,
+  "thumbnail": "",
+  "theme": "viking",
+  "query": "viking ship",
+  "suggested_site": [
+   "coast"
+  ],
+  "suggested_biomes": [
+   "beach",
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/1/1f/0_A.D._viking_longship_smooth.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._viking_longship_smooth.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. viking longship smooth.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "0 A.D. viking longship.stl",
+  "title": "0 A.D. viking longship",
+  "url": "https://commons.wikimedia.org/wiki/File:0_A.D._viking_longship.stl",
+  "author": "Wildfire Games (https://wildfiregames.com/)",
+  "author_url": "",
+  "license": "CC-BY-SA-3.0",
+  "license_label": "CC BY-SA 3.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 36484,
+  "thumbnail": "",
+  "theme": "viking",
+  "query": "viking ship",
+  "suggested_site": [
+   "coast"
+  ],
+  "suggested_biomes": [
+   "beach",
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/54/0_A.D._viking_longship.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "0_A.D._viking_longship.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:0 A.D. viking longship.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "C55000 132 1904-147 001 B 01.stl",
+  "title": "C55000 132 1904-147 001 B 01",
+  "url": "https://commons.wikimedia.org/wiki/File:C55000_132_1904-147_001_B_01.stl",
+  "author": "Xxl viking",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 363852284,
+  "thumbnail": "",
+  "theme": "viking",
+  "query": "viking ship",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/bd/C55000_132_1904-147_001_B_01.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "C55000_132_1904-147_001_B_01.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:C55000 132 1904-147 001 B 01.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Castlestrange Stone - 3D model by roscommon3d - Sketchfab.stl",
+  "title": "Castlestrange Stone - 3D model by roscommon3d - Sketchfab",
+  "url": "https://commons.wikimedia.org/wiki/File:Castlestrange_Stone_-_3D_model_by_roscommon3d_-_Sketchfab.stl",
+  "author": "roscommon3d",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 3382684,
+  "thumbnail": "",
+  "theme": "viking",
+  "query": "rune stone",
+  "suggested_site": [
+   "ridge",
+   "peak",
+   "plain"
+  ],
+  "suggested_biomes": [
+   "grassland",
+   "forest",
+   "mountain"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/59/Castlestrange_Stone_-_3D_model_by_roscommon3d_-_Sketchfab.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Castlestrange_Stone_-_3D_model_by_roscommon3d_-_Sketchfab.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Castlestrange Stone - 3D model by roscommon3d - Sketchfab.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Ogham Stone at Church Island (Oilean an Teampaill).stl",
+  "title": "Ogham Stone at Church Island (Oilean an Teampaill)",
+  "url": "https://commons.wikimedia.org/wiki/File:Ogham_Stone_at_Church_Island_(Oilean_an_Teampaill).stl",
+  "author": "Fthierygeo",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 25000084,
+  "thumbnail": "",
+  "theme": "viking",
+  "query": "rune stone",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/8/83/Ogham_Stone_at_Church_Island_%28Oilean_an_Teampaill%29.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Ogham_Stone_at_Church_Island_(Oilean_an_Teampaill).stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Ogham Stone at Church Island (Oilean an Teampaill).stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Ogham Stone at Gearha South (An Gaorthadh Theas).stl",
+  "title": "Ogham Stone at Gearha South (An Gaorthadh Theas)",
+  "url": "https://commons.wikimedia.org/wiki/File:Ogham_Stone_at_Gearha_South_(An_Gaorthadh_Theas).stl",
+  "author": "Fthierygeo",
+  "author_url": "",
+  "license": "CC-BY-SA-4.0",
+  "license_label": "CC BY-SA 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 25000034,
+  "thumbnail": "",
+  "theme": "viking",
+  "query": "rune stone",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/4/46/Ogham_Stone_at_Gearha_South_%28An_Gaorthadh_Theas%29.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Ogham_Stone_at_Gearha_South_(An_Gaorthadh_Theas).stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Ogham Stone at Gearha South (An Gaorthadh Theas).stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Rectangular stone watchtower - 9e2bf602191149dc84788e424e4ab986.stl",
+  "title": "Rectangular stone watchtower - 9e2bf602191149dc84788e424e4ab986",
+  "url": "https://commons.wikimedia.org/wiki/File:Rectangular_stone_watchtower_-_9e2bf602191149dc84788e424e4ab986.stl",
+  "author": "Institutul Național al Patrimoniului",
+  "author_url": "",
+  "license": "CC-BY-4.0",
+  "license_label": "CC BY 4.0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 772084,
+  "thumbnail": "",
+  "theme": "viking",
+  "query": "rune stone",
+  "suggested_site": [
+   "peak",
+   "cliff",
+   "ridge"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Rectangular_stone_watchtower_-_9e2bf602191149dc84788e424e4ab986.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Rectangular_stone_watchtower_-_9e2bf602191149dc84788e424e4ab986.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Rectangular stone watchtower - 9e2bf602191149dc84788e424e4ab986.stl"
+ },
+ {
+  "source": "commons",
+  "source_id": "Wikingerhelm 20230429 002.stl",
+  "title": "Wikingerhelm 20230429 002",
+  "url": "https://commons.wikimedia.org/wiki/File:Wikingerhelm_20230429_002.stl",
+  "author": "PantheraLeo1359531",
+  "author_url": "",
+  "license": "CC0-1.0",
+  "license_label": "CC0",
+  "faces": null,
+  "formats": [
+   "stl"
+  ],
+  "download_size": 142835084,
+  "thumbnail": "",
+  "theme": "viking",
+  "query": "viking ship",
+  "suggested_site": [
+   "plain"
+  ],
+  "suggested_biomes": [
+   "any"
+  ],
+  "flags": [],
+  "download": {
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikingerhelm_20230429_002.stl?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "file": "Wikingerhelm_20230429_002.stl"
+  },
+  "notes": "STL without colour: use material rules by height and normal",
+  "first_seen": "2026-10-11",
+  "id": "commons:Wikingerhelm 20230429 002.stl"
+ }
+]

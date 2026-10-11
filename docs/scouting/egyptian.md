@@ -1,0 +1,31 @@
+# Scouting: egyptian
+
+Found by `sagas scout`; licences as reported by the source. Check the model page before promoting.
+Flags: licence-conflict = the description mentions NC/ND; trademark = possible protected character.
+
+| Model | Author | Licence | Faces | Size | Site | Flags | Promote |
+|---|---|---|---|---|---|---|---|
+| [Colossal sculpture of Ramesses II](https://commons.wikimedia.org/wiki/File:Colossal_sculpture_of_Ramesses_II.stl) | Dejp3 | CC-BY-4.0 |  | 25 MB | plain |  | `sagas scout promote commons:Colossal sculpture of Ramesses II.stl` |
+| [Giza3D](https://commons.wikimedia.org/wiki/File:Giza3D.stl) | Drummyfish | CC0-1.0 |  | 281 kB | plain |  | `sagas scout promote commons:Giza3D.stl` |
+| [Obelisk 20221209](https://commons.wikimedia.org/wiki/File:Obelisk_20221209.stl) | PantheraLeo1359531 | CC0-1.0 |  | 110 MB | plain |  | `sagas scout promote commons:Obelisk 20221209.stl` |
+| [Pyramid of Khafre](https://commons.wikimedia.org/wiki/File:Pyramid_of_Khafre.stl) | Drummyfish | CC0-1.0 |  | 10 kB | plain |  | `sagas scout promote commons:Pyramid of Khafre.stl` |
+| [Pyramid of Khufu](https://commons.wikimedia.org/wiki/File:Pyramid_of_Khufu.stl) | Drummyfish | CC0-1.0 |  | 85 kB | plain |  | `sagas scout promote commons:Pyramid of Khufu.stl` |
+| [Pyramid of Menkaure](https://commons.wikimedia.org/wiki/File:Pyramid_of_Menkaure.stl) | Drummyfish | CC0-1.0 |  | 20 kB | plain |  | `sagas scout promote commons:Pyramid of Menkaure.stl` |
+| [Pyramid stop](https://commons.wikimedia.org/wiki/File:Pyramid_stop.stl) | A.-K. D. | CC0-1.0 |  | 1 kB | plain |  | `sagas scout promote commons:Pyramid stop.stl` |
+| [Pyramiden aus Pyramiden 20230416 001](https://commons.wikimedia.org/wiki/File:Pyramiden_aus_Pyramiden_20230416_001.stl) | PantheraLeo1359531 | CC0-1.0 |  | 235 kB | plain |  | `sagas scout promote commons:Pyramiden aus Pyramiden 20230416 001.stl` |
+| [Statue of Amun-Ra King of the Gods, 3D photogrammetry scan (STL)](https://commons.wikimedia.org/wiki/File:Statue_of_Amun-Ra_King_of_the_Gods,_3D_photogrammetry_scan_(STL).stl) | OmarElAtabany | CC-BY-SA-4.0 |  | 4 MB | plain |  | `sagas scout promote commons:Statue of Amun-Ra King of the Gods, 3D photogrammetry scan (STL).stl` |
+| [Statue of Hapi the Scribe, 3D photogrammetry scan (STL)](https://commons.wikimedia.org/wiki/File:Statue_of_Hapi_the_Scribe,_3D_photogrammetry_scan_(STL).stl) | OmarElAtabany | CC-BY-SA-4.0 |  | 8 MB | plain |  | `sagas scout promote commons:Statue of Hapi the Scribe, 3D photogrammetry scan (STL).stl` |
+| [Statue of Khonsu, 3D photogrammetry scan (STL)](https://commons.wikimedia.org/wiki/File:Statue_of_Khonsu,_3D_photogrammetry_scan_(STL).stl) | OmarElAtabany | CC-BY-SA-4.0 |  | 5 MB | plain |  | `sagas scout promote commons:Statue of Khonsu, 3D photogrammetry scan (STL).stl` |
+| [Statue of King Thutmose III, 3D photogrammetry scan (STL)](https://commons.wikimedia.org/wiki/File:Statue_of_King_Thutmose_III,_3D_photogrammetry_scan_(STL).stl) | OmarElAtabany | CC-BY-SA-4.0 |  | 7 MB | plain |  | `sagas scout promote commons:Statue of King Thutmose III, 3D photogrammetry scan (STL).stl` |
+| [U+2020 Noto Sans 20230523](https://commons.wikimedia.org/wiki/File:U%2B2020_Noto_Sans_20230523.stl) | 3D-Modell: PantheraLeo1359531 😺
+Font: Google | CC0-1.0 |  | 6 kB | plain |  | `sagas scout promote commons:U+2020 Noto Sans 20230523.stl` |
+| [0 A.D. kushites barracks](https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/kushites/barracks.xml) | Wildfire Games (0 A.D.) | CC-BY-SA-3.0 |  |  | plain |  | `sagas scout promote zeroad:kushites/barracks` |
+| [0 A.D. kushites bireme](https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/kushites/bireme.xml) | Wildfire Games (0 A.D.) | CC-BY-SA-3.0 |  |  | plain |  | `sagas scout promote zeroad:kushites/bireme` |
+| [0 A.D. kushites blacksmith](https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/kushites/blacksmith.xml) | Wildfire Games (0 A.D.) | CC-BY-SA-3.0 |  |  | plain |  | `sagas scout promote zeroad:kushites/blacksmith` |
+| [0 A.D. kushites civic centre egyptian](https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/kushites/civic_centre_egyptian.xml) | Wildfire Games (0 A.D.) | CC-BY-SA-3.0 |  |  | plain |  | `sagas scout promote zeroad:kushites/civic_centre_egyptian` |
+| [0 A.D. kushites civic centre kush](https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/kushites/civic_centre_kush.xml) | Wildfire Games (0 A.D.) | CC-BY-SA-3.0 |  |  | plain |  | `sagas scout promote zeroad:kushites/civic_centre_kush` |
+| [0 A.D. ptolemies barracks](https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/ptolemies/barracks.xml) | Wildfire Games (0 A.D.) | CC-BY-SA-3.0 |  |  | plain |  | `sagas scout promote zeroad:ptolemies/barracks` |
+| [0 A.D. ptolemies bireme](https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/ptolemies/bireme.xml) | Wildfire Games (0 A.D.) | CC-BY-SA-3.0 |  |  | plain |  | `sagas scout promote zeroad:ptolemies/bireme` |
+| [0 A.D. ptolemies blacksmith](https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/ptolemies/blacksmith.xml) | Wildfire Games (0 A.D.) | CC-BY-SA-3.0 |  |  | plain |  | `sagas scout promote zeroad:ptolemies/blacksmith` |
+| [0 A.D. ptolemies civic centre](https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/ptolemies/civic_centre.xml) | Wildfire Games (0 A.D.) | CC-BY-SA-3.0 |  |  | plain |  | `sagas scout promote zeroad:ptolemies/civic_centre` |
+| [0 A.D. ptolemies corral](https://github.com/0ad/0ad/blob/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/actors/structures/ptolemies/corral.xml) | Wildfire Games (0 A.D.) | CC-BY-SA-3.0 |  |  | plain |  | `sagas scout promote zeroad:ptolemies/corral` |
