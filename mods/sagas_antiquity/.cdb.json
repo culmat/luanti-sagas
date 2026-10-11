@@ -1,7 +1,7 @@
 {
 	"type": "MOD",
 	"title": "Sagas: Antiquity",
-	"short_description": "Buildings of the ancient world from the 0 A.D. game art (Wildfire Games, CC-BY-SA 3.0): an Alexandrian lighthouse, Kushite pyramids and the temple of Amun, a Greek temple, a Han temple, a Briton hill ",
+	"short_description": "Buildings of the ancient world from the 0 A.D. game art (Wildfire Games, CC-BY-SA 3.0): an Alexandrian lighthouse, Kushite pyramids and the temple of Amun, a Ptolemaic temple, a Greek temple, a Han te",
 	"license": "MIT",
 	"media_license": "CC-BY-SA-3.0",
 	"ai_disclosure": "ASSISTED",
@@ -10,7 +10,7 @@
 		"mapgen",
 		"decorative"
 	],
-	"long_description": "Buildings of the ancient world from the 0 A.D. game art (Wildfire Games, CC-BY-SA 3.0): an Alexandrian lighthouse, Kushite pyramids and the temple of Amun, a Greek temple, a Han temple, a Briton hill fort and roundhouses.\n\nRequires the **sagas** mod, which places these landmarks during map generation\nwhere their site fits and builds them from the materials of the game and the site.\n\n| Saga | Size | Where |\n|---|---|---|\n| Temple on the hill | 39 x 35 x 57 | peak or ridge or plain |\n| Temple of the Han | 33 x 36 x 41 | plain or slope or ridge |\n| Lighthouse of the harbour | 15 x 43 x 27 | cliff+coast or coast |\n| Temple by the river | 34 x 40 x 45 | plain+river or plain |\n| Pyramid of Meroe | 16 x 35 x 28 | plain or slope |\n| Small pyramid | 8 x 19 x 11 | plain or slope |\n| Roundhouse | 12 x 14 x 15 | plain or slope |\n| Temple of Amun | 48 x 41 x 59 | plain+river or plain |\n\nEvery schematic is an adaptation of a freely licensed model; see ATTRIBUTION.md for sources.",
+	"long_description": "Buildings of the ancient world from the 0 A.D. game art (Wildfire Games, CC-BY-SA 3.0): an Alexandrian lighthouse, Kushite pyramids and the temple of Amun, a Ptolemaic temple, a Greek temple, a Han temple and Briton roundhouses.\n\nRequires the **sagas** mod, which places these landmarks during map generation\nwhere their site fits and builds them from the materials of the game and the site.\n\n| Saga | Size | Where |\n|---|---|---|\n| Temple on the hill | 39 x 35 x 57 | peak or ridge or plain |\n| Temple of the Han | 33 x 36 x 41 | plain or slope or ridge |\n| Lighthouse of the harbour | 15 x 43 x 27 | cliff+coast or coast |\n| Temple by the river | 34 x 40 x 45 | plain+river or plain |\n| Pyramid of Meroe | 16 x 35 x 28 | plain or slope |\n| Small pyramid | 8 x 19 x 11 | plain or slope |\n| Roundhouse | 12 x 14 x 15 | plain or slope |\n| Temple of Amun | 48 x 41 x 59 | plain+river or plain |\n\nEvery schematic is an adaptation of a freely licensed model; see ATTRIBUTION.md for sources.",
 	"repo": "https://github.com/culmat/luanti-sagas",
 	"issue_tracker": "https://github.com/culmat/luanti-sagas/issues"
 }
