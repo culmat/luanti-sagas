@@ -32,7 +32,7 @@ function large.candidate(def, cx, cz)
 end
 
 -- Heightmap-free context over a VoxelManip for site predicates.
-local function vm_ctx(def, p1, p2, data, area)
+local function vm_ctx(def, data, area)
 	local kinds = sagas.sites.kinds()
 	local tops = {}
 	local ctx = {
@@ -75,21 +75,45 @@ local function vm_ctx(def, p1, p2, data, area)
 	return ctx
 end
 
-local function finish(def, k, rec)
+-- The box to emerge and inspect: the footprint plus a margin, and a tall vertical window around the
+-- surface height reported by the heightmap (the real surface may differ, e.g. in Mineclonia).
+local function window(def, rec)
 	local p1, p2 = util.bbox(def, { x = rec.x, y = rec.y, z = rec.z }, rec.rot)
 	local margin = 16
-	local vm = core.get_voxel_manip(
-		{ x = p1.x - margin, y = p1.y - def.foundation - margin, z = p1.z - margin },
-		{ x = p2.x + margin, y = p2.y + margin, z = p2.z + margin }
-	)
+	return { x = p1.x - margin, y = p1.y - def.foundation - 48, z = p1.z - margin },
+		{ x = p2.x + margin, y = p2.y + 48, z = p2.z + margin },
+		p1,
+		p2
+end
+
+local function finish(def, k, rec)
+	local current = core.parse_json(storage:get_string(k))
+	if type(current) == "table" and current.state ~= "pending" then
+		return -- already handled (idempotent: an emerge may complete twice)
+	end
+	local w1, w2 = window(def, rec)
+	local vm = core.get_voxel_manip(w1, w2)
 	local emin, emax = vm:get_emerged_area()
 	local area = VoxelArea(emin, emax)
 	local data = vm:get_data()
-	local ctx = vm_ctx(def, p1, p2, data, area)
+	local ctx = vm_ctx(def, data, area)
 	local y, site = sagas.sites.evaluate(def, ctx, rec.x, rec.z, rec.rot, PcgRandom(util.hash32(k)))
-	if not y or not sagas.records.spacing_ok(def.id, p1, p2, def.min_distance) then
-		storage:set_string(k, core.write_json({ state = "rejected" }))
-		util.debug("large saga %s rejected at %d,%d", def.id, rec.x, rec.z)
+	local reason
+	if not y then
+		reason = "site " .. table.concat(def.site, " | ") .. " does not hold"
+	else
+		local p1, p2 = util.bbox(def, { x = rec.x, y = y, z = rec.z }, rec.rot)
+		if not sagas.records.spacing_ok(def.id, p1, p2, def.min_distance) then
+			local near = {}
+			for _, r in ipairs(sagas.records.in_box(p1, p2)) do
+				near[#near + 1] = r.id .. "@" .. core.pos_to_string(r.anchor)
+			end
+			reason = "too close to another saga (" .. table.concat(near, ", ") .. ")"
+		end
+	end
+	if reason then
+		storage:set_string(k, core.write_json({ state = "rejected", reason = reason }))
+		util.log("action", "large saga %s at %d,%d rejected: %s", def.id, rec.x, rec.z, reason)
 		return
 	end
 	local anchor = { x = rec.x, y = y, z = rec.z }
@@ -99,24 +123,20 @@ local function finish(def, k, rec)
 end
 
 local function emerge(def, k, rec)
-	local p1, p2 = util.bbox(def, { x = rec.x, y = rec.y, z = rec.z }, rec.rot)
+	local w1, w2 = window(def, rec)
 	local failed = false
-	core.emerge_area(
-		{ x = p1.x - 16, y = p1.y - def.foundation - 16, z = p1.z - 16 },
-		{ x = p2.x + 16, y = p2.y + 16, z = p2.z + 16 },
-		function(_, action, remaining)
-			if action == core.EMERGE_CANCELLED or action == core.EMERGE_ERRORED then
-				failed = true
-			end
-			if remaining == 0 and not failed then
-				local ok, err = pcall(finish, def, k, rec)
-				if not ok then
-					util.log("error", "large saga %s failed: %s", def.id, tostring(err))
-					storage:set_string(k, core.write_json({ state = "rejected" }))
-				end
+	core.emerge_area(w1, w2, function(_, action, remaining)
+		if action == core.EMERGE_CANCELLED or action == core.EMERGE_ERRORED then
+			failed = true
+		end
+		if remaining == 0 and not failed then
+			local ok, err = pcall(finish, def, k, rec)
+			if not ok then
+				util.log("error", "large saga %s failed: %s", def.id, tostring(err))
+				storage:set_string(k, core.write_json({ state = "rejected" }))
 			end
 		end
-	)
+	end)
 end
 
 function large.on_generated(minp, maxp)
@@ -154,16 +174,33 @@ function large.on_generated(minp, maxp)
 	end
 end
 
--- Resume placements that were pending when the server stopped.
-function large.resume()
+-- Stored state of def in cell (cx, cz): nil, or {state = "pending" | "placed" | "rejected", ...}.
+function large.state(def, cx, cz)
+	local raw = storage:get_string(key(def, cx, cz))
+	return raw ~= "" and core.parse_json(raw) or nil
+end
+
+-- Placements that were pending when the server stopped (collected at load, before any generation).
+local function pending_at_load()
+	local out = {}
 	for k, v in pairs(storage:to_table().fields) do
 		if k:sub(1, 2) == "L:" then
 			local rec = core.parse_json(v)
-			local id = k:match("^L:(.+):%-?%d+:%-?%d+$")
-			local def = id and sagas.registered[id]
-			if rec and rec.state == "pending" and def then
-				emerge(def, k, rec)
+			if type(rec) == "table" and rec.state == "pending" then
+				out[#out + 1] = k
 			end
+		end
+	end
+	return out
+end
+
+function large.resume(keys)
+	for _, k in ipairs(keys) do
+		local rec = core.parse_json(storage:get_string(k))
+		local id = k:match("^L:(.+):%-?%d+:%-?%d+$")
+		local def = id and sagas.registered[id]
+		if type(rec) == "table" and rec.state == "pending" and def then
+			emerge(def, k, rec)
 		end
 	end
 end
@@ -173,5 +210,8 @@ core.register_on_generated(function(minp, maxp)
 end)
 
 core.register_on_mods_loaded(function()
-	core.after(3, large.resume)
+	local keys = pending_at_load()
+	if #keys > 0 then
+		core.after(3, large.resume, keys)
+	end
 end)

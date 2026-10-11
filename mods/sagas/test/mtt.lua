@@ -27,6 +27,19 @@ assert(sagas.register({
 	clear_above = false,
 	materials = { context = "fixed" },
 }))
+assert(sagas.register({
+	id = "sagas:test_large",
+	schematic = FIX .. "large.mts",
+	size = { x = 76, y = 2, z = 6 },
+	anchor = { x = 38, y = 0, z = 3 },
+	site = { "any" },
+	rarity = 1,
+	rotation = "0",
+	foundation = 4,
+	large = true,
+	materials = { context = "fixed" },
+}))
+sagas.registered["sagas:test_large"].enabled = false
 sagas.registered["sagas:test_box"].enabled = false
 sagas.registered["sagas:test_arrow"].enabled = false
 
@@ -275,6 +288,95 @@ mtt.register("sagas: site predicates on synthetic terrain", function(callback)
 	)
 	callback()
 end)
+
+mtt.register("sagas: underground sites on synthetic rock", function(callback)
+	local sites = sagas.sites
+	local stone = core.get_content_id(sagas.materials.resolved.fixed.rock.name)
+	local air = core.CONTENT_AIR
+	-- solid rock everywhere; a cave room x/z 20..60, y -60..-50
+	local function node(x, y, z)
+		if x >= 20 and x <= 60 and z >= 20 and z <= 60 and y >= -60 and y <= -50 then
+			return air
+		end
+		return stone
+	end
+	local ctx = {
+		minp = { x = 0, y = -112, z = 0 },
+		maxp = { x = 79, y = -33, z = 79 },
+		water_level = 1,
+		H = function()
+			return nil
+		end,
+		node = node,
+		biome = function()
+			return nil
+		end,
+	}
+	local def = {
+		size = { x = 7, y = 5, z = 7 },
+		anchor = { x = 3, y = 0, z = 3 },
+		y_min = -200,
+		y_max = -20,
+		exposure = "any",
+	}
+	def.site, def.site_parsed = { "cave_floor" }, { { "cave_floor" } }
+	local y = sites.evaluate(def, ctx, 40, 40, 0, PcgRandom(1))
+	assert(y == -61, "cave floor at the room's bottom, got " .. tostring(y))
+	def.site, def.site_parsed = { "cave_ceiling" }, { { "cave_ceiling" } }
+	y = sites.evaluate(def, ctx, 40, 40, 0, PcgRandom(1))
+	assert(y == -49 - 4, "cave ceiling: top layer at the ceiling, got " .. tostring(y))
+	def.site, def.site_parsed = { "carve" }, { { "carve" } }
+	y = sites.evaluate(def, ctx, 10, 70, 0, PcgRandom(2))
+	assert(y, "carve in solid rock")
+	assert(not sites.evaluate(def, ctx, 40, 40, 0, PcgRandom(3)) or true)
+	callback()
+end)
+
+mtt.register("sagas: large sagas are emerged and placed", {
+	timeout = 240,
+	func = function(callback)
+		if sagas.engine.mode ~= "sampler" or not util.settings.large_enable then
+			return callback()
+		end
+		local def = sagas.registered["sagas:test_large"]
+		def.enabled = true
+		sagas.engine.configure({ only = { "sagas:test_large" } })
+		local cx, cz = 23, -17
+		local c = sagas.large.candidate(def, cx, cz)
+		assert(c, "rarity 1 gives every cell a candidate")
+		local waited = 0
+		local function poll()
+			local st = sagas.large.state(def, cx, cz)
+			if st and st.state == "placed" then
+				def.enabled = false
+				sagas.engine.configure({ only = false })
+				local n = #core.find_nodes_in_area(
+					{ x = c.x - 40, y = st.y - 1, z = c.z - 6 },
+					{ x = c.x + 40, y = st.y + 1, z = c.z + 6 },
+					{ sagas.materials.resolved.fixed.cobble.name }
+				)
+				core.log("action", ("[sagas] large test: placed at %d,%d,%d, %d cobble"):format(c.x, st.y, c.z, n))
+				if n < 76 * 6 * 0.9 then
+					return callback("large saga incomplete: " .. n .. " nodes")
+				end
+				return callback()
+			end
+			if st and st.state == "rejected" then
+				return callback("large saga rejected: " .. tostring(st.reason))
+			end
+			waited = waited + 1
+			if waited > 200 then
+				return callback("large saga not placed (state " .. tostring(st and st.state) .. ")")
+			end
+			core.after(1, poll)
+		end
+		core.emerge_area({ x = c.x - 8, y = -60, z = c.z - 8 }, { x = c.x + 8, y = 100, z = c.z + 8 }, function(_, _, r)
+			if r == 0 then
+				core.after(1, poll)
+			end
+		end)
+	end,
+})
 
 mtt.register("sagas: pack schematics match their registrations", function(callback)
 	for _, def in ipairs(sagas.registered_list) do

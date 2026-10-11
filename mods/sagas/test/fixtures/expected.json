@@ -38,5 +38,19 @@
       5,
       7
     ]
+  },
+  "large": {
+    "counts": {
+      "sagas:m_cobble": 456
+    },
+    "names": [
+      "air",
+      "sagas:m_cobble"
+    ],
+    "size": [
+      76,
+      2,
+      6
+    ]
   }
 }

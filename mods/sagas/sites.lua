@@ -306,6 +306,28 @@ local function air_at(ctx, x, y, z)
 	return cid == core.CONTENT_AIR
 end
 
+-- y values from y0 towards `last` (step -1 or 1), then the rest of the range: covers every height
+-- once, starting at a random one so that different tries find different caves.
+local function column_order(ylo, yhi, y0, step)
+	local out = {}
+	if step < 0 then
+		for y = y0, ylo, -1 do
+			out[#out + 1] = y
+		end
+		for y = yhi, y0 + 1, -1 do
+			out[#out + 1] = y
+		end
+	else
+		for y = y0, yhi do
+			out[#out + 1] = y
+		end
+		for y = ylo, y0 - 1 do
+			out[#out + 1] = y
+		end
+	end
+	return out
+end
+
 function P.cave_floor(ctx, def, p1, p2, s, pr)
 	local cx, cz = floor((p1.x + p2.x) / 2), floor((p1.z + p2.z) / 2)
 	local h = def.size.y
@@ -314,7 +336,7 @@ function P.cave_floor(ctx, def, p1, p2, s, pr)
 		return false
 	end
 	local y0 = pr and pr:next(ylo, yhi) or yhi
-	for y = y0, max(ylo, y0 - 24), -1 do
+	for _, y in ipairs(column_order(ylo, yhi, y0, -1)) do
 		if solid_at(ctx, cx, y, cz) and air_at(ctx, cx, y + 1, cz) then
 			local corners = 0
 			for _, c in ipairs({ { p1.x, p1.z }, { p2.x, p1.z }, { p1.x, p2.z }, { p2.x, p2.z } }) do
@@ -344,7 +366,7 @@ function P.cave_ceiling(ctx, def, p1, p2, s, pr)
 		return false
 	end
 	local y0 = pr and pr:next(ylo, yhi) or ylo
-	for y = y0, min(yhi, y0 + 24) do
+	for _, y in ipairs(column_order(ylo, yhi, y0, 1)) do
 		if solid_at(ctx, cx, y, cz) and air_at(ctx, cx, y - 1, cz) then
 			local corners = 0
 			for _, c in ipairs({ { p1.x, p1.z }, { p2.x, p1.z }, { p1.x, p2.z }, { p2.x, p2.z } }) do

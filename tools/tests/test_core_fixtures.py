@@ -64,6 +64,12 @@ def fixtures() -> dict[str, bytes]:
         g.param1[x, 0, z] = schematic.PROB_ALWAYS | schematic.FORCE_PLACE
     out["arrow.mts"] = schematic.to_mts(g)
     meta["arrow"] = {"size": [3, 1, 2], "names": g.names, "counts": g.counts()}
+    # large: a 76x2x6 slab, wider than a mapchunk allows, so it must use the large-saga path
+    g = schematic.empty((76, 2, 6), ["air", "sagas:m_cobble"])
+    g.content[:, 0, :] = 1
+    g.param1[:, 0, :] = schematic.PROB_ALWAYS | schematic.FORCE_PLACE
+    out["large.mts"] = schematic.to_mts(g)
+    meta["large"] = {"size": [76, 2, 6], "names": g.names, "counts": g.counts()}
     out["expected.json"] = (json.dumps(meta, indent=2, sort_keys=True) + "\n").encode()
     return out
 
