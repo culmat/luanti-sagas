@@ -1,5 +1,5 @@
 name: Model found
-description: Suggest a free 3D model that would make a good saga
+description: Suggest a free 3D model that would make a good landmark
 title: "Model: "
 labels: ["model-found"]
 body:
@@ -34,9 +34,9 @@ body:
       label: Where is the licence shown?
       description: e.g. "licence box on the Sketchfab page", "LICENSE.txt in the zip"
   - type: dropdown
-    id: theme
+    id: saga
     attributes:
-      label: Theme
+      label: Saga
       options: [medieval, viking, asian, egyptian, antique, prehistoric, gothic, nautical, dwarven, elven, alpine, creatures, ruins, other]
   - type: textarea
     id: hints

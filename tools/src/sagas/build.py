@@ -1,4 +1,4 @@
-"""voxels.vx.gz + saga.toml -> schematic grid (the reproducible half of the pipeline)."""
+"""voxels.vx.gz + landmark.toml -> schematic grid (the reproducible half of the pipeline)."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ import numpy as np
 from . import ruin as ruinmod
 from . import schematic, vocab
 from .classify import Classified, budget_findings, classify
-from .config import Saga
+from .config import Landmark
 from .interior import interior_mask
 from .voxels import NORMAL_UP, VoxelModel, compute_normals
 
@@ -20,7 +20,7 @@ STONE_FAMILY = ("stone", "stone_dark", "cobble", "brick", "sandstone", "marble")
 
 @dataclass
 class BuildResult:
-    saga: Saga
+    landmark: Landmark
     model: VoxelModel  # after ruin/erosion
     classified: Classified
     interior: np.ndarray
@@ -46,20 +46,20 @@ def anchor_for(size: tuple[int, int, int], mode: str) -> tuple[int, int, int]:
     return x // 2, 0, z // 2
 
 
-def build(saga: Saga, model: VoxelModel) -> BuildResult:
+def build(landmark: Landmark, model: VoxelModel) -> BuildResult:
     model = model.cropped()
-    rng = ruinmod.rng_for(saga.ruin, saga.id)
-    r = saga.ruin
+    rng = ruinmod.rng_for(landmark.ruin, landmark.id)
+    r = landmark.ruin
     if r.enabled and r.erosion > 0:
-        occ = ruinmod.erode(model.occ, r.erosion, rng, saga.voxel.min_component)
+        occ = ruinmod.erode(model.occ, r.erosion, rng, landmark.voxel.min_component)
         model.occ = occ
         model.normal = compute_normals(occ)
         model = model.cropped()
 
-    c = classify(model, saga.materials)
+    c = classify(model, landmark.materials)
     cid = {n: i for i, n in enumerate(c.names)}
 
-    inner = interior_mask(model.occ, saga.voxel.interior_close) if saga.voxel.interior == "carve" else None
+    inner = interior_mask(model.occ, landmark.voxel.interior_close) if landmark.voxel.interior == "carve" else None
     if inner is None:
         inner = np.zeros(model.size, bool)
 
@@ -82,7 +82,7 @@ def build(saga: Saga, model: VoxelModel) -> BuildResult:
         mossy = top & (rng.random(model.size) < r.moss)
         c.cls[mossy] = cid["moss"]
 
-    findings = budget_findings(c, saga.materials)
+    findings = budget_findings(c, landmark.materials)
 
     used = sorted({c.names[int(i)] for i in np.unique(c.cls[c.cls >= 0])} | ({"debris"} if fill.any() else set()))
     names = ["air"] + ([COLOR_NODE] if (c.color >= 0).any() else []) + [CLASS_PREFIX + n for n in used]
@@ -112,12 +112,12 @@ def build(saga: Saga, model: VoxelModel) -> BuildResult:
     grid.param1[model.occ] = prob[model.occ] | force
 
     return BuildResult(
-        saga=saga,
+        landmark=landmark,
         model=model,
         classified=c,
         interior=inner,
         grid=grid,
-        anchor=anchor_for(model.size, saga.transform.anchor),
+        anchor=anchor_for(model.size, landmark.transform.anchor),
         findings=findings,
     )
 

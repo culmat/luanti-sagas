@@ -1,6 +1,6 @@
 schema = 1
 id = "temple_ruin_01"
-theme = "ruins"
+saga = "ruins"
 title = "Overgrown temple"
 tags = ["ruin", "3td"]
 lore = "Vines hold the columns together now."

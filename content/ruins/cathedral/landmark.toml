@@ -1,15 +1,15 @@
 schema = 1
-id = "pillar"
-theme = "ruins"
-title = "Fallen pillar"
+id = "cathedral"
+saga = "ruins"
+title = "Ruined cathedral"
 tags = ["ruin", "3td"]
-lore = ""
+lore = "Only the walls still stand. Nobody remembers whose name was sung here."
 
 [source]
 kind = "mesh"
 url = "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip"
 file = "Fantasy Ruins Pack.zip"
-member = "FantasyRuins_Ready/game/art/shapes/Ruins/RuinPillar_01/RuinPillar_01.dae"
+member = "FantasyRuins_Ready/game/art/shapes/Ruins/CathedralRuins_01/CathedralRuins_01.dae"
 sha256 = "12dad8708181bef31ac5e688fb61dc3232138206a6f004407044215f5fd64dfd"
 author = "Ron Kapaun / 3TD Studios"
 author_url = "https://opengameart.org/content/3td-fantasy-ruins-pack"
@@ -20,7 +20,7 @@ notes = "3TD Fantasy Ruins Pack on OpenGameArt. Attribution not required; credit
 
 [transform]
 up = "auto"
-target_size = 9
+target_size = 44
 anchor = "bottom-center"
 
 [voxel]
@@ -65,11 +65,13 @@ match = { material = "*brick*" }
 class = "stone"
 
 [ruin]
-enabled = false
+enabled = true
+debris_height = 2
+moss = 0.12
 
 [placement]
 site = ["plain", "slope"]
 exposure = "any"
-biomes = ["grassland", "savanna", "desert", "forest"]
-rarity = 120
-hints = "Common filler: a lone pillar."
+biomes = ["grassland", "forest", "taiga", "mountain"]
+rarity = 2500
+hints = "Big and rare: an open, fairly flat place in temperate land. Built from the local stone."

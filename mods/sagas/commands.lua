@@ -36,10 +36,10 @@ local function restore(snap)
 	vm:write_to_map(true)
 end
 
-local function list(theme)
+local function list(saga)
 	local lines = {}
-	for _, def in ipairs(sagas.registered_list) do
-		if not theme or def.theme == theme then
+	for _, def in ipairs(sagas.landmark_list) do
+		if not saga or def.saga == saga then
 			lines[#lines + 1] = ("%s  %dx%dx%d  %s  1/%d%s"):format(
 				def.id,
 				def.size.x,
@@ -52,7 +52,7 @@ local function list(theme)
 		end
 	end
 	table.sort(lines)
-	return #lines > 0 and table.concat(lines, "\n") or S("No sagas registered.")
+	return #lines > 0 and table.concat(lines, "\n") or S("No landmarks registered.")
 end
 
 local function parse_place(args)
@@ -76,13 +76,13 @@ local function cmd_place(name, args)
 	end
 	local id, rot, nofound = parse_place(args)
 	id = sagas.resolve_id(id)
-	local def = id and sagas.registered[id]
+	local def = id and sagas.registered_landmarks[id]
 	if not def then
-		return false, S("Unknown saga. Try /saga list")
+		return false, S("Unknown landmark. Try /saga list")
 	end
 	local pos = pointed_node(player)
 	if not pos then
-		return false, S("Point at a node (within 64 nodes) to place the saga there.")
+		return false, S("Point at a node (within 64 nodes) to place the landmark there.")
 	end
 	local r = rot == "random" or rot == nil and def.rotation == "random"
 	local rotn = r and ({ 0, 90, 180, 270 })[math.random(1, 4)] or tonumber(rot or def.rotation) or 0
@@ -121,11 +121,11 @@ local function cmd_here(name)
 	end
 	local recs = sagas.records.at(vector.round(player:get_pos()))
 	if #recs == 0 then
-		return true, S("No saga here.")
+		return true, S("No landmark here.")
 	end
 	local out = {}
 	for _, rec in ipairs(recs) do
-		local def = sagas.registered[rec.id]
+		local def = sagas.registered_landmarks[rec.id]
 		out[#out + 1] = ("%s (%s) at %s, site %s, rotation %d"):format(
 			rec.id,
 			def and def.title or "?",
@@ -137,12 +137,12 @@ local function cmd_here(name)
 	return true, table.concat(out, "\n")
 end
 
--- Mark where the saga's site expression holds around the player (particles for 20 s).
+-- Mark where the landmark's site expression holds around the player (particles for 20 s).
 local function cmd_sites(name, args)
 	local player = core.get_player_by_name(name)
 	local id, radius = args:match("^(%S+)%s*(%d*)")
 	id = sagas.resolve_id(id)
-	local def = id and sagas.registered[id]
+	local def = id and sagas.registered_landmarks[id]
 	if not player or not def then
 		return false, S("Usage: /saga sites <id> [radius]")
 	end
@@ -271,13 +271,13 @@ local function cmd_export(name, args)
 end
 
 local HELP = S(
-	"Usage: /saga list [theme] | place <id> [0|90|180|270] [--no-foundation] | undo | here | "
+	"Usage: /saga list [saga] | place <id> [0|90|180|270] [--no-foundation] | undo | here | "
 		.. "sites <id> [radius] | mark | export <name> | info <id>"
 )
 
 core.register_chatcommand("saga", {
-	params = "list [theme] | place <id> [rotation] | undo | here | sites <id> | mark | export <name> | info <id>",
-	description = S("Place and inspect sagas (landmarks)"),
+	params = "list [saga] | place <id> [rotation] | undo | here | sites <id> | mark | export <name> | info <id>",
+	description = S("Place and inspect landmarks"),
 	privs = { sagas = true },
 	func = function(name, param)
 		local sub, rest = param:match("^(%S*)%s*(.-)$")
@@ -296,9 +296,9 @@ core.register_chatcommand("saga", {
 		elseif sub == "export" then
 			return cmd_export(name, rest)
 		elseif sub == "info" then
-			local def = sagas.registered[sagas.resolve_id(rest) or ""]
+			local def = sagas.registered_landmarks[sagas.resolve_id(rest) or ""]
 			if not def then
-				return false, S("Unknown saga.")
+				return false, S("Unknown landmark.")
 			end
 			return true,
 				("%s: %s\n%dx%dx%d, site %s, exposure %s, biomes %s, 1 per %d chunks\n%s, %s, %s"):format(

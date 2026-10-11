@@ -17,7 +17,7 @@ class SagasError(Exception):
 
 
 class ConfigError(SagasError):
-    """A saga.toml is invalid."""
+    """A landmark.toml is invalid."""
 
     exit_code = EXIT_USAGE
 

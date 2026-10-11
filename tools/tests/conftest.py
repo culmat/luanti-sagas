@@ -69,12 +69,12 @@ def write_vox(path: Path, size: tuple[int, int, int], voxels: list[tuple[int, ..
     path.write_bytes(b"VOX " + struct.pack("<i", 150) + main)
 
 
-def saga_toml(repo: Repo, theme: str, sid: str, extra: str = "") -> Path:
-    d = repo.content / theme / sid
+def landmark_toml(repo: Repo, saga: str, sid: str, extra: str = "") -> Path:
+    d = repo.content / saga / sid
     d.mkdir(parents=True, exist_ok=True)
-    p = d / "saga.toml"
+    p = d / "landmark.toml"
     p.write_text(
-        f'id = "{sid}"\ntheme = "{theme}"\ntitle = "Test {sid}"\n'
+        f'id = "{sid}"\nsaga = "{saga}"\ntitle = "Test {sid}"\n'
         + extra
         + '\n[source]\nkind = "voxels"\nfile = "model.txt"\nurl = "https://example.org/model"\n'
         'author = "Tester"\nlicense = "CC0-1.0"\n'

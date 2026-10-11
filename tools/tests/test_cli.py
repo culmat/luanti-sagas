@@ -16,7 +16,7 @@ def test_convert_build_check_lint(repo, tmp_path):
         repo,
         "convert-txt",
         str(txt),
-        "--theme",
+        "--saga",
         "village",
         "--license",
         "CC0-1.0",
@@ -40,7 +40,7 @@ def test_convert_build_check_lint(repo, tmp_path):
 
 
 def test_new_and_lint_failure(repo):
-    r = run(repo, "new", "tower", "--theme", "medieval", "--license", "CC-BY-NC-4.0")
+    r = run(repo, "new", "tower", "--saga", "medieval", "--license", "CC-BY-NC-4.0")
     assert r.exit_code == 0, r.output
     r = run(repo, "lint", "medieval")
     assert r.exit_code == 3 and "L002" in r.output
@@ -48,4 +48,4 @@ def test_new_and_lint_failure(repo):
 
 def test_unknown_selector(repo):
     r = run(repo, "build", "nothing")
-    assert r.exit_code == 1 and "no theme or saga" in r.output
+    assert r.exit_code == 1 and "no saga or landmark" in r.output

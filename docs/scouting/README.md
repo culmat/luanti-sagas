@@ -1,7 +1,7 @@
 # Scouting reports
 
-Candidate models per theme, refreshed by `sagas scout` (weekly in CI as a pull request).
-Promote one with `sagas scout promote <id> --theme <theme> --id <saga_id>`, or reject it with
+Candidate models per saga, refreshed by `sagas scout` (weekly in CI as a pull request).
+Promote one with `sagas scout promote <id> --saga <saga> --id <landmark_id>`, or reject it with
 `sagas scout reject <id> --reason "..."` so it does not come back.
 
 - [alpine](alpine.md): 10 candidates

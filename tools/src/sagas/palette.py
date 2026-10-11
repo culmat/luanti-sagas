@@ -1,6 +1,6 @@
 """The fixed 256-colour palette of the `sagas:color` node.
 
-Index layout (stable; changing it changes every colour saga):
+Index layout (stable; changing it changes every colour landmark):
     0..23     neutral greys, L* 0..100 (index 0 = black)
     24..203   CIELCh lattice: 12 hues x 5 lightness x 3 chroma levels (25/55/90 % of the largest
               in-gamut chroma for that hue and lightness, capped at 70)

@@ -1,5 +1,5 @@
--- Site predicates: where does a saga fit? Pure functions over a context `ctx`:
---   ctx.minp, ctx.maxp        chunk being generated (the saga footprint must stay inside x/z)
+-- Site predicates: where does a landmark fit? Pure functions over a context `ctx`:
+--   ctx.minp, ctx.maxp        chunk being generated (the landmark footprint must stay inside x/z)
 --   ctx.water_level
 --   ctx.H(x, z)               surface y (top solid node) or nil if unknown / outside the chunk
 --   ctx.biome(x, z)           biome id or nil
@@ -62,7 +62,7 @@ local function kind(ctx, x, y, z)
 	return cid and kinds[cid]
 end
 
--- Footprint (x/z box) of a saga anchored at (x, z) with rotation rot.
+-- Footprint (x/z box) of a landmark anchored at (x, z) with rotation rot.
 function sites.footprint(def, x, z, rot)
 	local p1, p2 = util.bbox(def, { x = x, y = 0, z = z }, rot)
 	return p1, p2

@@ -1,4 +1,4 @@
--- When a player first walks into a placed saga that has lore, show it briefly (setting sagas_lore).
+-- When a player first walks into a placed landmark that has lore, show it briefly (setting sagas_lore).
 if not sagas.util.settings.lore then
 	return
 end
@@ -20,7 +20,7 @@ core.register_globalstep(function(dtime)
 	for _, player in ipairs(core.get_connected_players()) do
 		local recs = sagas.records.at(vector.round(player:get_pos()))
 		for _, rec in ipairs(recs) do
-			local def = sagas.registered[rec.id]
+			local def = sagas.registered_landmarks[rec.id]
 			if def and def.lore and def.lore ~= "" then
 				local seen = seen_set(player)
 				if not seen[rec.id] then

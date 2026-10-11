@@ -1,15 +1,15 @@
 schema = 1
-id = "temple_ruin_02"
-theme = "ruins"
-title = "Temple of the four arches"
+id = "foundation_ruin"
+saga = "ruins"
+title = "Old foundation"
 tags = ["ruin", "3td"]
-lore = "Four arches over a dry well. Pilgrims used to leave coins here."
+lore = ""
 
 [source]
 kind = "mesh"
 url = "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip"
 file = "Fantasy Ruins Pack.zip"
-member = "FantasyRuins_Ready/game/art/shapes/Ruins/TempleRuin_02/TempleRuin_02.DAE"
+member = "FantasyRuins_Ready/game/art/shapes/Ruins/FoundationRuin_01/foundationRuin_01.dae"
 sha256 = "12dad8708181bef31ac5e688fb61dc3232138206a6f004407044215f5fd64dfd"
 author = "Ron Kapaun / 3TD Studios"
 author_url = "https://opengameart.org/content/3td-fantasy-ruins-pack"
@@ -20,7 +20,7 @@ notes = "3TD Fantasy Ruins Pack on OpenGameArt. Attribution not required; credit
 
 [transform]
 up = "auto"
-target_size = 30
+target_size = 14
 anchor = "bottom-center"
 
 [voxel]
@@ -66,11 +66,11 @@ class = "stone"
 
 [ruin]
 enabled = true
-moss = 0.1
+moss = 0.15
 
 [placement]
-site = ["plain", "ridge", "peak"]
-exposure = "prominent"
-biomes = ["forest", "jungle", "grassland", "savanna", "mountain"]
-rarity = 700
-hints = "Prominent: on a hill or ridge with a view."
+site = ["plain", "slope"]
+exposure = "any"
+biomes = ["grassland", "forest", "taiga", "savanna"]
+rarity = 160
+hints = "Common filler: the corner of a long-gone house."

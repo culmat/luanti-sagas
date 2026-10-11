@@ -1,6 +1,6 @@
 schema = 1
 id = "mammoth_skeleton"
-theme = "ruins"
+saga = "ruins"
 title = "Mammoth skeleton"
 tags = ["relic", "prehistoric", "scan"]
 lore = "Bones of a woolly mammoth, bleached by a hundred winters."

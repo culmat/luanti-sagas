@@ -60,7 +60,7 @@ jobs:
   mods:
     name: mods
     # luacheck, ldg lint and headless runs of the sagas_pack modpack in every game x engine
-    uses: culmat/avanti-luanti/.github/workflows/mod-ci.yml@v1
+    uses: culmat/avanti-luanti/.github/workflows/mod-ci.yml@v2
     with:
       path: mods
       games: minetest,mineclonia,mineclone2

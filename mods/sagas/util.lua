@@ -60,7 +60,7 @@ function util.rotate_local(p, size, rot)
 	return { x = p.x, y = p.y, z = p.z }
 end
 
--- Min/max corners of saga def placed with its anchor at world position anchor.
+-- Min/max corners of landmark def placed with its anchor at world position anchor.
 function util.bbox(def, anchor, rot)
 	local rs = util.rotated_size(def.size, rot)
 	local ra = util.rotate_local(def.anchor, def.size, rot)

@@ -31,27 +31,27 @@ def test_extract_rejects_traversal(tmp_path):
 
 
 def test_record_sha256(tmp_path):
-    p = tmp_path / "tst" / "sss" / "saga.toml"
+    p = tmp_path / "tst" / "sss" / "landmark.toml"
     p.parent.mkdir(parents=True)
     p.write_text(
-        'id = "sss"\ntheme = "tst"\ntitle = "S"\n\n[source]\nurl = "u"\nsha256 = ""\n\n[placement]\nsite = "plain"\n'
+        'id = "sss"\nsaga = "tst"\ntitle = "S"\n\n[source]\nurl = "u"\nsha256 = ""\n\n[placement]\nsite = "plain"\n'
     )
-    saga = config.load(p)
-    fetch.record_sha256(saga, "ab" * 32)
+    landmark = config.load(p)
+    fetch.record_sha256(landmark, "ab" * 32)
     again = config.load(p)
     assert again.source.sha256 == "ab" * 32 and again.placement.site == ["plain"]
 
 
 def test_fetch_from_local_copy(tmp_path):
-    p = tmp_path / "tst" / "sss" / "saga.toml"
+    p = tmp_path / "tst" / "sss" / "landmark.toml"
     p.parent.mkdir(parents=True)
-    p.write_text('id = "sss"\ntheme = "tst"\ntitle = "S"\n[source]\nfile = "m.obj"\nmanual = true\n')
-    saga = config.load(p)
+    p.write_text('id = "sss"\nsaga = "tst"\ntitle = "S"\n[source]\nfile = "m.obj"\nmanual = true\n')
+    landmark = config.load(p)
     with pytest.raises(SagasError, match="manual"):
-        fetch.fetch(saga, tmp_path / "sources")
+        fetch.fetch(landmark, tmp_path / "sources")
     src = tmp_path / "m.obj"
     src.write_text("v 0 0 0\n")
-    dest, digest = fetch.fetch(saga, tmp_path / "sources", src=src)
+    dest, digest = fetch.fetch(landmark, tmp_path / "sources", src=src)
     assert dest == tmp_path / "sources" / "sss" / "m.obj" and len(digest) == 64
-    assert fetch.cache_path(saga, tmp_path / "sources") == dest
+    assert fetch.cache_path(landmark, tmp_path / "sources") == dest
     assert Path(dest).read_text() == "v 0 0 0\n"

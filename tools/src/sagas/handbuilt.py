@@ -1,6 +1,6 @@
-"""Hand-built sagas: a schematic exported in game (/saga export) -> VoxelModel with classes.
+"""Hand-built sagas: a schematic exported in game (/landmark export) -> VoxelModel with classes.
 
-Game nodes are mapped back to material classes so the saga adapts to every game: explicit table
+Game nodes are mapped back to material classes so the landmark adapts to every game: explicit table
 first, then name patterns (stairs and slabs use their base material), coloured blocks (wool,
 concrete, terracotta) keep their colour. Unknown nodes fall back to the default class and are
 reported; a materials rule can still override any node (match = { part = "mod:node" }).

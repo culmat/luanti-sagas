@@ -1,6 +1,6 @@
-# Placement: how a saga finds its place
+# Placement: how a landmark finds its place
 
-Creators describe where a saga belongs; the `sagas` mod decides while the map is generated.
+Creators describe where a landmark belongs; the `sagas` mod decides while the map is generated.
 
 ```toml
 [placement]
@@ -26,9 +26,9 @@ Combine primitives with `+` (all must hold); list alternatives in an array.
 | `river` | river water close by (mapgens with rivers) |
 | `lake` | still water above sea level close by |
 | `waterfall` | flowing water close by next to a drop |
-| `underwater` | the sea floor, deep enough for the saga |
+| `underwater` | the sea floor, deep enough for the landmark |
 | `cave_floor`, `cave_ceiling` | the floor or ceiling of an underground cave (set `y_max` below -10) |
-| `carve` | solid rock below the surface: the saga's interior is carved out (dwarven halls) |
+| `carve` | solid rock below the surface: the landmark's interior is carved out (dwarven halls) |
 | `floatland` | on mgv7 floatlands |
 | `any` | anywhere the surface is known |
 
@@ -43,30 +43,30 @@ and VoxeLibre, then name keywords, then the biome's heat and humidity).
 
 ## Rarity
 
-`rarity` is roughly how many generated mapchunks (80 x 80 x 80 nodes) each saga gets one attempt in:
+`rarity` is roughly how many generated mapchunks (80 x 80 x 80 nodes) each landmark gets one attempt in:
 60 is common, 400 rare, 5000 legendary. An attempt tries six positions and rotations; when the site
 does not fit, nothing is placed, so sites that are hard to satisfy are rarer in practice. The server
 setting `sagas_rarity_scale` multiplies all rarities.
 
-Sagas never overlap, and rare sagas (rarity 400+) keep a distance from copies of themselves
+Landmarks never overlap, and rare landmarks (rarity 400+) keep a distance from copies of themselves
 (`min_distance`, default three times their width).
 
 ## What the mod does on placement
 
 1. Clears trees and plants in the footprint and up to 16 nodes above.
 2. Places the schematic (walls replace terrain, outside air keeps it, rooms are carved).
-3. Builds a foundation of the site's rock under every column that starts on the saga's bottom layer,
+3. Builds a foundation of the site's rock under every column that starts on the landmark's bottom layer,
    down to the ground (at most `foundation` nodes).
 4. Replaces material placeholders with the nodes of the site (see [materials.md](materials.md)).
 5. Records the placement (for `/saga here`, lore messages and spacing) and calls
    `sagas.register_on_placed` callbacks, which other mods can use to add loot or mobs.
 
-## Large sagas
+## Large landmarks
 
-Sagas wider than 72 nodes or taller than 96 need `large = true`. The world is split into
-512 x 512 cells with at most one deterministic candidate per cell and saga. When the mapchunk with
-that column's surface is generated, the saga's area is emerged, the site is checked on the real
-terrain, and the saga is placed. Pending placements survive a server restart.
+Landmarks wider than 72 nodes or taller than 96 need `large = true`. The world is split into
+512 x 512 cells with at most one deterministic candidate per cell and landmark. When the mapchunk with
+that column's surface is generated, the landmark's area is emerged, the site is checked on the real
+terrain, and the landmark is placed. Pending placements survive a server restart.
 
 ## Games and mapgens
 

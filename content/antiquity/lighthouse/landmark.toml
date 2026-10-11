@@ -1,6 +1,6 @@
 schema = 1
 id = "lighthouse"
-theme = "antiquity"
+saga = "antiquity"
 title = "Lighthouse of the harbour"
 tags = ["0ad", "antiquity"]
 lore = "Its fire went out centuries ago, yet ships still steer by it."

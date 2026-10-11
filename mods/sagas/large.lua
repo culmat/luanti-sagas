@@ -1,7 +1,7 @@
--- Sagas larger than a mapchunk. The world is split into 512x512 cells; each cell gets at most one
--- deterministic candidate column per large saga. When the mapchunk containing that column's surface
--- is generated, the saga's box is emerged and, once complete, the site is checked on the real
--- terrain and the saga placed on the live map. States live in mod storage ("L:<id>:<cx>:<cz>" =
+-- Landmarks larger than a mapchunk. The world is split into 512x512 cells; each cell gets at most one
+-- deterministic candidate column per large landmark. When the mapchunk containing that column's surface
+-- is generated, the landmark's box is emerged and, once complete, the site is checked on the real
+-- terrain and the landmark placed on the live map. States live in mod storage ("L:<id>:<cx>:<cz>" =
 -- pending | placed | rejected) so a restart resumes pending placements.
 local util = sagas.util
 local large = { cell = 512 }
@@ -108,18 +108,18 @@ local function finish(def, k, rec)
 			for _, r in ipairs(sagas.records.in_box(p1, p2)) do
 				near[#near + 1] = r.id .. "@" .. core.pos_to_string(r.anchor)
 			end
-			reason = "too close to another saga (" .. table.concat(near, ", ") .. ")"
+			reason = "too close to another landmark (" .. table.concat(near, ", ") .. ")"
 		end
 	end
 	if reason then
 		storage:set_string(k, core.write_json({ state = "rejected", reason = reason }))
-		util.log("action", "large saga %s at %d,%d rejected: %s", def.id, rec.x, rec.z, reason)
+		util.log("action", "large landmark %s at %d,%d rejected: %s", def.id, rec.x, rec.z, reason)
 		return
 	end
 	local anchor = { x = rec.x, y = y, z = rec.z }
 	sagas.placement.place(def, anchor, { rot = rec.rot, site = site })
 	storage:set_string(k, core.write_json({ state = "placed", x = rec.x, y = y, z = rec.z, rot = rec.rot }))
-	util.debug("large saga %s placed at %s", def.id, core.pos_to_string(anchor))
+	util.debug("large landmark %s placed at %s", def.id, core.pos_to_string(anchor))
 end
 
 local function emerge(def, k, rec)
@@ -132,7 +132,7 @@ local function emerge(def, k, rec)
 		if remaining == 0 and not failed then
 			local ok, err = pcall(finish, def, k, rec)
 			if not ok then
-				util.log("error", "large saga %s failed: %s", def.id, tostring(err))
+				util.log("error", "large landmark %s failed: %s", def.id, tostring(err))
 				storage:set_string(k, core.write_json({ state = "rejected" }))
 			end
 		end
@@ -145,7 +145,7 @@ function large.on_generated(minp, maxp)
 	end
 	local heightmap
 	local csx = maxp.x - minp.x + 1
-	for _, def in ipairs(sagas.registered_list) do
+	for _, def in ipairs(sagas.landmark_list) do
 		if
 			def.large
 			and def.enabled
@@ -198,7 +198,7 @@ function large.resume(keys)
 	for _, k in ipairs(keys) do
 		local rec = core.parse_json(storage:get_string(k))
 		local id = k:match("^L:(.+):%-?%d+:%-?%d+$")
-		local def = id and sagas.registered[id]
+		local def = id and sagas.registered_landmarks[id]
 		if type(rec) == "table" and rec.state == "pending" and def then
 			emerge(def, k, rec)
 		end

@@ -1,7 +1,7 @@
 schema = 1
-id = "wall_segment"
-theme = "ruins"
-title = "Ruined wall"
+id = "ruin_arch"
+saga = "ruins"
+title = "Broken aqueduct arch"
 tags = ["ruin", "3td"]
 lore = ""
 
@@ -9,7 +9,7 @@ lore = ""
 kind = "mesh"
 url = "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip"
 file = "Fantasy Ruins Pack.zip"
-member = "FantasyRuins_Ready/game/art/shapes/Ruins/RuinWallSegment_01/RuinWallSegment_01.dae"
+member = "FantasyRuins_Ready/game/art/shapes/Ruins/RuinArch_01/RuinArch_01.dae"
 sha256 = "12dad8708181bef31ac5e688fb61dc3232138206a6f004407044215f5fd64dfd"
 author = "Ron Kapaun / 3TD Studios"
 author_url = "https://opengameart.org/content/3td-fantasy-ruins-pack"
@@ -20,7 +20,7 @@ notes = "3TD Fantasy Ruins Pack on OpenGameArt. Attribution not required; credit
 
 [transform]
 up = "auto"
-target_size = 20
+target_size = 26
 anchor = "bottom-center"
 
 [voxel]
@@ -66,11 +66,11 @@ class = "stone"
 
 [ruin]
 enabled = true
-moss = 0.15
+moss = 0.08
 
 [placement]
-site = ["plain", "slope"]
+site = ["plain", "slope", "river"]
 exposure = "any"
-biomes = ["grassland", "forest", "taiga", "mountain"]
-rarity = 140
-hints = "Common filler: a piece of wall in the countryside."
+biomes = ["grassland", "savanna", "desert", "forest"]
+rarity = 450
+hints = "Arches of an old aqueduct, good near rivers or on gentle slopes."

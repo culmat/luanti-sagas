@@ -1,4 +1,4 @@
-# Maintainers review everything; theme curators can be added per content/<theme>/ folder.
+# Maintainers review everything; saga curators can be added per content/<saga>/ folder.
 *            @culmat
 /content/    @culmat
 /tools/      @culmat

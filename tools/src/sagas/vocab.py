@@ -81,5 +81,5 @@ def rarity_value(value: int | str) -> int:
             raise ValueError(f"unknown rarity {value!r} (use a number or one of {', '.join(named)})")
         return int(named[value])
     if value < 1:
-        raise ValueError("rarity must be >= 1 (expected mapchunks per saga)")
+        raise ValueError("rarity must be >= 1 (expected mapchunks per landmark)")
     return int(value)

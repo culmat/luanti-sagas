@@ -10,7 +10,7 @@ import zipfile
 from pathlib import Path, PurePosixPath
 from urllib.parse import unquote, urlparse
 
-from .config import Saga
+from .config import Landmark
 from .errors import SagasError, SourceMissing
 
 MAX_MEMBERS = 20_000
@@ -26,21 +26,21 @@ def sha256_file(path: Path) -> str:
     return h.hexdigest()
 
 
-def target_name(saga: Saga) -> str:
-    if saga.source.file:
-        return saga.source.file
-    name = Path(unquote(urlparse(saga.source.url).path)).name
+def target_name(landmark: Landmark) -> str:
+    if landmark.source.file:
+        return landmark.source.file
+    name = Path(unquote(urlparse(landmark.source.url).path)).name
     if not name:
-        raise SagasError(f"{saga.qualified_id}: set source.file (cannot derive a file name from the URL)")
+        raise SagasError(f"{landmark.qualified_id}: set source.file (cannot derive a file name from the URL)")
     return name
 
 
-def cache_path(saga: Saga, sources: Path) -> Path:
-    """Where a source file lives: shared per URL (several sagas can use one archive), else per saga."""
-    if saga.source.url:
-        key = hashlib.sha1(saga.source.url.encode()).hexdigest()[:16]
-        return sources / "_url" / key / target_name(saga)
-    return sources / saga.id / target_name(saga)
+def cache_path(landmark: Landmark, sources: Path) -> Path:
+    """Where a source file lives: shared per URL (several landmarks can use one archive), else per landmark."""
+    if landmark.source.url:
+        key = hashlib.sha1(landmark.source.url.encode()).hexdigest()[:16]
+        return sources / "_url" / key / target_name(landmark)
+    return sources / landmark.id / target_name(landmark)
 
 
 def extract_dir(archive: Path, member: str) -> Path:
@@ -49,41 +49,45 @@ def extract_dir(archive: Path, member: str) -> Path:
     return archive.parent / "extracted" / key
 
 
-def fetch(saga: Saga, sources: Path, src: Path | None = None, force: bool = False) -> tuple[Path, str]:
-    dest = cache_path(saga, sources)
+def fetch(landmark: Landmark, sources: Path, src: Path | None = None, force: bool = False) -> tuple[Path, str]:
+    dest = cache_path(landmark, sources)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    local = saga.dir / target_name(saga)
+    local = landmark.dir / target_name(landmark)
     if local.exists() and src is None:
-        dest = local  # committed next to saga.toml (small voxel files)
+        dest = local  # committed next to landmark.toml (small voxel files)
     elif src is not None:
         if not src.is_file():
             raise SagasError(f"{src} is not a file")
         shutil.copyfile(src, dest)
     elif dest.exists() and not force:
         pass
-    elif saga.source.manual or not saga.source.url:
-        msg = saga.source.instructions or f"download {saga.source.url or 'the model'} by hand"
-        raise SourceMissing(f"needs a manual download: {msg}; then run: sagas fetch {saga.qualified_id} --from FILE")
+    elif landmark.source.manual or not landmark.source.url:
+        msg = landmark.source.instructions or f"download {landmark.source.url or 'the model'} by hand"
+        raise SourceMissing(
+            f"needs a manual download: {msg}; then run: sagas fetch {landmark.qualified_id} --from FILE"
+        )
     else:
-        _download(saga.source.url, dest)
+        _download(landmark.source.url, dest)
     digest = sha256_file(dest)
     # manual downloads (e.g. Sketchfab zips) differ per download, so their checksum is not verified
-    if saga.source.sha256 and not saga.source.manual and digest != saga.source.sha256:
-        raise SagasError(f"{dest.name}: sha256 {digest} does not match source.sha256 {saga.source.sha256}")
+    if landmark.source.sha256 and not landmark.source.manual and digest != landmark.source.sha256:
+        raise SagasError(f"{dest.name}: sha256 {digest} does not match source.sha256 {landmark.source.sha256}")
     return dest, digest
 
 
-def fetch_extras(saga: Saga, sources: Path, force: bool = False) -> list[tuple[str, Path, str]]:
+def fetch_extras(landmark: Landmark, sources: Path, force: bool = False) -> list[tuple[str, Path, str]]:
     """Download source.extra_files next to the main file; verify sha256 when given."""
     out = []
-    base = cache_path(saga, sources).parent
+    base = cache_path(landmark, sources).parent
     base.mkdir(parents=True, exist_ok=True)
-    for extra in saga.source.extra_files:
+    for extra in landmark.source.extra_files:
         dest = base.joinpath(*_safe(extra["file"]).parts)  # may contain folders, e.g. textures/x.jpg
         dest.parent.mkdir(parents=True, exist_ok=True)
         if not dest.exists() or force:
             if not extra.get("url"):
-                raise SourceMissing(f"{saga.qualified_id}: extra file {extra['file']} has no url; copy it to {dest}")
+                raise SourceMissing(
+                    f"{landmark.qualified_id}: extra file {extra['file']} has no url; copy it to {dest}"
+                )
             _download(extra["url"], dest)
         digest = sha256_file(dest)
         if extra.get("sha256") and digest != extra["sha256"]:
@@ -167,21 +171,21 @@ def extract_member(archive: Path, member: str, dest_dir: Path) -> Path:
     return out
 
 
-def record_extra_sha256(saga: Saga, file: str, digest: str) -> bool:
+def record_extra_sha256(landmark: Landmark, file: str, digest: str) -> bool:
     """Fill sha256 = "" of the extra_files entry for `file` (inline-table form written by sagas new)."""
-    text = saga.path.read_text(encoding="utf-8")
+    text = landmark.path.read_text(encoding="utf-8")
     pat = re.compile(r'(file\s*=\s*"' + re.escape(file) + r'"\s*,\s*sha256\s*=\s*)""')
     new, n = pat.subn(lambda m: m.group(1) + f'"{digest}"', text, count=1)
     if n:
-        saga.path.write_text(new, encoding="utf-8")
+        landmark.path.write_text(new, encoding="utf-8")
     return bool(n)
 
 
 _SOURCE = re.compile(r"(?ms)^\[source\]\s*$(.*?)(?=^\[|\Z)")
 
 
-def record_sha256(saga: Saga, digest: str) -> None:
-    text = saga.path.read_text(encoding="utf-8")
+def record_sha256(landmark: Landmark, digest: str) -> None:
+    text = landmark.path.read_text(encoding="utf-8")
     m = _SOURCE.search(text)
     if not m:
         text += f'\n[source]\nsha256 = "{digest}"\n'
@@ -192,4 +196,4 @@ def record_sha256(saga: Saga, digest: str) -> None:
         else:
             body = f'\nsha256 = "{digest}"' + body
         text = text[: m.start(1)] + body + text[m.end(1) :]
-    saga.path.write_text(text, encoding="utf-8")
+    landmark.path.write_text(text, encoding="utf-8")

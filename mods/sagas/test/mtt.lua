@@ -4,7 +4,7 @@ local FIX = sagas.modpath .. "/test/fixtures/"
 local expected = core.parse_json(util.read_file(FIX .. "expected.json"))
 
 -- Test sagas: disabled for mapgen except where a test enables them.
-assert(sagas.register({
+assert(sagas.register_landmark({
 	id = "sagas:test_box",
 	title = "Test box",
 	schematic = FIX .. "box.mts",
@@ -16,7 +16,7 @@ assert(sagas.register({
 	foundation = 6,
 	materials = { context = "fixed" },
 }))
-assert(sagas.register({
+assert(sagas.register_landmark({
 	id = "sagas:test_arrow",
 	schematic = FIX .. "arrow.mts",
 	size = { x = 3, y = 1, z = 2 },
@@ -27,7 +27,7 @@ assert(sagas.register({
 	clear_above = false,
 	materials = { context = "fixed" },
 }))
-assert(sagas.register({
+assert(sagas.register_landmark({
 	id = "sagas:test_large",
 	schematic = FIX .. "large.mts",
 	size = { x = 76, y = 2, z = 6 },
@@ -39,9 +39,9 @@ assert(sagas.register({
 	large = true,
 	materials = { context = "fixed" },
 }))
-sagas.registered["sagas:test_large"].enabled = false
-sagas.registered["sagas:test_box"].enabled = false
-sagas.registered["sagas:test_arrow"].enabled = false
+sagas.registered_landmarks["sagas:test_large"].enabled = false
+sagas.registered_landmarks["sagas:test_box"].enabled = false
+sagas.registered_landmarks["sagas:test_arrow"].enabled = false
 
 local function name_at(pos)
 	return core.get_node(pos).name
@@ -63,21 +63,21 @@ end
 mtt.register("sagas: invalid definitions are rejected, not fatal", function(callback)
 	util.reject_level = "action"
 	assert(
-		sagas.register({ id = "sagas:test_missing", schematic = FIX .. "nope.mts", size = vector.new(1, 1, 1) })
+		sagas.register_landmark({ id = "sagas:test_missing", schematic = FIX .. "nope.mts", size = vector.new(1, 1, 1) })
 			== false
 	)
-	assert(sagas.register({
+	assert(sagas.register_landmark({
 		id = "sagas:test_huge",
 		schematic = FIX .. "box.mts",
 		size = { x = 200, y = 5, z = 7 },
-	}) == false, "a saga larger than a mapchunk needs large = true")
-	assert(sagas.register({
+	}) == false, "a landmark larger than a mapchunk needs large = true")
+	assert(sagas.register_landmark({
 		id = "sagas:test_badsite",
 		schematic = FIX .. "box.mts",
 		size = { x = 7, y = 5, z = 7 },
 		site = { "volcano" },
 	}) == false)
-	assert(sagas.register({ id = "bad id" }) == false)
+	assert(sagas.register_landmark({ id = "bad id" }) == false)
 	util.reject_level = "error"
 	assert(sagas.resolve_id("test_box") == "sagas:test_box", "short names resolve")
 	callback()
@@ -161,7 +161,7 @@ mtt.register_with_area(
 	{ size = { x = 16, y = 4, z = 16 }, emerged = true },
 	function(pos1, pos2, callback)
 		fill(pos1, pos2, "air")
-		local def = sagas.registered["sagas:test_arrow"]
+		local def = sagas.registered_landmarks["sagas:test_arrow"]
 		local stone = sagas.materials.resolved.fixed.stone.name
 		local brick = sagas.materials.resolved.fixed.brick.name
 		for i, rot in ipairs({ 0, 90, 180, 270 }) do
@@ -189,7 +189,7 @@ mtt.register_with_area(
 		local ground = pos1.y + 8
 		fill(pos1, { x = pos2.x, y = ground, z = pos2.z }, rock)
 		local anchor = { x = pos1.x + 8, y = ground, z = pos1.z + 8 }
-		local def = sagas.registered["sagas:test_box"]
+		local def = sagas.registered_landmarks["sagas:test_box"]
 		local p1, p2 = util.bbox(def, anchor, 0)
 		-- a hole under one corner: the foundation has to fill it
 		fill({ x = p1.x, y = ground - 4, z = p1.z }, { x = p1.x + 1, y = ground, z = p1.z + 1 }, "air")
@@ -332,13 +332,13 @@ mtt.register("sagas: underground sites on synthetic rock", function(callback)
 	callback()
 end)
 
-mtt.register("sagas: large sagas are emerged and placed", {
+mtt.register("sagas: large landmarks are emerged and placed", {
 	timeout = 240,
 	func = function(callback)
 		if sagas.engine.mode ~= "sampler" or not util.settings.large_enable then
 			return callback()
 		end
-		local def = sagas.registered["sagas:test_large"]
+		local def = sagas.registered_landmarks["sagas:test_large"]
 		def.enabled = true
 		sagas.engine.configure({ only = { "sagas:test_large" } })
 		local cx, cz = 23, -17
@@ -369,7 +369,7 @@ mtt.register("sagas: large sagas are emerged and placed", {
 				)
 				core.log("action", ("[sagas] large test: placed at %d,%d,%d, %d cobble"):format(c.x, st.y, c.z, n))
 				if n < 76 * 6 * 0.9 then
-					return callback("large saga incomplete: " .. n .. " nodes")
+					return callback("large landmark incomplete: " .. n .. " nodes")
 				end
 				return callback()
 			end
@@ -381,11 +381,11 @@ mtt.register("sagas: large sagas are emerged and placed", {
 					c = sagas.large.candidate(def, cx, cz)
 					return start()
 				end
-				return callback("large saga rejected: " .. tostring(st.reason))
+				return callback("large landmark rejected: " .. tostring(st.reason))
 			end
 			waited = waited + 1
 			if waited > 200 then
-				return callback("large saga not placed (state " .. tostring(st and st.state) .. ")")
+				return callback("large landmark not placed (state " .. tostring(st and st.state) .. ")")
 			end
 			core.after(1, poll)
 		end
@@ -394,7 +394,7 @@ mtt.register("sagas: large sagas are emerged and placed", {
 })
 
 mtt.register("sagas: pack schematics match their registrations", function(callback)
-	for _, def in ipairs(sagas.registered_list) do
+	for _, def in ipairs(sagas.landmark_list) do
 		local s = core.read_schematic(def.schematic, { write_yslice_prob = "none" })
 		assert(s, def.id .. ": schematic unreadable")
 		assert(s.size.x == def.size.x and s.size.y == def.size.y and s.size.z == def.size.z, def.id .. ": size")
@@ -412,7 +412,7 @@ mtt.register("sagas: mapgen places sagas", {
 			core.log("action", "[sagas] mapgen test skipped (mode " .. sagas.engine.mode .. ")")
 			return callback()
 		end
-		local def = sagas.registered["sagas:test_box"]
+		local def = sagas.registered_landmarks["sagas:test_box"]
 		def.enabled = true
 		sagas.engine.configure({ rarity_scale = 1, only = { "sagas:test_box" } })
 		local before = sagas.engine.placed
@@ -425,9 +425,9 @@ mtt.register("sagas: mapgen places sagas", {
 					def.enabled = false
 					sagas.engine.configure({ only = false })
 					local placed = sagas.engine.placed - before
-					core.log("action", ("[sagas] mapgen test: %d saga(s) placed"):format(placed))
+					core.log("action", ("[sagas] mapgen test: %d landmark(s) placed"):format(placed))
 					if placed < 1 then
-						return callback("no saga was placed in 9+ mapchunks")
+						return callback("no landmark was placed in 9+ mapchunks")
 					end
 					local recs = sagas.records.in_box(vector.subtract(c, 200), vector.add(c, 200))
 					if #recs < 1 then

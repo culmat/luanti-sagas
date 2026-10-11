@@ -182,7 +182,7 @@ end
 
 local cache = {}
 
--- Remap table for saga def at a site: placeholder cid -> {cid=, param2=} or {mix = {...}}.
+-- Remap table for landmark def at a site: placeholder cid -> {cid=, param2=} or {mix = {...}}.
 function materials.remap(def, ctx)
 	ctx = ctx or {}
 	local context = def.materials and def.materials.context or "surroundings"
@@ -227,8 +227,8 @@ function materials.apply(data, param2s, area, p1, p2, map, pr)
 	return changed
 end
 
--- Node used under a saga where the ground falls away: the site's rock, or the fixed rock when the
--- saga uses fixed materials.
+-- Node used under a landmark where the ground falls away: the site's rock, or the fixed rock when the
+-- landmark uses fixed materials.
 function materials.foundation_target(def, ctx)
 	local context = def and def.materials and def.materials.context or "surroundings"
 	local fam = context ~= "fixed" and resolved.families[ctx and ctx.family or ""]

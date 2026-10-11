@@ -1,6 +1,6 @@
 """Make a structure look ruined: erosion, placement variation, debris fill, moss.
 
-Everything is seeded (ruin.seed, or crc32 of the saga id) so builds are reproducible.
+Everything is seeded (ruin.seed, or crc32 of the landmark id) so builds are reproducible.
 """
 
 from __future__ import annotations
@@ -16,8 +16,8 @@ _SIX = ndimage.generate_binary_structure(3, 1)
 _SIX[1, 1, 1] = False
 
 
-def rng_for(ruin: Ruin, saga_id: str) -> np.random.Generator:
-    return np.random.default_rng(ruin.seed or zlib.crc32(saga_id.encode()))
+def rng_for(ruin: Ruin, landmark_id: str) -> np.random.Generator:
+    return np.random.default_rng(ruin.seed or zlib.crc32(landmark_id.encode()))
 
 
 def exposed_faces(occ: np.ndarray) -> np.ndarray:

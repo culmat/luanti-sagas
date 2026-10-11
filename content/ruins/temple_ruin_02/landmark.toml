@@ -1,15 +1,15 @@
 schema = 1
-id = "cathedral"
-theme = "ruins"
-title = "Ruined cathedral"
+id = "temple_ruin_02"
+saga = "ruins"
+title = "Temple of the four arches"
 tags = ["ruin", "3td"]
-lore = "Only the walls still stand. Nobody remembers whose name was sung here."
+lore = "Four arches over a dry well. Pilgrims used to leave coins here."
 
 [source]
 kind = "mesh"
 url = "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip"
 file = "Fantasy Ruins Pack.zip"
-member = "FantasyRuins_Ready/game/art/shapes/Ruins/CathedralRuins_01/CathedralRuins_01.dae"
+member = "FantasyRuins_Ready/game/art/shapes/Ruins/TempleRuin_02/TempleRuin_02.DAE"
 sha256 = "12dad8708181bef31ac5e688fb61dc3232138206a6f004407044215f5fd64dfd"
 author = "Ron Kapaun / 3TD Studios"
 author_url = "https://opengameart.org/content/3td-fantasy-ruins-pack"
@@ -20,7 +20,7 @@ notes = "3TD Fantasy Ruins Pack on OpenGameArt. Attribution not required; credit
 
 [transform]
 up = "auto"
-target_size = 44
+target_size = 30
 anchor = "bottom-center"
 
 [voxel]
@@ -66,12 +66,11 @@ class = "stone"
 
 [ruin]
 enabled = true
-debris_height = 2
-moss = 0.12
+moss = 0.1
 
 [placement]
-site = ["plain", "slope"]
-exposure = "any"
-biomes = ["grassland", "forest", "taiga", "mountain"]
-rarity = 2500
-hints = "Big and rare: an open, fairly flat place in temperate land. Built from the local stone."
+site = ["plain", "ridge", "peak"]
+exposure = "prominent"
+biomes = ["forest", "jungle", "grassland", "savanna", "mountain"]
+rarity = 700
+hints = "Prominent: on a hill or ridge with a view."

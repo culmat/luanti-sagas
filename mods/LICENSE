@@ -26,7 +26,7 @@ SOFTWARE.
 == Content (content/*, mods/sagas_*/schematics) ==
 
 Every saga is an adaptation of a third-party 3D model and keeps that model's licence.
-content/<theme>/<id>/saga.toml names the source, author and licence; each pack's
+content/<saga>/<landmark>/landmark.toml names the source, author and licence; each pack's
 LICENSE and ATTRIBUTION.md list them. Only free licences are accepted (CC0, CC-BY,
 CC-BY-SA, MIT); see CONTRIBUTING.md.
 

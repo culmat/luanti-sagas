@@ -104,8 +104,8 @@ def test_commons_adapter_drops_unfree():
 
 
 def test_merge_refresh_and_reject(repo):
-    a = base.Candidate("polyhaven", "a", "A", "https://p/a", license="CC0-1.0", theme="medieval")
-    b = base.Candidate("polyhaven", "b", "B", "https://p/b", license="CC0-1.0", theme="medieval")
+    a = base.Candidate("polyhaven", "a", "A", "https://p/a", license="CC0-1.0", saga="medieval")
+    b = base.Candidate("polyhaven", "b", "B", "https://p/b", license="CC0-1.0", saga="medieval")
     merged = report.merge(repo, [a, b], today="2026-01-01")
     report.write(repo, merged)
     again = report.merge(repo, [a], today="2026-02-01", searched={("polyhaven", "medieval")})
@@ -124,7 +124,7 @@ def test_promote_polyhaven(repo):
         "https://polyhaven.com/a/rock_01",
         author="Rob",
         license="CC0-1.0",
-        theme="dwarven",
+        saga="dwarven",
         download={"polyhaven": "rock_01"},
         suggested_site=["carve"],
         suggested_biomes=["any"],
@@ -143,10 +143,10 @@ def test_promote_polyhaven(repo):
         }
     }
     path = promote.promote(repo, c, sid="rock_one", http=FakeHttp({"api.polyhaven.com/files/rock_01": files}))
-    saga = config.load(path)
-    assert saga.source.file == "rock_01_1k.gltf" and saga.source.license == "CC0-1.0"
-    assert [e["file"] for e in saga.source.extra_files] == ["rock_01.bin", "textures/rock_01_diff_1k.jpg"]
-    assert saga.placement.site == ["carve"]
+    landmark = config.load(path)
+    assert landmark.source.file == "rock_01_1k.gltf" and landmark.source.license == "CC0-1.0"
+    assert [e["file"] for e in landmark.source.extra_files] == ["rock_01.bin", "textures/rock_01_diff_1k.jpg"]
+    assert landmark.placement.site == ["carve"]
 
 
 def test_promote_refuses_flagged(repo):
@@ -160,6 +160,6 @@ def test_promote_refuses_flagged(repo):
         download={"manual": True, "file": "t.zip", "member": "scene.gltf"},
     )
     with pytest.raises(SagasError, match="NC/ND"):
-        promote.promote(repo, c, theme="misc", http=FakeHttp({}))
-    path = promote.promote(repo, c, theme="misc", sid="thing", force=True, http=FakeHttp({}))
+        promote.promote(repo, c, saga="misc", http=FakeHttp({}))
+    path = promote.promote(repo, c, saga="misc", sid="thing", force=True, http=FakeHttp({}))
     assert config.load(path).source.manual

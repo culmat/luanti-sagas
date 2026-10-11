@@ -1,4 +1,4 @@
-"""saga.toml: the source of truth for one saga (schema, defaults, validation)."""
+"""landmark.toml: the source of truth for one landmark (schema, defaults, validation)."""
 
 from __future__ import annotations
 
@@ -120,9 +120,9 @@ class Placement:
 
 
 @dataclass
-class Saga:
+class Landmark:
     id: str
-    theme: str
+    saga: str
     title: str
     path: Path
     tags: list[str] = field(default_factory=list)
@@ -141,7 +141,7 @@ class Saga:
 
     @property
     def pack(self) -> str:
-        return f"sagas_{self.theme}"
+        return f"sagas_{self.saga}"
 
     @property
     def qualified_id(self) -> str:
@@ -194,12 +194,12 @@ def _rules(raw: list, where: str) -> list[Rule]:
     return rules
 
 
-def parse(data: dict, path: Path) -> Saga:
+def parse(data: dict, path: Path) -> Landmark:
     where = str(path)
     top = {
         "schema",
         "id",
-        "theme",
+        "saga",
         "title",
         "tags",
         "source",
@@ -213,7 +213,7 @@ def parse(data: dict, path: Path) -> Saga:
     unknown = sorted(set(data) - top)
     if unknown:
         raise ConfigError(f"{where}: unknown key(s) {', '.join(unknown)}")
-    for key in ("id", "theme", "title"):
+    for key in ("id", "saga", "title"):
         if not isinstance(data.get(key), str) or not data[key]:
             raise ConfigError(f"{where}: '{key}' is required")
     mats = dict(data.get("materials", {}))
@@ -233,9 +233,9 @@ def parse(data: dict, path: Path) -> Saga:
     lore = data.get("lore", "")
     if isinstance(lore, dict):
         lore = lore.get("text", "")
-    saga = Saga(
+    landmark = Landmark(
         id=data["id"],
-        theme=data["theme"],
+        saga=data["saga"],
         title=data["title"],
         path=path,
         tags=list(data.get("tags", [])),
@@ -248,15 +248,15 @@ def parse(data: dict, path: Path) -> Saga:
         placement=_build(Placement, placement, f"{where}: placement"),
         lore=lore,
     )
-    saga.materials.rules = rules
-    validate(saga)
-    return saga
+    landmark.materials.rules = rules
+    validate(landmark)
+    return landmark
 
 
-def load(path: Path) -> Saga:
+def load(path: Path) -> Landmark:
     path = Path(path)
     if path.is_dir():
-        path = path / "saga.toml"
+        path = path / "landmark.toml"
     try:
         data = tomllib.loads(path.read_text(encoding="utf-8"))
     except FileNotFoundError as e:
@@ -266,13 +266,13 @@ def load(path: Path) -> Saga:
     return parse(data, path)
 
 
-def validate(s: Saga) -> None:
-    """Structural checks that make a saga unusable. Policy checks live in lint.py."""
+def validate(s: Landmark) -> None:
+    """Structural checks that make a landmark unusable. Policy checks live in lint.py."""
     w = str(s.path)
     if not ID_RE.match(s.id):
         raise ConfigError(f"{w}: id {s.id!r} must match {ID_RE.pattern}")
-    if not ID_RE.match(s.theme):
-        raise ConfigError(f"{w}: theme {s.theme!r} must match {ID_RE.pattern}")
+    if not ID_RE.match(s.saga):
+        raise ConfigError(f"{w}: saga {s.saga!r} must match {ID_RE.pattern}")
     if s.schema != 1:
         raise ConfigError(f"{w}: unsupported schema {s.schema}")
     src = s.source

@@ -35,17 +35,17 @@ def box_model() -> VoxelModel:
 def fixtures() -> dict[str, bytes]:
     out: dict[str, bytes] = {}
     meta: dict[str, dict] = {}
-    saga = config.parse(
+    landmark = config.parse(
         {
             "id": "box",
-            "theme": "sagastest",
+            "saga": "sagastest",
             "title": "Box",
             "ruin": {"enabled": True, "debris_height": 2},
             "materials": {"mode": "classes", "default": "stone"},
         },
-        Path("x/saga.toml"),
+        Path("x/landmark.toml"),
     )
-    res = build.build(saga, box_model())
+    res = build.build(landmark, box_model())
     out["box.mts"] = schematic.to_mts(res.grid)
     meta["box"] = {
         "size": list(res.size),
@@ -64,7 +64,7 @@ def fixtures() -> dict[str, bytes]:
         g.param1[x, 0, z] = schematic.PROB_ALWAYS | schematic.FORCE_PLACE
     out["arrow.mts"] = schematic.to_mts(g)
     meta["arrow"] = {"size": [3, 1, 2], "names": g.names, "counts": g.counts()}
-    # large: a 76x2x6 slab, wider than a mapchunk allows, so it must use the large-saga path
+    # large: a 76x2x6 slab, wider than a mapchunk allows, so it must use the large-landmark path
     g = schematic.empty((76, 2, 6), ["air", "sagas:m_cobble"])
     g.content[:, 0, :] = 1
     g.param1[:, 0, :] = schematic.PROB_ALWAYS | schematic.FORCE_PLACE

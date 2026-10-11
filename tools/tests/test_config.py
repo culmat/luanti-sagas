@@ -7,9 +7,9 @@ from sagas.errors import ConfigError
 
 
 def parse(**data):
-    base = {"id": "tower", "theme": "medieval", "title": "Tower"}
+    base = {"id": "tower", "saga": "medieval", "title": "Tower"}
     base.update(data)
-    return config.parse(base, Path("content/medieval/tower/saga.toml"))
+    return config.parse(base, Path("content/medieval/tower/landmark.toml"))
 
 
 def test_defaults():
@@ -53,7 +53,7 @@ def test_invalid(data, msg):
 
 
 def test_load_file(tmp_path):
-    p = tmp_path / "medieval" / "tower" / "saga.toml"
+    p = tmp_path / "medieval" / "tower" / "landmark.toml"
     p.parent.mkdir(parents=True)
-    p.write_text('id = "tower"\ntheme = "medieval"\ntitle = "T"\n[placement]\nsite = "peak"\n')
+    p.write_text('id = "tower"\nsaga = "medieval"\ntitle = "T"\n[placement]\nsite = "peak"\n')
     assert config.load(p.parent).placement.site == ["peak"]

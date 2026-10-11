@@ -1,6 +1,6 @@
 schema = 1
 id = "ptolemaic_temple"
-theme = "antiquity"
+saga = "antiquity"
 title = "Temple by the river"
 tags = ["0ad", "antiquity"]
 lore = "Greek columns, Egyptian gods."

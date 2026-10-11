@@ -1,8 +1,8 @@
-"""Theme -> search terms, and keyword -> placement suggestions. Edit freely."""
+"""Saga -> search terms, and keyword -> placement suggestions. Edit freely."""
 
 from __future__ import annotations
 
-THEMES: dict[str, list[str]] = {
+SAGAS: dict[str, list[str]] = {
     "medieval": ["castle", "castle ruin", "watchtower", "fortress", "keep", "gatehouse", "stone bridge"],
     "viking": ["longship", "viking ship", "stave church", "longhouse", "rune stone"],
     "asian": ["pagoda", "torii", "shrine", "chinese temple", "japanese castle", "stone lantern"],
@@ -41,11 +41,11 @@ SITE_HINTS: list[tuple[str, list[str], list[str]]] = [
 ]
 
 
-def suggest(title: str, theme: str) -> tuple[list[str], list[str]]:
+def suggest(title: str, saga: str) -> tuple[list[str], list[str]]:
     t = title.lower()
     for kw, site, biomes in SITE_HINTS:
         if kw in t:
             return site, biomes
-    if theme == "egyptian":
+    if saga == "egyptian":
         return ["plain"], ["desert", "savanna"]
     return ["plain"], ["any"]

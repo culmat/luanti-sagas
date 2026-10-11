@@ -1,4 +1,4 @@
-"""Turn a scouting candidate into content/<theme>/<id>/saga.toml."""
+"""Turn a scouting candidate into content/<saga>/<id>/landmark.toml."""
 
 from __future__ import annotations
 
@@ -78,7 +78,7 @@ def _zeroad(http: Http, actor: str, source: dict, voxel: dict) -> None:
 def promote(
     repo: Repo,
     c: Candidate,
-    theme: str | None = None,
+    saga: str | None = None,
     sid: str | None = None,
     force: bool = False,
     http: Http | None = None,
@@ -89,13 +89,13 @@ def promote(
         raise SagasError(f"{c.id}: the description mentions NC/ND terms; check the page, then use --force")
     if "trademark" in c.flags and not force:
         raise SagasError(f"{c.id}: possibly a protected character or brand; check, then use --force")
-    theme = theme or c.theme or "misc"
+    saga = saga or c.saga or "misc"
     sid = sid or slug(c.title)
     if not re.match(r"^[a-z][a-z0-9_]{2,31}$", sid):
-        sid = ("saga_" + sid)[:32]
-    d = repo.content / theme / sid
-    if (d / "saga.toml").exists():
-        raise SagasError(f"{d / 'saga.toml'} already exists")
+        sid = ("landmark_" + sid)[:32]
+    d = repo.content / saga / sid
+    if (d / "landmark.toml").exists():
+        raise SagasError(f"{d / 'landmark.toml'} already exists")
     http = http or Http()
     source: dict = {
         "kind": "mesh",
@@ -137,7 +137,7 @@ def promote(
             source["author_url"] = source["author_url"] or c.url
     extra = source.pop("extra_files", None)
     text = (
-        f'schema = 1\nid = "{sid}"\ntheme = "{theme}"\ntitle = {_toml_value(c.title)}\ntags = []\nlore = ""\n\n'
+        f'schema = 1\nid = "{sid}"\nsaga = "{saga}"\ntitle = {_toml_value(c.title)}\ntags = []\nlore = ""\n\n'
         + _table("source", source)
         + (f"extra_files = {_toml_value(extra)}\n" if extra else "")
         + "\n"
@@ -159,5 +159,5 @@ def promote(
         )
     )
     d.mkdir(parents=True, exist_ok=True)
-    (d / "saga.toml").write_text(text)
-    return d / "saga.toml"
+    (d / "landmark.toml").write_text(text)
+    return d / "landmark.toml"

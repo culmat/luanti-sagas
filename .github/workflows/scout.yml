@@ -29,5 +29,5 @@ jobs:
           commit-message: "Scouting report"
           body: |
             Candidates found by `sagas scout`. Licences are as reported by the sources: check the model
-            page before promoting (`sagas scout promote <id> --theme <theme> --id <saga_id>`).
+            page before promoting (`sagas scout promote <id> --saga <saga> --id <landmark_id>`).
           add-paths: docs/scouting/

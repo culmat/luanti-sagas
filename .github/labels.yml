@@ -1,14 +1,14 @@
 # Labels used by the issue forms and triage (create with: gh label create NAME --color HEX --description TEXT)
-- { name: "model-found", color: "0e8a16", description: "A free model suggested as a saga" }
-- { name: "model wanted", color: "fbca04", description: "A saga idea looking for a model" }
-- { name: "good first saga", color: "7057ff", description: "A good first contribution" }
+- { name: "model-found", color: "0e8a16", description: "A free model suggested as a landmark" }
+- { name: "model wanted", color: "fbca04", description: "A landmark idea looking for a model" }
+- { name: "good first landmark", color: "7057ff", description: "A good first contribution" }
 - { name: "licence-review", color: "d93f0b", description: "Licence needs a closer look" }
 - { name: "needs-preview", color: "c5def5", description: "Preview missing or wrong" }
 - { name: "lane:link", color: "bfdadc", description: "Model link contribution" }
 - { name: "lane:handbuilt", color: "bfdadc", description: "Built in game" }
 - { name: "lane:curation", color: "bfdadc", description: "Materials, placement, lore" }
-- { name: "theme:medieval", color: "d4c5f9", description: "Medieval" }
-- { name: "theme:asian", color: "d4c5f9", description: "Asian" }
-- { name: "theme:egyptian", color: "d4c5f9", description: "Egyptian" }
-- { name: "theme:viking", color: "d4c5f9", description: "Viking" }
+- { name: "saga:medieval", color: "d4c5f9", description: "Medieval" }
+- { name: "saga:asian", color: "d4c5f9", description: "Asian" }
+- { name: "saga:egyptian", color: "d4c5f9", description: "Egyptian" }
+- { name: "saga:viking", color: "d4c5f9", description: "Viking" }
 - { name: "bug", color: "b60205", description: "Something is broken" }

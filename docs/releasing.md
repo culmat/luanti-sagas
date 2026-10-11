@@ -25,7 +25,7 @@ release and then waits. After you approve the `contentdb` deployment, it commits
 ContentDB sees exactly the package (dev files are left out by its `.gitattributes`), with the commit linked.
 
 Release the core mod (`sagas-v…`) before or together with packs that need its newer features; packs
-declare `depends = sagas`.
+declare `depends = landmarks`.
 
 ## Why not a ContentDB webhook
 

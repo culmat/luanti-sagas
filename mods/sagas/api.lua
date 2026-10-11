@@ -1,11 +1,11 @@
--- Public API. Content packs call sagas.register() from their generated registry.lua.
+-- Public API. Content packs call sagas.register_landmark() from their generated registry.lua.
 local util = sagas.util
 local vocab = sagas.vocab
 
 util.reject_level = "error" -- tests lower this while registering invalid definitions on purpose
 
 local function fail(id, msg, ...)
-	util.log(util.reject_level, "saga %s not registered: " .. msg, tostring(id), ...)
+	util.log(util.reject_level, "landmark %s not registered: " .. msg, tostring(id), ...)
 	return false
 end
 
@@ -13,14 +13,14 @@ local function vec(v)
 	return type(v) == "table" and type(v.x) == "number" and type(v.y) == "number" and type(v.z) == "number"
 end
 
--- Register a saga. Returns true on success; invalid definitions are logged and skipped so that one
--- broken saga never stops a server from starting.
-function sagas.register(def)
+-- Register a landmark. Returns true on success; invalid definitions are logged and skipped so that one
+-- broken landmark never stops a server from starting.
+function sagas.register_landmark(def)
 	local id = def.id
 	if type(id) ~= "string" or not id:match("^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$") then
 		return fail(id, "id must look like modname:name (e.g. sagas_ruins:cathedral)")
 	end
-	if sagas.registered[id] then
+	if sagas.registered_landmarks[id] then
 		return fail(id, "duplicate id")
 	end
 	if type(def.schematic) ~= "string" or not util.read_file(def.schematic) then
@@ -89,11 +89,11 @@ function sagas.register(def)
 	if def.min_distance == nil or def.min_distance <= 0 then
 		def.min_distance = def.rarity >= 400 and 3 * math.max(def.size.x, def.size.z) or 0
 	end
-	def.theme = def.theme or id:match("^([^:]+)"):gsub("^sagas_", "")
+	def.saga = def.saga or id:match("^([^:]+)"):gsub("^sagas_", "")
 	def.salt = util.hash32(id) % 16777216
-	def.enabled = not (util.settings.disabled[id] or util.settings.disabled[def.theme])
-	sagas.registered[id] = def
-	sagas.registered_list[#sagas.registered_list + 1] = def
+	def.enabled = not (util.settings.disabled[id] or util.settings.disabled[def.saga])
+	sagas.registered_landmarks[id] = def
+	sagas.landmark_list[#sagas.landmark_list + 1] = def
 	return true
 end
 
@@ -104,20 +104,20 @@ function sagas.register_on_placed(fn)
 	sagas.registered_on_placed[#sagas.registered_on_placed + 1] = fn
 end
 
--- Full id for a name typed by a player: the full id, theme:name, or a unique short name.
+-- Full id for a name typed by a player: the full id, saga:name, or a unique short name.
 function sagas.resolve_id(name)
 	if not name or name == "" then
 		return nil
 	end
-	if sagas.registered[name] then
+	if sagas.registered_landmarks[name] then
 		return name
 	end
-	local theme, short = name:match("^([^:]+):(.+)$")
-	if theme and sagas.registered["sagas_" .. theme .. ":" .. short] then
-		return "sagas_" .. theme .. ":" .. short
+	local saga, short = name:match("^([^:]+):(.+)$")
+	if saga and sagas.registered_landmarks["sagas_" .. saga .. ":" .. short] then
+		return "sagas_" .. saga .. ":" .. short
 	end
 	local found
-	for id in pairs(sagas.registered) do
+	for id in pairs(sagas.registered_landmarks) do
 		if id:match(":(.+)$") == name then
 			if found then
 				return nil -- ambiguous
@@ -128,13 +128,13 @@ function sagas.resolve_id(name)
 	return found
 end
 
--- Place saga `id` with its anchor at `pos`. opts: rot (0/90/180/270), foundation (depth),
+-- Place landmark `id` with its anchor at `pos`. opts: rot (0/90/180/270), foundation (depth),
 -- clear_above (bool). Returns p1, p2 or nil, error.
 function sagas.place(id, pos, opts)
 	id = sagas.resolve_id(id) or id
-	local def = sagas.registered[id]
+	local def = sagas.registered_landmarks[id]
 	if not def then
-		return nil, "unknown saga " .. tostring(id)
+		return nil, "unknown landmark " .. tostring(id)
 	end
 	opts = opts or {}
 	local rot = opts.rot
@@ -147,14 +147,14 @@ function sagas.place(id, pos, opts)
 end
 
 core.register_on_mods_loaded(function()
-	for _, def in ipairs(sagas.registered_list) do
+	for _, def in ipairs(sagas.landmark_list) do
 		def.biome_filter = sagas.biomes.filter(def.biomes)
 	end
-	table.sort(sagas.registered_list, function(a, b)
+	table.sort(sagas.landmark_list, function(a, b)
 		if a.rarity ~= b.rarity then
 			return a.rarity > b.rarity
 		end
 		return a.id < b.id
 	end)
-	util.log("action", "%d saga(s) registered (%s materials)", #sagas.registered_list, sagas.materials.game)
+	util.log("action", "%d landmark(s) registered (%s materials)", #sagas.landmark_list, sagas.materials.game)
 end)

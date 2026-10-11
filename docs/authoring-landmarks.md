@@ -1,13 +1,13 @@
----
-name: saga-author
-description: Create or improve a saga in luanti-sagas - find a free model, write saga.toml from the contributor's own words (where it belongs, what it is made of), fetch, voxelize, build, read the preview, tune material rules and pass sagas lint. Use for "add this model as a saga", "make a saga from ...", "where should this castle appear", "the preview looks wrong", or any edit of content/<theme>/<id>/saga.toml.
----
+# Authoring a landmark (guide for people and coding agents)
 
-# Authoring a saga
-
-A saga is a free 3D model turned into a Luanti schematic. Creators describe **where** it belongs and
+A landmark is a free 3D model turned into a Luanti schematic. Creators describe **where** it belongs and
 **what** it is made of; the `sagas` mod places it and picks the game's materials. Reference:
-`docs/pipeline.md` (all saga.toml fields), `docs/placement.md`, `docs/materials.md`, `docs/sources.md`.
+`docs/pipeline.md` (all landmark.toml fields), `docs/placement.md`, `docs/materials.md`, `docs/sources.md`.
+
+Every landmark belongs to a **saga**, a theme such as *ruins*, *antiquity* or *vikings*
+(see [glossary.md](glossary.md)). Pick the saga with the creator; a new saga is a folder
+`content/<saga>/` with a `saga.toml` holding its `title` and `description`, and becomes the pack
+`sagas_<saga>`.
 
 Run the CLI as `uv run --project tools sagas ...` from the repository root.
 
@@ -15,11 +15,11 @@ Run the CLI as `uv run --project tools sagas ...` from the repository root.
 
 - Accept only CC0, CC-BY, CC-BY-SA or MIT. Never NC or ND, never film or game characters, never
   marketplace or 3D Warehouse models. If the licence is unclear, stop and tell the user why.
-- Candidates: `docs/scouting/<theme>.md`; `sagas scout promote <id> --theme <theme> --id <id>` writes the
-  saga.toml. Otherwise `sagas new <id> --theme <theme> --url ... --license ... --author ...`.
+- Candidates: `docs/scouting/<saga>.md`; `sagas scout promote <id> --saga <saga> --id <id>` writes the
+  landmark.toml. Otherwise `sagas new <id> --saga <saga> --url ... --license ... --author ...`.
 - Sketchfab needs a login: `manual = true`, `member = "scene.gltf"`, the user downloads the glTF zip and
-  runs `sagas fetch <theme>/<id> --from <zip>`.
-- CC-BY-SA sources belong in a share-alike theme (like `antiquity`); `sagas lint` warns when a theme mixes.
+  runs `sagas fetch <saga>/<id> --from <zip>`.
+- CC-BY-SA sources belong in a share-alike saga (like `antiquity`); `sagas lint` warns when a saga mixes.
 
 ## 2. From the creator's words to [placement]
 
@@ -60,10 +60,10 @@ Always copy the creator's sentence into `hints`.
 ## 4. Build and look
 
 ```sh
-sagas fetch <theme>/<id>
-sagas inspect <theme>/<id>          # parts, materials, textures, extents, up axis
-sagas voxelize <theme>/<id> --force
-sagas build <theme>                 # writes mods/sagas_<theme>/ and content/<theme>/<id>/preview.png
+sagas fetch <saga>/<id>
+sagas inspect <saga>/<id>          # parts, materials, textures, extents, up axis
+sagas voxelize <saga>/<id> --force
+sagas build <saga>                 # writes mods/sagas_<saga>/ and content/<saga>/<id>/preview.png
 ```
 
 Read `preview.png` (top, front, side, isometric) and fix:
@@ -79,7 +79,7 @@ Read `preview.png` (top, front, side, isometric) and fix:
 
 ## 5. Check and hand over
 
-- `sagas lint <theme>/<id>` must pass; `sagas build --check` must report packs up to date.
-- Commit `saga.toml`, `voxels.vx.gz`, `preview.png` and `mods/sagas_<theme>/`. Never commit `sources/`.
+- `sagas lint <saga>/<id>` must pass; `sagas build --check` must report packs up to date.
+- Commit `landmark.toml`, `voxels.vx.gz`, `preview.png` and `mods/sagas_<saga>/`. Never commit `sources/`.
 - In game (optional): `avanti test mods`, or a creative world with `/saga place <id>` and `/saga sites <id>`.
 - Never publish (ContentDB, forums, upstream issues) without the maintainer's explicit approval.

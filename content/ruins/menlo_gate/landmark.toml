@@ -1,6 +1,6 @@
 schema = 1
 id = "menlo_gate"
-theme = "ruins"
+saga = "ruins"
 title = "Gates of Menlo Castle"
 tags = ["ruin", "medieval", "scan", "ireland"]
 lore = "The gates of a castle that burned long ago. The ivy keeps them standing."

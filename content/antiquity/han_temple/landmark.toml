@@ -1,6 +1,6 @@
 schema = 1
 id = "han_temple"
-theme = "antiquity"
+saga = "antiquity"
 title = "Temple of the Han"
 tags = ["0ad", "antiquity"]
 lore = "Incense still lingers in the halls."

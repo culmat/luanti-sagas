@@ -1,15 +1,15 @@
 schema = 1
-id = "speaking_stones"
-theme = "ruins"
-title = "Speaking stones"
+id = "wall_segment"
+saga = "ruins"
+title = "Ruined wall"
 tags = ["ruin", "3td"]
-lore = "On still nights the stones answer, if you ask in the old tongue."
+lore = ""
 
 [source]
 kind = "mesh"
 url = "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip"
 file = "Fantasy Ruins Pack.zip"
-member = "FantasyRuins_Ready/game/art/shapes/Ruins/SpeakingStones_01/SpeakingStones_01.dae"
+member = "FantasyRuins_Ready/game/art/shapes/Ruins/RuinWallSegment_01/RuinWallSegment_01.dae"
 sha256 = "12dad8708181bef31ac5e688fb61dc3232138206a6f004407044215f5fd64dfd"
 author = "Ron Kapaun / 3TD Studios"
 author_url = "https://opengameart.org/content/3td-fantasy-ruins-pack"
@@ -20,7 +20,7 @@ notes = "3TD Fantasy Ruins Pack on OpenGameArt. Attribution not required; credit
 
 [transform]
 up = "auto"
-target_size = 22
+target_size = 20
 anchor = "bottom-center"
 
 [voxel]
@@ -65,11 +65,12 @@ match = { material = "*brick*" }
 class = "stone"
 
 [ruin]
-enabled = false
+enabled = true
+moss = 0.15
 
 [placement]
-site = ["plain", "ridge"]
-exposure = "prominent"
-biomes = ["grassland", "tundra", "taiga", "snow", "mountain"]
-rarity = 600
-hints = "A stone circle on open, windswept land."
+site = ["plain", "slope"]
+exposure = "any"
+biomes = ["grassland", "forest", "taiga", "mountain"]
+rarity = 140
+hints = "Common filler: a piece of wall in the countryside."

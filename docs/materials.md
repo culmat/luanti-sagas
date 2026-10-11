@@ -2,7 +2,7 @@
 
 Schematics never contain game nodes. Every voxel is either a **material class** placeholder
 (`sagas:m_<class>`) or the **palette colour** node (`sagas:color`, param2 = one of 256 colours).
-When a saga is placed, the mod swaps each placeholder for a node of the running game.
+When a landmark is placed, the mod swaps each placeholder for a node of the running game.
 
 ## Classes
 
@@ -24,7 +24,7 @@ When a saga is placed, the mod swaps each placeholder for a node of the running 
 | thatch | thatch | straw | hay bale |
 | metal | iron work (budget 64) | steel block | iron block |
 | gold | gold (budget 0 unless granted, max 64) | gold block | gold block |
-| emerald | gems (budget 0 unless granted, max 64) | jade-coloured saga stone | emerald block |
+| emerald | gems (budget 0 unless granted, max 64) | jade-coloured landmark stone | emerald block |
 | glass, water, ice, snow, dirt, grass, leaves, bone, lamp | as named | game nodes; water is still water unless `sagas_real_water` | game nodes |
 | debris | rubble mix | gravel, cobble, mossy cobble, dirt (varied per node) | same |
 
@@ -44,16 +44,16 @@ an "unknown node". Games other than these three get a generic mapping (mapgen al
 
 ## Value budget
 
-Players can mine sagas, so precious materials are limited per saga: `gold` and `emerald` default to 0
+Players can mine landmarks, so precious materials are limited per landmark: `gold` and `emerald` default to 0
 and may be raised to at most 64 nodes (`materials.value_budget`), `metal` and `lamp` default to 64
-and 32. `sagas lint` fails when a saga exceeds its budget. Diamond and mese never appear.
+and 32. `sagas lint` fails when a landmark exceeds its budget. Diamond and mese never appear.
 
 ## The palette
 
 256 colours, generated in CIE Lab: 24 greys, a lattice of 12 hues x 5 lightness x 3 chroma levels,
 and 52 material anchors (sandstone, granite, oak, thatch, moss, bone, water, ice, skin tones, metals).
 Colours are matched in Lab space without dithering. The palette is fixed: changing it would recolour
-every palette saga, so `sagas palette` only checks it.
+every palette landmark, so `sagas palette` only checks it.
 
 Use the palette for fantasy models whose colours matter (statues, dragons), classes for anything a
 player would expect to be made of real materials (castles, houses, ships).

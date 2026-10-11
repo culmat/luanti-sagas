@@ -1,13 +1,13 @@
 -- Sagas: landmarks from real 3D models, placed by terrain and biome hints.
--- The mod owns material mapping and placement; content packs (sagas_<theme>) only register schematics.
+-- The mod owns material mapping and placement; content packs (sagas_<saga>) only register landmark schematics.
 local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)
 
 sagas = {
 	modpath = modpath,
 	S = core.get_translator(modname),
-	registered = {}, -- id -> definition
-	registered_list = {}, -- definitions in registration order
+	registered_landmarks = {}, -- id -> definition
+	landmark_list = {}, -- definitions in registration order
 	registered_on_placed = {},
 }
 

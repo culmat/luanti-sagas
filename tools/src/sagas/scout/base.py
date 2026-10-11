@@ -63,7 +63,7 @@ class Candidate:
     formats: list[str] = field(default_factory=list)
     download_size: int | None = None
     thumbnail: str = ""
-    theme: str = ""
+    saga: str = ""
     query: str = ""
     suggested_site: list[str] = field(default_factory=list)
     suggested_biomes: list[str] = field(default_factory=list)

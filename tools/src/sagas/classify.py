@@ -90,7 +90,7 @@ def classify(model: VoxelModel, mats: Materials) -> Classified:
         else:
             cls[mask] = cid[rule.cls]
         assigned |= mask
-    # hand-built sagas carry classes in their part materials ("class:stone", "color")
+    # hand-built landmarks carry classes in their part materials ("class:stone", "color")
     if any(m.startswith("class:") or m == "color" for _, m in model.parts):
         for i, (_, mat) in enumerate(model.parts):
             sel = model.occ & ~assigned & (model.part == i)

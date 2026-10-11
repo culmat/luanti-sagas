@@ -1,10 +1,10 @@
-# Pipeline and saga.toml reference
+# Pipeline and landmark.toml reference
 
 ```
 sagas fetch     download the source (sha256-checked) into sources/        needs network or --from FILE
 sagas inspect   parts, materials, textures, size of the source
-sagas voxelize  source -> content/<theme>/<id>/voxels.vx.gz               needs the source
-sagas build     voxels.vx.gz -> mods/sagas_<theme>/ + preview.png         reproducible, no source needed
+sagas voxelize  source -> content/<saga>/<id>/voxels.vx.gz               needs the source
+sagas build     voxels.vx.gz -> mods/sagas_<saga>/ + preview.png         reproducible, no source needed
 sagas lint      licence, attribution, size, value budget, drift checks
 sagas catalog   docs/gallery/ (index.md, catalog.json)
 ```
@@ -29,10 +29,10 @@ Exit codes: 0 ok, 1 error, 2 bad config, 3 lint errors, 4 source missing, 5 stal
 6. **Write**: `.mts` schematics with only `air`, `sagas:color` and `sagas:m_<class>` nodes; outside air
    has probability 0 (keeps terrain), solid nodes and carved air are force-placed.
 
-## saga.toml
+## landmark.toml
 
-Top level: `schema = 1`, `id`, `theme` (both `^[a-z][a-z0-9_]{2,31}$`, matching the directories),
-`title`, `tags`, `lore` (shown in game when a player first enters the saga).
+Top level: `schema = 1`, `id`, `saga` (both `^[a-z][a-z0-9_]{2,31}$`, matching the directories),
+`title`, `tags`, `lore` (shown in game when a player first enters the landmark).
 
 ### [source]
 
@@ -42,7 +42,7 @@ Top level: `schema = 1`, `id`, `theme` (both `^[a-z][a-z0-9_]{2,31}$`, matching 
 | `url` | Where the model is published. Required unless `manual`. |
 | `manual` | `true` when the site needs a login (Sketchfab): `sagas fetch --from FILE` |
 | `instructions` | Shown by `sagas fetch` for manual sources |
-| `file` | File name of the download (or a file next to saga.toml) |
+| `file` | File name of the download (or a file next to landmark.toml) |
 | `member` | File inside a zip/tar to load; its folder (textures) is extracted too |
 | `sha256` | Checksum of the download; `sagas fetch` records it (not for manual sources) |
 | `extra_files` | `[{ url, file, sha256 }]` downloaded next to `file` (e.g. textures defined elsewhere) |

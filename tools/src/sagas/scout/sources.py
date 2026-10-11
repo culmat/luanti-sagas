@@ -16,10 +16,10 @@ def _strip_html(s: str) -> str:
     return unescape(re.sub(r"<[^>]+>", "", s or "")).strip()
 
 
-def sketchfab(http: Http, theme: str, term: str, limit: int, licences: list[str]) -> Iterator[Candidate]:
+def sketchfab(http: Http, saga: str, term: str, limit: int, licences: list[str]) -> Iterator[Candidate]:
     """Sketchfab v3 search. Sketchfab challenges anonymous scripted clients, so set SKETCHFAB_TOKEN
     (your API token from https://sketchfab.com/settings/password). Downloads need a login anyway,
-    so promoted sagas are manual."""
+    so promoted landmarks are manual."""
     token = secrets.get("SKETCHFAB_TOKEN")
     headers = {"Authorization": f"Token {token}"} if token else None
     for lic in licences:
@@ -60,7 +60,7 @@ def sketchfab(http: Http, theme: str, term: str, limit: int, licences: list[str]
                 thumbnail=max((r.get("thumbnails") or {}).get("images", [{}]), key=lambda i: i.get("width", 0)).get(
                     "url", ""
                 ),
-                theme=theme,
+                saga=saga,
                 query=term,
                 download={
                     "manual": True,
@@ -73,7 +73,7 @@ def sketchfab(http: Http, theme: str, term: str, limit: int, licences: list[str]
             yield c
 
 
-def commons(http: Http, theme: str, term: str, limit: int, licences: list[str]) -> Iterator[Candidate]:
+def commons(http: Http, saga: str, term: str, limit: int, licences: list[str]) -> Iterator[Candidate]:
     """Wikimedia Commons 3D files (STL). Licence per file from extmetadata."""
     data = http.get_json(
         "https://commons.wikimedia.org/w/api.php",
@@ -117,7 +117,7 @@ def commons(http: Http, theme: str, term: str, limit: int, licences: list[str]) 
             license_label=label,
             formats=[name.rsplit(".", 1)[-1].lower()],
             download_size=ii.get("size"),
-            theme=theme,
+            saga=saga,
             query=term,
             download={"url": ii.get("url", ""), "file": name.replace(" ", "_")},
             notes="STL without colour: use material rules by height and normal",
@@ -126,7 +126,7 @@ def commons(http: Http, theme: str, term: str, limit: int, licences: list[str]) 
         yield c
 
 
-def polyhaven(http: Http, theme: str, term: str, limit: int, licences: list[str]) -> Iterator[Candidate]:
+def polyhaven(http: Http, saga: str, term: str, limit: int, licences: list[str]) -> Iterator[Candidate]:
     """Poly Haven models (all CC0); matched by name, tags and categories."""
     if "cc0" not in licences:
         return
@@ -152,7 +152,7 @@ def polyhaven(http: Http, theme: str, term: str, limit: int, licences: list[str]
             faces=a.get("polycount"),
             formats=["gltf"],
             thumbnail=f"https://cdn.polyhaven.com/asset_img/thumbs/{slug_}.png?height=256",
-            theme=theme,
+            saga=saga,
             query=term,
             download={"polyhaven": slug_},
         )
@@ -162,7 +162,7 @@ def polyhaven(http: Http, theme: str, term: str, limit: int, licences: list[str]
             return
 
 
-def smithsonian(http: Http, theme: str, term: str, limit: int, licences: list[str]) -> Iterator[Candidate]:
+def smithsonian(http: Http, saga: str, term: str, limit: int, licences: list[str]) -> Iterator[Candidate]:
     """Smithsonian Open Access records with a 3D package and usage CC0 (api.data.gov key, DEMO_KEY works)."""
     if "cc0" not in licences:
         return
@@ -184,7 +184,7 @@ def smithsonian(http: Http, theme: str, term: str, limit: int, licences: list[st
                 license="CC0-1.0",
                 license_label="CC0 (Smithsonian Open Access)",
                 formats=["glb"],
-                theme=theme,
+                saga=saga,
                 query=term,
                 download={"voyager": package},
                 notes="Voyager GLBs are often Z-up and Draco-compressed; check the package is the object you want",
@@ -196,7 +196,7 @@ def smithsonian(http: Http, theme: str, term: str, limit: int, licences: list[st
             return
 
 
-CIV_THEMES = {
+CIV_SAGAS = {
     "britons": "celtic",
     "gauls": "celtic",
     "iberians": "celtic",
@@ -215,13 +215,13 @@ CIV_THEMES = {
 ZEROAD_SHA = "61a3b9507d974084e6badb88a0826bd89a6d5b8b"  # last commit of the archived GitHub mirror
 
 
-def zeroad(http: Http, theme: str, term: str, limit: int, licences: list[str]) -> Iterator[Candidate]:
-    """0 A.D. structure actors (CC-BY-SA 3.0). Matches civilisations whose theme is `theme`."""
+def zeroad(http: Http, saga: str, term: str, limit: int, licences: list[str]) -> Iterator[Candidate]:
+    """0 A.D. structure actors (CC-BY-SA 3.0). Matches civilisations whose saga is `saga`."""
     if "by-sa" not in licences:
         return
     base = "https://api.github.com/repos/0ad/0ad/git/trees"
-    for civ, civ_theme in sorted(CIV_THEMES.items()):
-        if civ_theme != theme:
+    for civ, civ_saga in sorted(CIV_SAGAS.items()):
+        if civ_saga != saga:
             continue
         tree = http.get_json(f"{base}/{ZEROAD_SHA}:binaries/data/mods/public/art/actors/structures/{civ}")
         n = 0
@@ -240,7 +240,7 @@ def zeroad(http: Http, theme: str, term: str, limit: int, licences: list[str]) -
                 license="CC-BY-SA-3.0",
                 license_label="CC-BY-SA 3.0 (0 A.D. art)",
                 formats=["dae"],
-                theme=theme,
+                saga=saga,
                 query=term,
                 download={"zeroad_actor": actor},
                 notes="Read the actor XML for <mesh> and baseTex; use extra_files, voxel.texture, voxel.alpha = ignore",

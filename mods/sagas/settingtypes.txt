@@ -1,22 +1,22 @@
-# How rare sagas are. 1 = as designed by each saga, 0.1 = ten times more often, 10 = ten times rarer.
+# How rare landmarks are. 1 = as designed by each landmark, 0.1 = ten times more often, 10 = ten times rarer.
 sagas_rarity_scale (Rarity scale) float 1.0 0.001 1000
 
-# Comma-separated themes or saga ids that are never placed automatically, e.g. "egyptian,ruins:temple_02".
-sagas_disabled (Disabled themes or sagas) string
+# Comma-separated sagas (e.g. "antiquity") or landmark ids (e.g. "sagas_ruins:cathedral") that are never placed automatically.
+sagas_disabled (Disabled sagas or landmarks) string
 
-# At most this many sagas per generated mapchunk.
+# At most this many landmarks per generated mapchunk.
 sagas_max_per_chunk (Sagas per mapchunk) int 1 1 4
 
-# Place sagas that are larger than a mapchunk (they are emerged and placed after generation).
-sagas_large_enable (Large sagas) bool true
+# Place landmarks that are larger than a mapchunk (they are emerged and placed after generation).
+sagas_large_enable (Large landmarks) bool true
 
-# Show a saga's story when a player enters it for the first time.
+# Show a landmark's story when a player enters it for the first time.
 sagas_lore (Show lore) bool true
 
-# Use the game's flowing water inside sagas instead of still water.
-sagas_real_water (Flowing water in sagas) bool false
+# Use the game's flowing water inside landmarks instead of still water.
+sagas_real_water (Flowing water in landmarks) bool false
 
-# Never place sagas during map generation (/saga place still works).
+# Never place landmarks during map generation (/saga place still works).
 sagas_disable_mapgen (No automatic placement) bool false
 
 # Log placements and mark candidate sites.

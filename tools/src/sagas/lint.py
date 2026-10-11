@@ -9,7 +9,7 @@ from pathlib import Path
 
 from . import palette, vocab
 from .build import BuildResult, fits_chunk
-from .config import LICENSE_ALLOWLIST, SHARE_ALIKE, Saga
+from .config import LICENSE_ALLOWLIST, SHARE_ALIKE, Landmark
 from .repo import Repo
 
 MAX_FILE_BYTES = 2 * 1024 * 1024
@@ -25,7 +25,7 @@ CODES = {
     "L006": "AI-generated source without the tool named",
     "L007": "pack mixes share-alike and other licences",
     "L008": "generated files are stale (run sagas build)",
-    "L009": "directory does not match id/theme",
+    "L009": "directory does not match id/saga",
     "L010": "preview.png missing (run sagas preview)",
     "L011": "core mod out of sync with the tools (run sagas sync-core)",
     "L012": "voxels.vx.gz missing (run sagas voxelize)",
@@ -39,25 +39,30 @@ CODES = {
 class Finding:
     code: str
     level: str  # error | warn
-    saga: str
+    landmark: str
     message: str
 
     def __str__(self) -> str:
-        return f"{self.level.upper():5} {self.code} {self.saga}: {self.message}"
+        return f"{self.level.upper():5} {self.code} {self.landmark}: {self.message}"
 
 
-def check_saga(saga: Saga, built: BuildResult | None = None, strict: bool = False) -> list[Finding]:
+def check_saga(landmark: Landmark, built: BuildResult | None = None, strict: bool = False) -> list[Finding]:
     out: list[Finding] = []
-    sid = saga.qualified_id
+    sid = landmark.qualified_id
 
     def add(code: str, msg: str, level: str = "error") -> None:
         out.append(Finding(code, level, sid, msg))
 
-    src = saga.source
+    src = landmark.source
     for name in ("license", "author"):
         if not getattr(src, name):
             add("L001", f"source.{name} is required")
-    if src.kind in ("mesh", "vox", "voxels") and not src.url and not src.manual and not (saga.dir / src.file).is_file():
+    if (
+        src.kind in ("mesh", "vox", "voxels")
+        and not src.url
+        and not src.manual
+        and not (landmark.dir / src.file).is_file()
+    ):
         add("L001", "source.url is required (where the model can be found)")
     if src.license and src.license not in LICENSE_ALLOWLIST:
         add("L002", f"{src.license!r} is not one of {', '.join(LICENSE_ALLOWLIST)} (NC/ND licences are never allowed)")
@@ -75,21 +80,25 @@ def check_saga(saga: Saga, built: BuildResult | None = None, strict: bool = Fals
     for text in (src.notes, src.license_url, src.instructions):
         if text and NC_ND.search(text):
             add("L013", f"check the licence: {text[:80]!r}")
-    if saga.dir.name != saga.id:
-        add("L009", f"directory {saga.dir.name!r} must be named like the id {saga.id!r}")
-    if saga.dir.parent.name != saga.theme:
-        add("L009", f"theme directory {saga.dir.parent.name!r} must match theme {saga.theme!r}")
-    if not saga.vx_path.exists() and src.kind != "none":
-        add("L012", f"{saga.vx_path.name} is missing")
-    if not saga.preview_path.exists():
+    if landmark.dir.name != landmark.id:
+        add("L009", f"directory {landmark.dir.name!r} must be named like the id {landmark.id!r}")
+    if landmark.dir.parent.name != landmark.saga:
+        add("L009", f"saga directory {landmark.dir.parent.name!r} must match saga {landmark.saga!r}")
+    if not landmark.vx_path.exists() and src.kind != "none":
+        add("L012", f"{landmark.vx_path.name} is missing")
+    if not landmark.preview_path.exists():
         add("L010", "preview.png is missing", "warn")
-    for f in saga.dir.iterdir():
+    for f in landmark.dir.iterdir():
         if f.is_file() and f.stat().st_size > MAX_FILE_BYTES:
             add("L014", f"{f.name} is {f.stat().st_size // 1024} KiB (limit {MAX_FILE_BYTES // 1024} KiB)")
-    if saga.placement.rarity < 20:
-        add("L015", f"rarity {saga.placement.rarity} means a saga every {saga.placement.rarity} mapchunks", "warn")
+    if landmark.placement.rarity < 20:
+        add(
+            "L015",
+            f"rarity {landmark.placement.rarity} means a landmark every {landmark.placement.rarity} mapchunks",
+            "warn",
+        )
     if built is not None:
-        if not fits_chunk(built.size) and not saga.placement.large:
+        if not fits_chunk(built.size) and not landmark.placement.large:
             fp, h = vocab.vocabulary()["chunk_limits"].values()
             add(
                 "L004",
@@ -100,22 +109,22 @@ def check_saga(saga: Saga, built: BuildResult | None = None, strict: bool = Fals
     return out
 
 
-def check_packs(sagas: list[Saga]) -> list[Finding]:
+def check_packs(landmarks: list[Landmark]) -> list[Finding]:
     """Pack-level checks: mixing share-alike and other licences makes the whole pack share-alike."""
     out = []
-    by_theme: dict[str, set[str]] = {}
-    for s in sagas:
-        by_theme.setdefault(s.theme, set()).add(s.source.license)
-    for theme, lics in sorted(by_theme.items()):
+    by_saga: dict[str, set[str]] = {}
+    for s in landmarks:
+        by_saga.setdefault(s.saga, set()).add(s.source.license)
+    for saga, lics in sorted(by_saga.items()):
         sa = lics & set(SHARE_ALIKE)
         if sa and lics - set(SHARE_ALIKE):
             out.append(
                 Finding(
                     "L007",
                     "warn",
-                    f"sagas_{theme}",
+                    f"sagas_{saga}",
                     f"mixes {', '.join(sorted(sa))} with {', '.join(sorted(lics - sa))}: the whole pack "
-                    "becomes share-alike; consider a separate theme",
+                    "becomes share-alike; consider a separate saga",
                 )
             )
     return out

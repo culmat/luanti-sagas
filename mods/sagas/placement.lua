@@ -1,4 +1,4 @@
--- Placing a saga into a VoxelManip: clear vegetation, blit the schematic, build a foundation, then
+-- Placing a landmark into a VoxelManip: clear vegetation, blit the schematic, build a foundation, then
 -- swap placeholders for this site's materials. Used by the mapgen engine and by `sagas.place`.
 local util = sagas.util
 local materials = sagas.materials
@@ -6,7 +6,7 @@ local placement = {}
 sagas.placement = placement
 
 local CLEAR_ABOVE = 16
-local saga_cid = {} -- content ids of nodes that come from saga schematics
+local saga_cid = {} -- content ids of nodes that come from landmark schematics
 
 core.register_on_mods_loaded(function()
 	for _, class in ipairs(sagas.vocab.class_names) do
@@ -104,7 +104,7 @@ local function run_callbacks(def, anchor, p1, p2, rot)
 end
 placement.run_callbacks = run_callbacks
 
--- Place on the live map (commands, large sagas). Returns p1, p2.
+-- Place on the live map (commands, large landmarks). Returns p1, p2.
 function placement.place(def, anchor, opts)
 	opts = opts or {}
 	local rot = opts.rot or 0

@@ -1,15 +1,15 @@
 schema = 1
-id = "ruin_arch"
-theme = "ruins"
-title = "Broken aqueduct arch"
+id = "speaking_stones"
+saga = "ruins"
+title = "Speaking stones"
 tags = ["ruin", "3td"]
-lore = ""
+lore = "On still nights the stones answer, if you ask in the old tongue."
 
 [source]
 kind = "mesh"
 url = "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip"
 file = "Fantasy Ruins Pack.zip"
-member = "FantasyRuins_Ready/game/art/shapes/Ruins/RuinArch_01/RuinArch_01.dae"
+member = "FantasyRuins_Ready/game/art/shapes/Ruins/SpeakingStones_01/SpeakingStones_01.dae"
 sha256 = "12dad8708181bef31ac5e688fb61dc3232138206a6f004407044215f5fd64dfd"
 author = "Ron Kapaun / 3TD Studios"
 author_url = "https://opengameart.org/content/3td-fantasy-ruins-pack"
@@ -20,7 +20,7 @@ notes = "3TD Fantasy Ruins Pack on OpenGameArt. Attribution not required; credit
 
 [transform]
 up = "auto"
-target_size = 26
+target_size = 22
 anchor = "bottom-center"
 
 [voxel]
@@ -65,12 +65,11 @@ match = { material = "*brick*" }
 class = "stone"
 
 [ruin]
-enabled = true
-moss = 0.08
+enabled = false
 
 [placement]
-site = ["plain", "slope", "river"]
-exposure = "any"
-biomes = ["grassland", "savanna", "desert", "forest"]
-rarity = 450
-hints = "Arches of an old aqueduct, good near rivers or on gentle slopes."
+site = ["plain", "ridge"]
+exposure = "prominent"
+biomes = ["grassland", "tundra", "taiga", "snow", "mountain"]
+rarity = 600
+hints = "A stone circle on open, windswept land."

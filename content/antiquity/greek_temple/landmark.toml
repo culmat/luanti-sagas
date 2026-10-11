@@ -1,6 +1,6 @@
 schema = 1
 id = "greek_temple"
-theme = "antiquity"
+saga = "antiquity"
 title = "Temple on the hill"
 tags = ["0ad", "antiquity"]
 lore = "Built for a goddess of wisdom, on the highest rock of the city."

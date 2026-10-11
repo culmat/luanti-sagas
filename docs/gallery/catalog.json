@@ -2,7 +2,7 @@
   {
     "id": "sagas_antiquity:greek_temple",
     "title": "Temple on the hill",
-    "theme": "antiquity",
+    "saga": "antiquity",
     "size": [
       39,
       35,
@@ -34,7 +34,7 @@
   {
     "id": "sagas_antiquity:han_temple",
     "title": "Temple of the Han",
-    "theme": "antiquity",
+    "saga": "antiquity",
     "size": [
       33,
       36,
@@ -67,7 +67,7 @@
   {
     "id": "sagas_antiquity:lighthouse",
     "title": "Lighthouse of the harbour",
-    "theme": "antiquity",
+    "saga": "antiquity",
     "size": [
       15,
       43,
@@ -98,7 +98,7 @@
   {
     "id": "sagas_antiquity:ptolemaic_temple",
     "title": "Temple by the river",
-    "theme": "antiquity",
+    "saga": "antiquity",
     "size": [
       34,
       40,
@@ -127,7 +127,7 @@
   {
     "id": "sagas_antiquity:pyramid",
     "title": "Pyramid of Meroe",
-    "theme": "antiquity",
+    "saga": "antiquity",
     "size": [
       16,
       35,
@@ -156,7 +156,7 @@
   {
     "id": "sagas_antiquity:pyramid_small",
     "title": "Small pyramid",
-    "theme": "antiquity",
+    "saga": "antiquity",
     "size": [
       8,
       19,
@@ -185,7 +185,7 @@
   {
     "id": "sagas_antiquity:roundhouse",
     "title": "Roundhouse",
-    "theme": "antiquity",
+    "saga": "antiquity",
     "size": [
       12,
       14,
@@ -215,7 +215,7 @@
   {
     "id": "sagas_antiquity:temple_of_amun",
     "title": "Temple of Amun",
-    "theme": "antiquity",
+    "saga": "antiquity",
     "size": [
       48,
       41,
@@ -244,7 +244,7 @@
   {
     "id": "sagas_ruins:cathedral",
     "title": "Ruined cathedral",
-    "theme": "ruins",
+    "saga": "ruins",
     "size": [
       29,
       20,
@@ -275,7 +275,7 @@
   {
     "id": "sagas_ruins:foundation_ruin",
     "title": "Old foundation",
-    "theme": "ruins",
+    "saga": "ruins",
     "size": [
       15,
       8,
@@ -306,7 +306,7 @@
   {
     "id": "sagas_ruins:mammoth_skeleton",
     "title": "Mammoth skeleton",
-    "theme": "ruins",
+    "saga": "ruins",
     "size": [
       20,
       36,
@@ -336,7 +336,7 @@
   {
     "id": "sagas_ruins:menlo_gate",
     "title": "Gates of Menlo Castle",
-    "theme": "ruins",
+    "saga": "ruins",
     "size": [
       47,
       20,
@@ -367,7 +367,7 @@
   {
     "id": "sagas_ruins:pillar",
     "title": "Fallen pillar",
-    "theme": "ruins",
+    "saga": "ruins",
     "size": [
       3,
       10,
@@ -398,7 +398,7 @@
   {
     "id": "sagas_ruins:ruin_arch",
     "title": "Broken aqueduct arch",
-    "theme": "ruins",
+    "saga": "ruins",
     "size": [
       27,
       18,
@@ -430,7 +430,7 @@
   {
     "id": "sagas_ruins:speaking_stones",
     "title": "Speaking stones",
-    "theme": "ruins",
+    "saga": "ruins",
     "size": [
       21,
       9,
@@ -462,7 +462,7 @@
   {
     "id": "sagas_ruins:temple_ruin_01",
     "title": "Overgrown temple",
-    "theme": "ruins",
+    "saga": "ruins",
     "size": [
       27,
       15,
@@ -494,7 +494,7 @@
   {
     "id": "sagas_ruins:temple_ruin_02",
     "title": "Temple of the four arches",
-    "theme": "ruins",
+    "saga": "ruins",
     "size": [
       30,
       24,
@@ -527,7 +527,7 @@
   {
     "id": "sagas_ruins:wall_segment",
     "title": "Ruined wall",
-    "theme": "ruins",
+    "saga": "ruins",
     "size": [
       21,
       9,

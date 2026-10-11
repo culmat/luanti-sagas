@@ -14,7 +14,7 @@ local function add_to_index(key, rec)
 	by_key[key] = rec
 end
 
--- Load existing records (keys "r:<x>,<y>,<z>"; large-saga states use "L:" keys, see large.lua).
+-- Load existing records (keys "r:<x>,<y>,<z>"; large-landmark states use "L:" keys, see large.lua).
 local fields = storage:to_table().fields
 local keys = {}
 for key in pairs(fields) do
@@ -96,8 +96,8 @@ function records.in_box(p1, p2)
 	return out
 end
 
--- A new saga box p1..p2 may not overlap any placed saga, and must keep `distance` nodes (horizontally)
--- from other instances of the same saga id.
+-- A new landmark box p1..p2 may not overlap any placed landmark, and must keep `distance` nodes (horizontally)
+-- from other instances of the same landmark id.
 function records.spacing_ok(id, p1, p2, distance)
 	if #records.in_box(p1, p2) > 0 then
 		return false

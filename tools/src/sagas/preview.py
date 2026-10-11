@@ -118,8 +118,8 @@ def render(res: BuildResult, size: int = 1024) -> Image.Image:
     d = ImageDraw.Draw(sheet)
     x, y, z = res.size
     label = (
-        f"{res.saga.qualified_id}  {x}x{y}x{z}  {res.node_count} nodes  "
-        f"materials: {res.saga.materials.mode}  site: {', '.join(res.saga.placement.site)}"
+        f"{res.landmark.qualified_id}  {x}x{y}x{z}  {res.node_count} nodes  "
+        f"materials: {res.landmark.materials.mode}  site: {', '.join(res.landmark.placement.site)}"
     )
     d.text((8, size + 8), label, fill=INK)
     d.text((8, 6), "top", fill=INK)

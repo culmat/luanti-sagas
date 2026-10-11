@@ -1,5 +1,5 @@
--- Nodes that appear in saga schematics: one placeholder per material class, the palette colour
--- node and a still (non-flowing) water. Placeholders are replaced by game nodes when a saga is
+-- Nodes that appear in landmark schematics: one placeholder per material class, the palette colour
+-- node and a still (non-flowing) water. Placeholders are replaced by game nodes when a landmark is
 -- placed; they only stay visible if a game lacks every candidate for a class.
 local S = sagas.S
 local has_default = core.get_modpath("default") ~= nil
@@ -20,7 +20,7 @@ for _, name in ipairs(sagas.vocab.class_names) do
 	local groups = table.copy(common_groups)
 	groups.sagas_placeholder = 1
 	core.register_node("sagas:m_" .. name, {
-		description = S("Saga placeholder (@1)", name),
+		description = S("Landmark placeholder (@1)", name),
 		tiles = { { name = "sagas_placeholder.png", color = class.rgb } },
 		groups = groups,
 		is_ground_content = false,
@@ -32,7 +32,7 @@ for _, name in ipairs(sagas.vocab.class_names) do
 end
 
 core.register_node("sagas:color", {
-	description = S("Saga stone"),
+	description = S("Landmark stone"),
 	tiles = { "sagas_white.png" },
 	paramtype2 = "color",
 	palette = "sagas_palette.png",

@@ -1,7 +1,7 @@
 # Where to find models
 
 Checked 2026-10-11. Licences change: always confirm on the model's own page and record it in
-`saga.toml`. `sagas scout` searches several of these sources for you (see docs/scouting/).
+`landmark.toml`. `sagas scout` searches several of these sources for you (see docs/scouting/).
 
 Accepted licences: **CC0, CC-BY, CC-BY-SA, MIT**. Never NC ("non-commercial") or ND ("no derivatives").
 
@@ -13,8 +13,8 @@ Accepted licences: **CC0, CC-BY, CC-BY-SA, MIT**. Never NC ("non-commercial") or
 | [Smithsonian Open Access 3D](https://3d.si.edu) | CC0 when the record says so | GLB downloads, often Draco-compressed (supported) | Skeletons, fossils, statues, artefacts. The Smithsonian also publishes CC0 copies on Sketchfab. Check the record's usage ("CC0"); the package for an object is not always the object you expect. |
 | [Wikimedia Commons](https://commons.wikimedia.org/w/index.php?search=filetype%3A3d+castle&ns6=1) | per file (CC-BY-SA, CC-BY, CC0) | STL downloads, no login | Several real castle scans. No colour: use material rules by height and normal. |
 | [Europeana](https://www.europeana.eu) | filter type "3D" and "can be reused" | GLB often hosted on Zenodo | Heritage buildings and objects; quality varies. |
-| [Poly Haven](https://polyhaven.com/models) | CC0 | glTF with textures, no login | Rocks, cliffs, trees, roots, piers, doors: good for nature sagas and dwarven halls. |
-| [0 A.D.](https://github.com/0ad/0ad) (Wildfire Games) | CC-BY-SA 3.0 (art) | DAE meshes in `art/meshes/structural/`, textures named by the actor XML in `art/actors/structures/<civ>/` | Coherent buildings of many ancient civilisations (Britons, Gauls, Iberians, Romans, Athenians, Ptolemies, Kushites, Persians, Mauryas, Han). Use `extra_files`, `voxel.texture` and `voxel.alpha = "ignore"` (alpha is player colour). Keep in share-alike themes. |
+| [Poly Haven](https://polyhaven.com/models) | CC0 | glTF with textures, no login | Rocks, cliffs, trees, roots, piers, doors: good for nature landmarks and dwarven halls. |
+| [0 A.D.](https://github.com/0ad/0ad) (Wildfire Games) | CC-BY-SA 3.0 (art) | DAE meshes in `art/meshes/structural/`, textures named by the actor XML in `art/actors/structures/<civ>/` | Coherent buildings of many ancient civilisations (Britons, Gauls, Iberians, Romans, Athenians, Ptolemies, Kushites, Persians, Mauryas, Han). Use `extra_files`, `voxel.texture` and `voxel.alpha = "ignore"` (alpha is player colour). Keep in share-alike sagas. |
 | [Millennium A.D.](https://github.com/0ADMods/millenniumad) | CC-BY-SA 3.0 (art) | like 0 A.D. | Medieval civilisations: Norse (longhouses), Anglo-Saxons, Byzantines, Carolingians. Credit "The Council of Modders, Fallen Empire Studio, Scion Development" and link wildfiregames.com. |
 | [OpenGameArt](https://opengameart.org/art-search-advanced?field_art_type_tid%5B%5D=10&field_art_licenses_tid%5B%5D=4) | filter CC0 / CC-BY / CC-BY-SA | direct downloads | Mostly game kits; some realistic packs such as the 3TD Fantasy Ruins Pack (CC0) used in `sagas_ruins`. |
 | [swissBUILDINGS3D 2.0](https://opendata.swiss/en/dataset/swissbuildings3d-2-0) | free use with attribution "©swisstopo" | DXF tiles per area | Real Swiss buildings and castles (e.g. Chillon) as untextured roofs and walls; colour by material rules. Experimental lane. |
@@ -36,7 +36,7 @@ Accepted licences: **CC0, CC-BY, CC-BY-SA, MIT**. Never NC ("non-commercial") or
 
 Verified 2026-10-11 on Sketchfab; CC-BY 4.0 unless noted. Re-check the licence before promoting one.
 
-| Theme | Candidates |
+| Saga | Candidates |
 |---|---|
 | medieval | Haldenstein castle ruin (Grisons), Torre Escaletes watchtower, Torre di Coreallo (Liguria coast), Rocca Calascio (peak) |
 | viking | Oseberg ship, Gislinge boat, Heddal stave church; Millennium A.D. Norse buildings (CC-BY-SA) |

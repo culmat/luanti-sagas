@@ -1,10 +1,10 @@
 -- Automatic placement during map generation.
 --
 -- No engine decorations are used (Mineclonia disables them in some modes); instead every generated
--- mapchunk rolls a deterministic die per saga (1 in rarity * sagas_rarity_scale), then tries a few
--- positions and rotations, evaluates the saga's site expression on the chunk heightmap and nodes,
--- and places the saga into the mapgen VoxelManip. Works the same in Minetest Game, Mineclonia and
--- VoxeLibre; sagas larger than a mapchunk are handled by large.lua.
+-- mapchunk rolls a deterministic die per landmark (1 in rarity * sagas_rarity_scale), then tries a few
+-- positions and rotations, evaluates the landmark's site expression on the chunk heightmap and nodes,
+-- and places the landmark into the mapgen VoxelManip. Works the same in Minetest Game, Mineclonia and
+-- VoxeLibre; landmarks larger than a mapchunk are handled by large.lua.
 local util = sagas.util
 local sites = sagas.sites
 local materials = sagas.materials
@@ -132,7 +132,7 @@ function engine.on_generated(minp, maxp, blockseed)
 		return
 	end
 	local rolls = {}
-	for _, def in ipairs(sagas.registered_list) do
+	for _, def in ipairs(sagas.landmark_list) do
 		if
 			def.enabled
 			and not def.large

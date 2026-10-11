@@ -1,7 +1,7 @@
 schema = 1
-id = "foundation_ruin"
-theme = "ruins"
-title = "Old foundation"
+id = "pillar"
+saga = "ruins"
+title = "Fallen pillar"
 tags = ["ruin", "3td"]
 lore = ""
 
@@ -9,7 +9,7 @@ lore = ""
 kind = "mesh"
 url = "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip"
 file = "Fantasy Ruins Pack.zip"
-member = "FantasyRuins_Ready/game/art/shapes/Ruins/FoundationRuin_01/foundationRuin_01.dae"
+member = "FantasyRuins_Ready/game/art/shapes/Ruins/RuinPillar_01/RuinPillar_01.dae"
 sha256 = "12dad8708181bef31ac5e688fb61dc3232138206a6f004407044215f5fd64dfd"
 author = "Ron Kapaun / 3TD Studios"
 author_url = "https://opengameart.org/content/3td-fantasy-ruins-pack"
@@ -20,7 +20,7 @@ notes = "3TD Fantasy Ruins Pack on OpenGameArt. Attribution not required; credit
 
 [transform]
 up = "auto"
-target_size = 14
+target_size = 9
 anchor = "bottom-center"
 
 [voxel]
@@ -65,12 +65,11 @@ match = { material = "*brick*" }
 class = "stone"
 
 [ruin]
-enabled = true
-moss = 0.15
+enabled = false
 
 [placement]
 site = ["plain", "slope"]
 exposure = "any"
-biomes = ["grassland", "forest", "taiga", "savanna"]
-rarity = 160
-hints = "Common filler: the corner of a long-gone house."
+biomes = ["grassland", "savanna", "desert", "forest"]
+rarity = 120
+hints = "Common filler: a lone pillar."

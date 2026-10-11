@@ -1,6 +1,6 @@
 schema = 1
 id = "pyramid_small"
-theme = "antiquity"
+saga = "antiquity"
 title = "Small pyramid"
 tags = ["0ad", "antiquity"]
 lore = ""
