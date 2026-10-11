@@ -1,0 +1,3 @@
+# Keep screenshot tooling out of the sagas_pack release zip.
+/tools export-ignore
+/screenshots export-ignore

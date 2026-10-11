@@ -304,6 +304,15 @@ def build(
                 pipeline.write_preview(res)
         for p in tb.written:
             typer.echo(f"  wrote {p.relative_to(r.root)}")
+    # the screenshot scene (mods/tools/showcase) always lists every saga
+    from . import showcase
+
+    every = [buildmod.build(s, voxels.read(s.vx_path)) for s in r.sagas() if s.vx_path.exists()]
+    for p in showcase.write(r.mods, every, check=check):
+        if check:
+            stale_total.append(str(p.relative_to(r.root)))
+        else:
+            typer.echo(f"  wrote {p.relative_to(r.root)}")
     if check:
         if stale_total:
             for p in stale_total:

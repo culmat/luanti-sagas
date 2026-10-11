@@ -1,0 +1,308 @@
+{
+ "shots": [
+  {
+   "name": "overview",
+   "pos": [
+    153.8,
+    333.7,
+    -276.8
+   ],
+   "look_at": [
+    307.5,
+    194.3,
+    29.5
+   ],
+   "time": 0.5,
+   "fov": 70,
+   "settle": 4
+  },
+  {
+   "name": "antiquity-greek_temple",
+   "pos": [
+    -34.2,
+    231.4,
+    -43.0
+   ],
+   "look_at": [
+    19.5,
+    197.5,
+    28.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "antiquity-han_temple",
+   "pos": [
+    25.6,
+    223.7,
+    -32.6
+   ],
+   "look_at": [
+    65.5,
+    198.0,
+    20.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "antiquity-lighthouse",
+   "pos": [
+    57.9,
+    228.6,
+    -41.9
+   ],
+   "look_at": [
+    99.5,
+    201.5,
+    13.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "antiquity-ptolemaic_temple",
+   "pos": [
+    90.7,
+    228.0,
+    -35.2
+   ],
+   "look_at": [
+    134.0,
+    200.0,
+    22.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "antiquity-pyramid",
+   "pos": [
+    134.3,
+    220.1,
+    -32.2
+   ],
+   "look_at": [
+    169.0,
+    197.5,
+    14.0
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "antiquity-pyramid_small",
+   "pos": [
+    170.1,
+    203.0,
+    -22.3
+   ],
+   "look_at": [
+    191.0,
+    189.5,
+    5.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "antiquity-roundhouse",
+   "pos": [
+    193.6,
+    198.2,
+    -15.8
+   ],
+   "look_at": [
+    211.0,
+    187.0,
+    7.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "antiquity-temple_of_amun",
+   "pos": [
+    195.6,
+    235.8,
+    -44.3
+   ],
+   "look_at": [
+    251.0,
+    200.5,
+    29.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "ruins-cathedral",
+   "pos": [
+    256.2,
+    217.0,
+    -35.2
+   ],
+   "look_at": [
+    299.5,
+    190.0,
+    22.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "ruins-foundation_ruin",
+   "pos": [
+    314.1,
+    194.9,
+    -17.8
+   ],
+   "look_at": [
+    331.5,
+    184.0,
+    5.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "ruins-mammoth_skeleton",
+   "pos": [
+    308.8,
+    229.9,
+    -40.4
+   ],
+   "look_at": [
+    359.0,
+    198.0,
+    26.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "ruins-menlo_gate",
+   "pos": [
+    357.5,
+    218.0,
+    -54.0
+   ],
+   "look_at": [
+    402.5,
+    190.0,
+    6.0
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "ruins-pillar",
+   "pos": [
+    424.4,
+    193.4,
+    -16.0
+   ],
+   "look_at": [
+    437.5,
+    185.0,
+    1.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "ruins-ruin_arch",
+   "pos": [
+    434.7,
+    206.6,
+    -30.5
+   ],
+   "look_at": [
+    462.5,
+    189.0,
+    6.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "ruins-speaking_stones",
+   "pos": [
+    473.9,
+    198.5,
+    -20.6
+   ],
+   "look_at": [
+    496.5,
+    184.5,
+    9.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "ruins-temple_ruin_01",
+   "pos": [
+    502.7,
+    204.9,
+    -24.0
+   ],
+   "look_at": [
+    530.5,
+    187.5,
+    13.0
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "ruins-temple_ruin_02",
+   "pos": [
+    537.8,
+    211.9,
+    -26.1
+   ],
+   "look_at": [
+    569.0,
+    192.0,
+    15.5
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  },
+  {
+   "name": "ruins-wall_segment",
+   "pos": [
+    581.9,
+    198.5,
+    -29.1
+   ],
+   "look_at": [
+    604.5,
+    184.5,
+    1.0
+   ],
+   "time": 0.5,
+   "fov": 60,
+   "settle": 3
+  }
+ ]
+}
