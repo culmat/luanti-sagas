@@ -217,6 +217,26 @@ mtt.register_with_area(
 	end
 )
 
+mtt.register_with_area(
+	"sagas: a builder inside the footprint gets a spot outside it",
+	{ size = { x = 20, y = 20, z = 20 }, emerged = true },
+	function(pos1, pos2, callback)
+		fill(pos1, pos2, "air")
+		local rock = sagas.materials.resolved.fixed.rock.name
+		local ground = pos1.y + 8
+		fill(pos1, { x = pos2.x, y = ground, z = pos2.z }, rock)
+		local anchor = { x = pos1.x + 8, y = ground, z = pos1.z + 8 }
+		local p1, p2 = sagas.place("sagas:test_box", anchor, { rot = 0, record = false })
+		-- standing one node in from the east wall, on the ground
+		local spot = sagas.placement.exit_spot(p1, p2, { x = p2.x - 1, y = ground + 1, z = anchor.z })
+		assert(spot, "a spot is found")
+		assert(spot.x == p2.x + 2 and spot.z == anchor.z, "east of the box, got " .. core.pos_to_string(spot))
+		assert(spot.y == ground + 1, ("on the ground at y=%d, got %d"):format(ground + 1, spot.y))
+		assert(sagas.placement.exit_spot(p1, p2, { x = p2.x + 3, y = ground + 1, z = anchor.z }) == nil, "outside")
+		callback()
+	end
+)
+
 mtt.register("sagas: site predicates on synthetic terrain", function(callback)
 	local sites = sagas.sites
 	local def = {

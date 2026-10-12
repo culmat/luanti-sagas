@@ -98,6 +98,11 @@ local function cmd_place(name, args)
 		end
 	end
 	sagas.place(id, pos, { rot = rotn, foundation = depth, site = "manual" })
+	-- Pointing at the ground nearby puts the builder inside the footprint: step them out of it.
+	local spot = sagas.placement.exit_spot(p1, p2, player:get_pos())
+	if spot then
+		player:set_pos({ x = spot.x, y = spot.y - 0.5, z = spot.z })
+	end
 	return true,
 		S("Placed @1 at @2 (rotation @3).", id, core.pos_to_string(pos), rotn)
 			.. (volume > MAX_UNDO_VOLUME and " " .. S("Too large to undo.") or "")

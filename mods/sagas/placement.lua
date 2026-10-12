@@ -104,6 +104,43 @@ local function run_callbacks(def, anchor, p1, p2, rot)
 end
 placement.run_callbacks = run_callbacks
 
+local function passable(name)
+	local def = core.registered_nodes[name]
+	return name ~= "ignore" and def ~= nil and def.walkable == false
+end
+
+-- Where someone standing at pos inside the box p1..p2 can stand instead: two nodes beyond the
+-- nearest side, on the highest solid node with room for a player. Returns nil if pos is outside
+-- the box or the column outside is not loaded.
+function placement.exit_spot(p1, p2, pos)
+	local x, y, z = math.floor(pos.x + 0.5), math.floor(pos.y + 0.5), math.floor(pos.z + 0.5)
+	if x < p1.x or x > p2.x or z < p1.z or z > p2.z or y < p1.y - 1 or y > p2.y then
+		return nil
+	end
+	local exits = {
+		{ d = x - p1.x, x = p1.x - 2, z = z },
+		{ d = p2.x - x, x = p2.x + 2, z = z },
+		{ d = z - p1.z, x = x, z = p1.z - 2 },
+		{ d = p2.z - z, x = x, z = p2.z + 2 },
+	}
+	table.sort(exits, function(a, b)
+		return a.d < b.d
+	end)
+	local e = exits[1]
+	for fy = p2.y + 1, p1.y - 16, -1 do
+		local below = core.get_node({ x = e.x, y = fy - 1, z = e.z }).name
+		if
+			below ~= "ignore"
+			and not passable(below)
+			and passable(core.get_node({ x = e.x, y = fy, z = e.z }).name)
+			and passable(core.get_node({ x = e.x, y = fy + 1, z = e.z }).name)
+		then
+			return { x = e.x, y = fy, z = e.z }
+		end
+	end
+	return nil
+end
+
 -- Place on the live map (commands, large landmarks). Returns p1, p2.
 function placement.place(def, anchor, opts)
 	opts = opts or {}
