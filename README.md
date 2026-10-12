@@ -20,12 +20,18 @@ More in the [gallery](https://culmat.github.io/luanti-sagas/).
 
 ## How it works
 
+```mermaid
+flowchart LR
+    A[Find a free model] --> B[landmark.toml] --> C[sagas voxelize]
+    C --> D[sagas build] --> E[Content pack mod] --> F[Sagas mod places it]
 ```
- find a model ──> landmark.toml ──> sagas voxelize ──> sagas build ──> content pack mod ──> the sagas mod places it
- (Sketchfab CC0,   (source,      (mesh -> coloured   (classes or     (mods/sagas_<saga>:   (in any game: picks a
-  museums, 0 A.D.)  licence,      voxels, committed   palette colours, schematics + registry)  site from your hints and
-                    hints)        as voxels.vx.gz)    interior, ruin)                          uses local materials)
-```
+
+1. **Find a model**: Sketchfab CC0, museums, 0 A.D. (see [docs/sources.md](docs/sources.md)).
+2. **Describe it** in `landmark.toml`: source, licence and hints.
+3. **`sagas voxelize`** turns the mesh into coloured voxels, committed as `voxels.vx.gz`.
+4. **`sagas build`** maps colours to game material classes or palette colours and adds interior and ruin.
+5. **Content pack mod** `mods/sagas_<saga>`: schematics and registry.
+6. **The Sagas mod places it** in any game: it picks a site from your hints and builds with local materials.
 
 - **Creators give hints, the mod decides.** A landmark says *"stone watchtower, on coast or river
   cliffs or near waterfalls, built from the stone around it"*:
