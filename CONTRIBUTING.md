@@ -36,8 +36,11 @@ A **saga** is a theme (ruins, antiquity, vikings, dragon fantasy); a **landmark*
 9. **Commit** `landmark.toml`, `voxels.vx.gz`, `preview.png` and the regenerated `mods/sagas_medieval/`,
    then open a pull request. CI rebuilds everything and runs the game tests.
 
-Try it in game: copy `mods/` into your Luanti mods folder (it is the `sagas_pack` modpack), enable it
-for a creative world, and use `/saga place watchtower` while pointing at the ground.
+Try it in game: `avanti play mods --game minetest` (or `mineclonia`, `mineclone2`) opens Luanti
+straight into a creative world that loads `mods/` from your checkout, linked rather than copied
+([avanti-luanti](https://github.com/culmat/avanti-luanti); the world lives in `.dev/`, which is ignored).
+Point at the ground and run `/saga place watchtower`. Luanti has no hot reload: after `sagas build`
+or a Lua edit, quit and run the command again.
 
 ## Four ways in
 
@@ -80,6 +83,8 @@ add a rule such as `match = { part = "mymod:roof_tile" }` with `class = "roof_re
 - Tools: `cd tools && uv run pytest && uv run ruff check . && uv run ruff format --check .`
 - Mod: `luacheck mods`, `stylua --check mods/sagas`, and `avanti test mods`
   ([avanti-luanti](https://github.com/culmat/avanti-luanti)) for the headless game tests.
+- Play-test while developing: `avanti play mods --game minetest` runs your working copy in game;
+  quit and rerun after each change (`--fresh` for a new map).
 - The vocabulary (classes, sites, biome tags) lives in `tools/src/sagas/data/vocabulary.json`;
   run `sagas sync-core` after changing it so the mod gets the same copy.
 
