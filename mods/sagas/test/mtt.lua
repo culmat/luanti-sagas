@@ -360,6 +360,7 @@ mtt.register("sagas: large landmarks are emerged and placed", {
 		end
 		local def = sagas.registered_landmarks["sagas:test_large"]
 		def.enabled = true
+		def.support = "free" -- a 2 high slab 76 long: this test is about emerging and placing
 		sagas.engine.configure({ only = { "sagas:test_large" } })
 		local cx, cz = 23, -17
 		local c = sagas.large.candidate(def, cx, cz)
@@ -877,3 +878,46 @@ mtt.register("sagas: find has map generation place one landmark, then restores p
 		end
 	end,
 })
+
+mtt.register("sagas: every foot stands on the ground: no hanging over drops, no burying in hills", function(callback)
+	local box = sagas.registered_landmarks["sagas:test_box"] -- one foot: its whole 7 x 7 bottom layer
+	local def = table.copy(box)
+	def.site, def.site_parsed, def.exposure = { "any" }, { { "any" } }, "any"
+	assert(#sagas.sites.feet_of(def) == 1, "the test box has one foot")
+	local function ctx_for(hfun)
+		return {
+			minp = { x = 0, y = -32, z = 0 },
+			maxp = { x = 79, y = 47, z = 79 },
+			water_level = 1,
+			H = function(x, z)
+				local h = hfun(x, z)
+				return h >= -32 and h < 47 and h or nil
+			end,
+			node = function() end,
+			biome = function() end,
+		}
+	end
+	local function at(hfun)
+		return sagas.sites.evaluate(def, ctx_for(hfun), 40, 40, 0) -- footprint x/z 37..43
+	end
+	assert(at(function()
+		return 10
+	end) == 10, "flat ground")
+	assert(at(function(x)
+		return x == 43 and 11 or 10
+	end) == 10, "a small bump is fine")
+	assert(not at(function(x)
+		return x >= 42 and -20 or 10
+	end), "part of the foot over a canyon deeper than the foundation")
+	assert(not at(function(x)
+		return x > 40 and 30 or 10
+	end), "half the foot buried in a hill")
+	local canyon = ctx_for(function(x)
+		return x >= 42 and -20 or 10
+	end)
+	local ok, why = sagas.sites.support_ok(canyon, def, 40, 40, 0, 10)
+	assert(not ok and why:find("hangs"), "reason given: " .. tostring(why))
+	def.support = "free"
+	assert(sagas.sites.support_ok(canyon, def, 40, 40, 0, 10), "support = free floats")
+	callback()
+end)

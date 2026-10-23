@@ -61,18 +61,25 @@ Landmarks never overlap, and rare landmarks (rarity 400+) keep a distance from c
 ## What the mod does on placement
 
 1. Clears trees and plants in the footprint and up to 16 nodes above.
-2. On uneven ground, sets the landmark a little into the ground: half the drop from the chosen height
+2. Checks that every foot stands on the ground. A landmark's feet are the connected parts of its
+   bottom layer (a skeleton's four feet, a house's walls, a temple's columns). No foot may hang over
+   the natural ground further than its foundation fills (`foundation`, so a skeleton with 3 never
+   spans a canyon), or sink deeper than a third of the landmark's height. Sites that want contact
+   with the hill (`against_rock`, `cave_mouth`) may bury a foot completely: a wall runs into the
+   hillside. Trees are not ground: a landmark never stands on a forest canopy. Mods that register
+   landmarks themselves can set `support = "free"` for things that float.
+3. On uneven ground, sets the landmark a little into the ground: half the drop from the chosen height
    to the lowest point of the footprint, at most 2 nodes and a sixth of its height. The uphill side is
    buried slightly, the downhill side hangs less.
-3. Places the schematic (walls replace terrain, outside air keeps it, rooms are carved).
-4. Builds a foundation of the site's rock under every column that starts on the landmark's bottom layer
+4. Places the schematic (walls replace terrain, outside air keeps it, rooms are carved).
+5. Builds a foundation of the site's rock under every column that starts on the landmark's bottom layer
    and under the floor of every ground-level room, down to the ground (at most `foundation` nodes).
    A node that would hang exactly one node above the ground gets a support node; higher overhangs
    such as eaves, porches and lintels stay as they are.
-5. Replaces material placeholders with the nodes of the site (see [materials.md](materials.md)).
-6. In biomes that dust their terrain (snow in cold biomes), covers the landmark's top surfaces with
+6. Replaces material placeholders with the nodes of the site (see [materials.md](materials.md)).
+7. In biomes that dust their terrain (snow in cold biomes), covers the landmark's top surfaces with
    the same node, as the mapgen does for terrain.
-7. Records the placement (for `/saga here`, lore messages and spacing) and calls
+8. Records the placement (for `/saga here`, lore messages and spacing) and calls
    `sagas.register_on_placed` callbacks, which other mods can use to add loot or mobs.
 
 ## Large landmarks

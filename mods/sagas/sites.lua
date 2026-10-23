@@ -457,6 +457,89 @@ function sites.embed(def, s, y)
 	return max(0, min(cap, floor((y - s.min) / 2)))
 end
 
+-- support: where the landmark touches the ground -------------------------------------------------
+-- A landmark's feet are the connected parts of its bottom layer (a skeleton's four feet, a house's
+-- walls, a temple's columns), read from its schematic. Each foot must stand on the natural ground:
+-- it may hang over it only as far as the foundation fills (def.foundation, at most 12), and sink into
+-- it at most a third of the landmark's height. Average slope is not enough: a long landmark on a
+-- slope would otherwise stand with one end in the air and the other buried in the hill. Sites that
+-- want contact with the hill (against_rock, cave_mouth) may bury a foot completely: a wall that runs
+-- into the hillside has its end inside it. Hanging is limited for every site.
+local feet_cache = {}
+local MAX_SAMPLES = 64 -- columns checked per foot (all of them for small feet)
+
+local function feet_of(def)
+	if not def.schematic then
+		return {}
+	end
+	local f = feet_cache[def.schematic]
+	if f then
+		return f
+	end
+	f = {}
+	local base = sagas.placement.base(def)
+	local sx, sz = def.size.x, def.size.z
+	local seen = {}
+	for k, low in pairs(base.lowest) do
+		if low == 0 and not seen[k] then
+			local foot, queue = {}, { k }
+			seen[k] = true
+			while #queue > 0 do
+				local c = table.remove(queue)
+				foot[#foot + 1] = { x = c % sx, z = floor(c / sx) }
+				local cx, cz = c % sx, floor(c / sx)
+				for _, d in ipairs({ { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } }) do
+					local nx, nz = cx + d[1], cz + d[2]
+					local n = nz * sx + nx
+					if nx >= 0 and nx < sx and nz >= 0 and nz < sz and base.lowest[n] == 0 and not seen[n] then
+						seen[n] = true
+						queue[#queue + 1] = n
+					end
+				end
+			end
+			-- an even spread of at most MAX_SAMPLES columns
+			local sample = {}
+			local step = max(1, #foot / MAX_SAMPLES)
+			for i = 1, #foot, step do
+				sample[#sample + 1] = foot[floor(i)]
+			end
+			f[#f + 1] = sample
+		end
+	end
+	feet_cache[def.schematic] = f
+	return f
+end
+sites.feet_of = feet_of
+
+-- Do all feet of def, anchored at (x, y, z) with rotation rot, stand on the ground of ctx? Returns
+-- ok and, if not, why ("hangs N" or "buried N" nodes at a foot). def.support = "free" skips the
+-- check (floating islands, flying ships). into_hill: the site wants the landmark to run into the hill.
+function sites.support_ok(ctx, def, x, z, rot, y, into_hill)
+	if def.support == "free" then
+		return true
+	end
+	local feet = feet_of(def)
+	if #feet == 0 then
+		return true
+	end
+	local p1 = util.bbox(def, { x = x, y = y, z = z }, rot)
+	local hang = max(1, min(12, def.foundation or 12))
+	local bury = into_hill and math.huge or max(3, floor(def.size.y / 3))
+	for _, foot in ipairs(feet) do
+		for _, c in ipairs(foot) do
+			local r = util.rotate_local({ x = c.x, y = 0, z = c.z }, def.size, rot)
+			local h = ctx.H(p1.x + r.x, p1.z + r.z)
+			local gap = h and (p1.y - 1 - h) or math.huge -- surface below the chunk: a deep drop
+			if gap > hang then
+				return false, "hangs " .. gap
+			elseif gap < -bury then
+				return false, "buried " .. -gap
+			end
+		end
+	end
+	return true
+end
+
 -- contact primitives: checked once the anchor height y is known --------------------------------------
 -- Each gets the landmark's box b1..b2 at height y and returns ok and, optionally, a corrected y.
 local POST = {}
@@ -668,6 +751,9 @@ function sites.evaluate(def, ctx, x, z, rot, pr)
 					end
 					y = y - (sink or 0)
 				end
+			end
+			if ok and y and not layer and s and not sites.support_ok(ctx, def, x, z, rot, floor(y), posts ~= nil) then
+				ok = false
 			end
 			if ok and y and sites.exposure_ok(ctx, def, p1, p2, s, y, layer) then
 				return floor(y), def.site[i]
