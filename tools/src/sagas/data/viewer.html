@@ -794,7 +794,7 @@ window.addEventListener("error", (ev) => {
     request();
   }, { passive: false });
   window.addEventListener("keydown", (ev) => {
-    if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
+    if (ev.metaKey || ev.ctrlKey || ev.altKey || (ev.target && ev.target.type === "range")) return;
     const k = ev.key;
     if (k === "r" || k === "R") frame();
     else if (k === "ArrowLeft") cam.yaw += 0.1;

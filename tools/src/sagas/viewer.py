@@ -255,9 +255,9 @@ def current_size(landmark: Landmark, committed: voxels.VoxelModel | None) -> int
 def model_sizes(
     landmark: Landmark, repo: Repo, sizes: list[int] | None = None, on_size: Callable[[ModelSize], None] | None = None
 ) -> tuple[list[ModelSize], list[str], SourceMesh | None]:
-    """Build the landmark at each size. The current size comes from the committed voxels (what
-    ships); other sizes are voxelized from the source mesh, which must be fetched. Also returns the
-    simplified source mesh (None without one), placed in each size's grid by ModelSize.mesh."""
+    """Build the landmark at each size from the source mesh; without it (not fetched, or a voxel
+    source) only the committed voxels, which is what ships. Also returns the simplified source mesh
+    (None without one), placed in each size's grid by ModelSize.mesh."""
     from . import pipeline
     from . import voxelize as vz
 
@@ -284,22 +284,26 @@ def model_sizes(
             notes.append(f"size {s} skipped (the page gets slow above {MAX_SIZE})")
             continue
         note = ""
-        if s == current and committed is not None:
-            lm, model = landmark, committed
-        else:
-            f = s / current
-            lm = dataclasses.replace(
-                landmark,
-                transform=dataclasses.replace(t, target_size=s, scale=0.0),
-                voxel=dataclasses.replace(v, openings=scaled_openings(v.openings, f)),
-            )
-            if v.openings:
-                note = f"voxel.openings scaled from size {current}"
+        lm, model = landmark, committed
+        if mesh is not None:
+            if s != current:
+                lm = dataclasses.replace(
+                    landmark,
+                    transform=dataclasses.replace(t, target_size=s, scale=0.0),
+                    voxel=dataclasses.replace(v, openings=scaled_openings(v.openings, s / current)),
+                )
+                if v.openings:
+                    note = f"voxel.openings scaled from size {current}"
             try:
                 model = vz.voxelize(mesh, lm.transform, lm.voxel)
             except ValueError as e:
                 notes.append(f"size {s}: {e}")
                 continue
+            if s == current and committed is not None and not np.array_equal(model.occ, committed.occ):
+                notes.append(
+                    "voxels.vx.gz differs from a fresh voxelize (landmark.toml, the source or the tools changed):"
+                    f" sagas voxelize {landmark.saga}/{landmark.id} --force"
+                )
         res = buildmod.build(lm, model)
         x, y, z = res.size
         out.append(
@@ -317,8 +321,8 @@ def model_sizes(
             )
         )
         if src is not None:
-            pitch = 1.0 / t.scale if s == current and t.scale > 0 else src.big / s
-            entry.mesh = mesh_affine(src, t, pitch)
+            lt = lm.transform
+            entry.mesh = mesh_affine(src, lt, 1.0 / lt.scale if lt.scale > 0 else src.big / lt.target_size)
         if on_size:
             on_size(entry)
     return out, notes, src

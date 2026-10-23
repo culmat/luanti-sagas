@@ -177,6 +177,15 @@ def test_view_command(repo, tmp_path, no_games):
     assert data["mesh"]["triangles"] == 12 and all(s["mesh"]["s"] > 0 for s in data["sizes"])
     assert runner.invoke(app, ["--root", str(repo.root), "view", "test/nothing", "--no-open"]).exit_code != 0
 
+    # committed voxels that no longer match landmark.toml are flagged
+    assert runner.invoke(app, ["--root", str(repo.root), "voxelize", "test/cube"]).exit_code == 0
+    assert runner.invoke(app, args).exit_code == 0
+    assert not page_data(out.read_text())["notes"]
+    toml = d / "landmark.toml"
+    toml.write_text(toml.read_text().replace("target_size = 8", "target_size = 10"))
+    assert runner.invoke(app, args).exit_code == 0
+    assert any("voxels.vx.gz differs" in n for n in page_data(out.read_text())["notes"])
+
 
 def test_fixed_size_sources_show_one_size(repo, tmp_path, no_games):
     txt = box_txt(tmp_path / "hut.txt")
