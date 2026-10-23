@@ -24,6 +24,8 @@ for _, file in ipairs({
 	"engine",
 	"large",
 	"commands",
+	"tour",
+	"explore",
 	"lore",
 }) do
 	dofile(modpath .. "/" .. file .. ".lua")

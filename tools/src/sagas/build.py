@@ -6,8 +6,8 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
+from . import doors, schematic, vocab
 from . import ruin as ruinmod
-from . import schematic, vocab
 from .classify import Classified, budget_findings, classify
 from .config import Landmark
 from .interior import interior_mask
@@ -27,6 +27,10 @@ class BuildResult:
     grid: schematic.Grid
     anchor: tuple[int, int, int]
     findings: list[str] = field(default_factory=list)  # budget violations etc.
+    doorway: str = ""  # what the doorway step did (auto doorway cut, or why the rooms stay sealed)
+    door: str = ""  # for the preview caption: "+z (auto)", "openings", "sealed" or "" (no rooms)
+    sealed: bool = False  # rooms without a way in at ground level remain
+    suggestions: list[str] = field(default_factory=list)  # doorway boxes per side when sealed
 
     @property
     def size(self) -> tuple[int, int, int]:
@@ -56,15 +60,34 @@ def build(landmark: Landmark, model: VoxelModel) -> BuildResult:
         model.normal = compute_normals(occ)
         model = model.cropped()
 
-    c = classify(model, landmark.materials)
-    cid = {n: i for i, n in enumerate(c.names)}
-
     inner = interior_mask(model.occ, landmark.voxel.interior_close) if landmark.voxel.interior == "carve" else None
     if inner is None:
         inner = np.zeros(model.size, bool)
 
+    # Doorways: given openings, or one inferred from a porch or lintel when the rooms are sealed.
+    v = landmark.voxel
+    openings = doors.openings_mask(model.size, v.openings)
+    doorway_note, door_label = "", "openings" if v.openings else ""
+    if v.doorway == "auto" and not v.openings and inner.any() and doors.sealed(model.occ, inner):
+        door = doors.find_doorway(model.occ, inner)
+        if door is not None:
+            openings |= door.cells
+            doorway_note = f"doorway cut facing {door.facing}: openings = [{door.box}]"
+            door_label = f"{door.facing} (auto)"
+    # Checked after cutting: given openings must actually lead in, and so must an inferred doorway.
+    still_sealed = v.doorway == "auto" and inner.any() and doors.sealed(model.occ & ~openings, inner)
+    suggested = []
+    if still_sealed:
+        suggested = [f"{d.facing} {d.box}" for d in doors.suggestions(model.occ & ~openings, inner)]
+    if openings.any():
+        model.occ = model.occ & ~openings
+        model.normal = compute_normals(model.occ)
+
+    c = classify(model, landmark.materials)
+    cid = {n: i for i, n in enumerate(c.names)}
+
     if r.enabled and r.debris_height > 0:
-        fill = inner.copy()
+        fill = inner & ~openings
         fill[:, r.debris_height :, :] = False
         # layer 0 inside the walls is natural ground; debris starts on top of it
         fill[:, 0, :] = False
@@ -93,7 +116,7 @@ def build(landmark: Landmark, model: VoxelModel) -> BuildResult:
     force = schematic.FORCE_PLACE
     prob = ruinmod.variation_prob(model.occ, model.normal == NORMAL_UP, r.variation if r.enabled else 0.0)
 
-    carve = inner & ~model.occ & ~fill
+    carve = (inner | openings) & ~model.occ & ~fill
     grid.param1[carve] = schematic.PROB_ALWAYS | force
 
     if fill.any():
@@ -119,6 +142,10 @@ def build(landmark: Landmark, model: VoxelModel) -> BuildResult:
         grid=grid,
         anchor=anchor_for(model.size, landmark.transform.anchor),
         findings=findings,
+        doorway=doorway_note,
+        door="sealed" if still_sealed else door_label,
+        sealed=still_sealed,
+        suggestions=suggested,
     )
 
 

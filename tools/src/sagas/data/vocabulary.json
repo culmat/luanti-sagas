@@ -48,6 +48,7 @@
 		"terrain": ["plain", "slope", "ridge", "peak", "cliff"],
 		"water": ["coast", "river", "lake", "waterfall", "underwater"],
 		"layer": ["cave_floor", "cave_ceiling", "floatland", "carve"],
+		"contact": ["against_rock", "cave_mouth"],
 		"any": ["any"]
 	},
 	"exposure": ["prominent", "hidden", "any"],

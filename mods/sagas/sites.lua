@@ -8,6 +8,7 @@
 -- A site expression is a list of alternatives, each a list of primitives that must all hold
 -- ("cliff+coast" = {"cliff", "coast"}). Each primitive returns ok, y; y is the anchor height it wants
 -- (nil = no opinion). The first non-nil y wins; otherwise the footprint median height is used.
+-- Contact primitives (against_rock, cave_mouth) need that height: they run afterwards, see sites.post.
 local util = sagas.util
 local sites = {}
 sagas.sites = sites
@@ -27,6 +28,28 @@ core.register_on_mods_loaded(function()
 	end
 	local river = cid_of_alias("mapgen_river_water_source")
 	local sea = cid_of_alias("mapgen_water_source")
+	-- Natural rock: what the mapgen and the biomes use as stone, ores, and the stone groups.
+	local rock_names = {}
+	local function add_rock(name)
+		name = name and (core.registered_aliases[name] or name)
+		if name and core.registered_nodes[name] then
+			rock_names[name] = true
+		end
+	end
+	for _, alias in ipairs({ "mapgen_stone", "mapgen_desert_stone", "mapgen_sandstone" }) do
+		add_rock(alias)
+	end
+	for _, b in pairs(core.registered_biomes) do
+		add_rock(b.node_stone)
+	end
+	for _, o in pairs(core.registered_ores) do
+		if type(o.ore) == "string" then
+			local g = (core.registered_nodes[o.ore] or {}).groups or {}
+			if (g.cracky or 0) > 0 or (g.pickaxey or 0) > 0 then
+				add_rock(o.ore)
+			end
+		end
+	end
 	for name, def in pairs(core.registered_nodes) do
 		local cid = core.get_content_id(name)
 		local g = def.groups or {}
@@ -46,6 +69,9 @@ core.register_on_mods_loaded(function()
 		k.flowing = def.liquidtype == "flowing"
 		k.water = (g.water or 0) > 0
 		k.solid = def.walkable ~= false and not k.liquid and not k.veg and name ~= "air" and name ~= "ignore"
+		k.rock = k.solid
+			and (rock_names[name] or (g.stone or 0) > 0 or (g.material_stone or 0) > 0)
+			and name:sub(1, 6) ~= "sagas:"
 		kinds[cid] = k
 	end
 	if river then
@@ -423,10 +449,125 @@ function P.floatland(ctx, def, p1, p2, s)
 	return true, s.median
 end
 
+-- How deep a landmark sits in uneven ground: half the drop from y to the lowest point of the
+-- footprint, at most 2 nodes and a sixth of its height (def.embed overrides the cap; 0 turns it off).
+-- The uphill side is buried a little, the downhill side hangs less.
+function sites.embed(def, s, y)
+	local cap = def.embed or min(2, floor(def.size.y / 6))
+	return max(0, min(cap, floor((y - s.min) / 2)))
+end
+
+-- contact primitives: checked once the anchor height y is known --------------------------------------
+-- Each gets the landmark's box b1..b2 at height y and returns ok and, optionally, a corrected y.
+local POST = {}
+sites.post = POST
+
+local function rock_at(ctx, x, y, z)
+	local k = kind(ctx, x, y, z)
+	return k and k.rock
+end
+
+-- Does an upper corner of the box b1..b2 touch rock (at the corner, beside it or just above it)?
+-- Only rock at min_y or higher counts, so plain stony ground next to a sunken landmark does not.
+local function corner_on_rock(ctx, b1, b2, min_y)
+	local top = b2.y
+	for _, c in ipairs({ { b1.x, b1.z, -1, -1 }, { b2.x, b1.z, 1, -1 }, { b1.x, b2.z, -1, 1 }, { b2.x, b2.z, 1, 1 } }) do
+		local x, z, sx, sz = c[1], c[2], c[3], c[4]
+		for y = math.max(top - 1, min_y or -math.huge), top + 1 do
+			if
+				rock_at(ctx, x, y, z)
+				or rock_at(ctx, x + sx, y, z)
+				or rock_at(ctx, x, y, z + sz)
+				or rock_at(ctx, x + sx, y, z + sz)
+			then
+				return true
+			end
+		end
+	end
+	return false
+end
+sites.corner_on_rock = corner_on_rock
+
+-- An upper corner rests on natural rock that rises at least 3 nodes above the landmark's ground:
+-- a wall running into a hillside, a cliff or a cave mouth. Ruins may sink up to 3 nodes to reach it.
+function POST.against_rock(ctx, def, b1, b2)
+	for sink = 0, 3 do
+		local q1, q2 = vector.offset(b1, 0, -sink, 0), vector.offset(b2, 0, -sink, 0)
+		if corner_on_rock(ctx, q1, q2, b1.y + 3) then
+			return true, sink
+		end
+	end
+	return false
+end
+
+-- Next to a cave opening at the landmark's ground level: air under the terrain surface within
+-- 8 nodes of the footprint, at the height of the landmark's lowest three layers.
+function POST.cave_mouth(ctx, def, b1, b2)
+	local y = b1.y
+	local found = 0
+	for d = 1, 8 do
+		local x1, x2, z1, z2 = b1.x - d, b2.x + d, b1.z - d, b2.z + d
+		local cols = {}
+		for x = x1, x2 do
+			cols[#cols + 1] = { x, z1 }
+			cols[#cols + 1] = { x, z2 }
+		end
+		for z = z1 + 1, z2 - 1 do
+			cols[#cols + 1] = { x1, z }
+			cols[#cols + 1] = { x2, z }
+		end
+		for _, c in ipairs(cols) do
+			local h = ctx.H(c[1], c[2])
+			if h and h >= y + 6 then
+				for dy = 1, 3 do
+					if air_at(ctx, c[1], y + dy, c[2]) then
+						found = found + 1
+						break
+					end
+				end
+			end
+		end
+		if found >= 3 then
+			return true
+		end
+	end
+	return false
+end
+
 -- exposure ----------------------------------------------------------------------------------------
+
+-- Share of the ground around the footprint (2 to 8 nodes out, every second column) that lies under
+-- tree canopy: leaves 2 to 16 nodes above the surface. Columns outside the chunk are not counted.
+sites.CANOPY_MAX = 0.4
+function sites.canopy(ctx, p1, p2)
+	local covered, total = 0, 0
+	for x = p1.x - 8, p2.x + 8, 2 do
+		for z = p1.z - 8, p2.z + 8, 2 do
+			if x < p1.x - 1 or x > p2.x + 1 or z < p1.z - 1 or z > p2.z + 1 then
+				local h = ctx.H(x, z)
+				if h then
+					total = total + 1
+					for dy = 2, 16, 2 do
+						local k = kind(ctx, x, h + dy, z)
+						if k and k.leaves then
+							covered = covered + 1
+							break
+						end
+					end
+				end
+			end
+		end
+	end
+	return total > 0 and covered / total or 0
+end
 
 function sites.exposure_ok(ctx, def, p1, p2, s, y, layer)
 	local e = def.exposure or "any"
+	-- Deep forest buries a landmark in leaves: only "hidden" ones (the authors' hint for "deep in the
+	-- forest") may stand where most of the ground around is under canopy.
+	if e ~= "hidden" and not layer and s and sites.canopy(ctx, p1, p2) >= sites.CANOPY_MAX then
+		return false
+	end
 	if e == "any" then
 		return true
 	end
@@ -493,22 +634,42 @@ function sites.evaluate(def, ctx, x, z, rot, pr)
 	local s = stats(ctx, p1, p2)
 	for i, alt in ipairs(def.site_parsed) do
 		local ok, y, layer = true, nil, false
+		local posts
 		for _, prim in ipairs(alt) do
-			local good, want = P[prim](ctx, def, p1, p2, s, pr)
-			if not good then
-				ok = false
-				break
-			end
-			if y == nil and want ~= nil then
-				y = want
-			end
-			if sagas.vocab.layer_set[prim] then
-				layer = true
+			if POST[prim] then
+				posts = posts or {}
+				posts[#posts + 1] = prim
+			else
+				local good, want = P[prim](ctx, def, p1, p2, s, pr)
+				if not good then
+					ok = false
+					break
+				end
+				if y == nil and want ~= nil then
+					y = want
+				end
+				if sagas.vocab.layer_set[prim] then
+					layer = true
+				end
 			end
 		end
 		if ok then
 			y = y or (s and s.median)
-			if y and sites.exposure_ok(ctx, def, p1, p2, s, y, layer) then
+			if y and s and not layer then
+				y = y - sites.embed(def, s, y)
+			end
+			if y and posts then
+				for _, prim in ipairs(posts) do
+					local b1, b2 = util.bbox(def, { x = x, y = floor(y), z = z }, rot)
+					local good, sink = POST[prim](ctx, def, b1, b2)
+					if not good then
+						ok = false
+						break
+					end
+					y = y - (sink or 0)
+				end
+			end
+			if ok and y and sites.exposure_ok(ctx, def, p1, p2, s, y, layer) then
 				return floor(y), def.site[i]
 			end
 		end

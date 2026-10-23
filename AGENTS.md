@@ -14,8 +14,9 @@ or vikings; a landmark is one structure). To create or change a landmark, follow
 | `tools/` | Python package `sagas` (uv). CLI: `uv run --project tools sagas ...` |
 | `tools/src/sagas/data/vocabulary.json` | Classes, site primitives, biome tags: the contract with the mod |
 | `content/<saga>/<id>/` | `landmark.toml` (source of truth), `voxels.vx.gz`, `preview.png` |
-| `mods/sagas/` | Core mod (Lua): materials, sites, engine, large landmarks, commands |
+| `mods/sagas/` | Core mod (Lua): materials, sites, engine, large landmarks, commands, tour |
 | `mods/sagas_<saga>/` | Generated packs: never edit by hand, run `sagas build` |
+| `mods/tools/` | Development-only mods, export-ignored from releases: `showcase` (screenshots), `survey` (bridge to `avanti survey`) |
 | `docs/` | Pipeline, placement, materials, sources, scouting reports, gallery |
 
 ## Conventions
@@ -28,6 +29,11 @@ or vikings; a landmark is one structure). To create or change a landmark, follow
   `~/.avanti/corpus/engine/doc/lua_api.md`.
 - Python: `uv run ruff check . && uv run ruff format --check . && uv run pytest` in `tools/`.
 - In-engine tests: `avanti test mods` (Minetest Game, Mineclonia, VoxeLibre).
+- Placement balance: `avanti survey mods --game minetest --set sagas_survey=true` (headless, about
+  4 minutes for the default 1800 mapchunks). Check SV findings after changing rarity, sites, biomes or
+  the engine. `mods/tools/survey` is the bridge; like `mods/tools/showcase` it is never released.
+- Visiting placements needs the Luanti window (`avanti play ... --world <kept survey world>`, then
+  `/saga tour`): ask the maintainer first, it takes over their screen.
 - Test fixtures for the mod are generated: `SAGAS_WRITE_FIXTURES=1 uv run pytest tests/test_core_fixtures.py`.
 
 ## Rules

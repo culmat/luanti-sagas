@@ -14,8 +14,31 @@ local engine = {
 	scale = util.settings.rarity_scale,
 	only = nil, -- set of ids (tests)
 	placed = 0,
+	chunks = 0, -- mapchunks generated while placement was on
+	survey = util.settings.survey,
+	-- id -> {rolls, tries, biome, site, box, spacing, placed}: what happened to real placement attempts
+	stats = {},
+	-- id -> {chunks, fit, tries, biome, site, box, spacing, biomes = {name -> {tries, fit}}}: dry runs
+	-- of every landmark in every chunk while engine.survey is on (sagas_survey)
+	probe = {},
 }
 sagas.engine = engine
+
+local REASONS = { "biome", "site", "box", "spacing" }
+engine.REASONS = REASONS
+
+local function counters(t, id)
+	local c = t[id]
+	if not c then
+		c = { rolls = 0, surface_rolls = 0, chunks = 0, fit = 0, tries = 0, placed = 0, biomes = {} }
+		for _, r in ipairs(REASONS) do
+			c[r] = 0
+		end
+		t[id] = c
+	end
+	return c
+end
+engine.counters = counters
 
 local ROTATIONS = { 0, 90, 180, 270 }
 local TRIES = 6
@@ -35,6 +58,9 @@ function engine.configure(opts)
 	end
 	if opts.mode then
 		engine.mode = opts.mode
+	end
+	if opts.survey ~= nil then
+		engine.survey = opts.survey
 	end
 end
 
@@ -82,8 +108,9 @@ local function rotation_of(def, pr)
 	return tonumber(def.rotation) or 0
 end
 
--- Try to place def in the chunk; returns true when placed.
-local function try_saga(def, pr, ctx, vm)
+-- Try to place def in the chunk; returns true when placed. With vm == nil only evaluate (survey):
+-- returns true when the landmark would fit. c is the counter table (engine.stats or engine.probe entry).
+local function try_saga(def, pr, ctx, vm, c)
 	for _ = 1, TRIES do
 		local rot = rotation_of(def, pr)
 		local rs = util.rotated_size(def.size, rot)
@@ -95,17 +122,34 @@ local function try_saga(def, pr, ctx, vm)
 		end
 		local x, z = pr:next(xlo, xhi), pr:next(zlo, zhi)
 		local biome = ctx.biome(x, z)
-		if not def.biome_filter or (biome and def.biome_filter[biome]) then
+		local bname = biome and core.get_biome_name(biome)
+		local bc
+		c.tries = c.tries + 1
+		if not vm and bname then
+			bc = c.biomes[bname] or { tries = 0, fit = 0 }
+			c.biomes[bname] = bc
+			bc.tries = bc.tries + 1
+		end
+		local reason
+		if def.biome_filter and not (biome and def.biome_filter[biome]) then
+			reason = "biome"
+		else
 			local y, site = sites.evaluate(def, ctx, x, z, rot, pr)
-			if y and y >= def.y_min and y <= def.y_max then
+			if not (y and y >= def.y_min and y <= def.y_max) then
+				reason = "site"
+			else
 				local anchor = { x = x, y = y, z = z }
 				local p1, p2 = util.bbox(def, anchor, rot)
-				if
-					p1.y - def.foundation >= ctx.emin.y
-					and p2.y <= ctx.emax.y
-					and sagas.records.spacing_ok(def.id, p1, p2, def.min_distance)
-				then
-					local bname = biome and core.get_biome_name(biome)
+				if p1.y - def.foundation < ctx.emin.y or p2.y > ctx.emax.y then
+					reason = "box"
+				elseif not sagas.records.spacing_ok(def.id, p1, p2, def.min_distance) then
+					reason = "spacing"
+				elseif not vm then
+					if bc then
+						bc.fit = bc.fit + 1
+					end
+					return true
+				else
 					local mctx = materials.site_context(bname, placement.samples(ctx.data, ctx.area, p1, p2, y))
 					placement.place_on_vm(vm, ctx.area, def, anchor, {
 						rot = rot,
@@ -115,22 +159,64 @@ local function try_saga(def, pr, ctx, vm)
 						pr = pr,
 					})
 					ctx.data = vm:get_data(data_buf)
-					sagas.records.add(def.id, anchor, p1, p2, rot, site)
+					sagas.records.add(def.id, anchor, p1, p2, rot, site, bname)
 					engine.placed = engine.placed + 1
+					c.placed = c.placed + 1
 					util.debug("placed %s at %s (%s, rot %d)", def.id, core.pos_to_string(anchor), site, rot)
 					core.after(0, placement.run_callbacks, def, anchor, p1, p2, rot)
 					return true
 				end
 			end
 		end
+		c[reason] = c[reason] + 1
 	end
 	return false
+end
+
+-- Whether the landmark's sites need the terrain surface inside the chunk (no layer primitive).
+local function needs_surface(def)
+	if def.needs_surface == nil then
+		def.needs_surface = true
+		for _, alt in ipairs(def.site_parsed) do
+			for _, prim in ipairs(alt) do
+				if sagas.vocab.layer_set[prim] then
+					def.needs_surface = false
+				end
+			end
+		end
+	end
+	return def.needs_surface
+end
+engine.needs_surface = needs_surface
+
+-- Survey: evaluate every enabled landmark in this chunk without placing (separate random stream, so
+-- real placement is unchanged). Chunks without terrain surface only count for layer sites.
+local function probe_chunk(ctx, minp, maxp, blockseed)
+	local cx, cz = math.floor((minp.x + maxp.x) / 2), math.floor((minp.z + maxp.z) / 2)
+	local surface = ctx.H(cx, cz) ~= nil
+	for _, def in ipairs(sagas.landmark_list) do
+		if
+			def.enabled
+			and not def.large
+			and def.y_max >= minp.y
+			and def.y_min <= maxp.y
+			and (surface or not needs_surface(def))
+			and (not engine.only or engine.only[def.id])
+		then
+			local c = counters(engine.probe, def.id)
+			c.chunks = c.chunks + 1
+			if try_saga(def, PcgRandom(blockseed + def.salt + 7919), ctx, nil, c) then
+				c.fit = c.fit + 1
+			end
+		end
+	end
 end
 
 function engine.on_generated(minp, maxp, blockseed)
 	if engine.mode ~= "sampler" then
 		return
 	end
+	engine.chunks = engine.chunks + 1
 	local rolls = {}
 	for _, def in ipairs(sagas.landmark_list) do
 		if
@@ -147,7 +233,7 @@ function engine.on_generated(minp, maxp, blockseed)
 			end
 		end
 	end
-	if #rolls == 0 then
+	if #rolls == 0 and not engine.survey then
 		return
 	end
 	local heightmap = core.get_mapgen_object("heightmap")
@@ -158,12 +244,21 @@ function engine.on_generated(minp, maxp, blockseed)
 	local area = VoxelArea(emin, emax)
 	local ctx = make_ctx(minp, maxp, emin, emax, heightmap or {}, core.get_mapgen_object("biomemap"), area)
 	ctx.data = vm:get_data(data_buf)
+	if engine.survey then
+		probe_chunk(ctx, minp, maxp, blockseed)
+	end
+	local surface = ctx.H(math.floor((minp.x + maxp.x) / 2), math.floor((minp.z + maxp.z) / 2)) ~= nil
 	local placed = 0
 	for _, roll in ipairs(rolls) do
 		if placed >= util.settings.max_per_chunk then
 			break
 		end
-		if try_saga(roll.def, roll.pr, ctx, vm) then
+		local c = counters(engine.stats, roll.def.id)
+		c.rolls = c.rolls + 1
+		if surface then
+			c.surface_rolls = c.surface_rolls + 1
+		end
+		if try_saga(roll.def, roll.pr, ctx, vm, c) then
 			placed = placed + 1
 		end
 	end

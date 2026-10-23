@@ -303,6 +303,10 @@ def build(
             x, y, z = res.size
             note = f"  ! {'; '.join(res.findings)}" if res.findings else ""
             typer.echo(f"{res.landmark.qualified_id}: {x}x{y}x{z}, {res.node_count} nodes{note}")
+            if res.doorway:
+                typer.echo(f"  {res.doorway}")
+            if res.sealed:
+                typer.echo("  ! rooms have no door (sagas lint shows a doorway box per side)")
             if not no_preview and res.landmark.qualified_id in ids:
                 pipeline.write_preview(res)
         for p in tb.written:

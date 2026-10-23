@@ -28,6 +28,8 @@ anchor = "bottom-center"
 [voxel]
 mode = "shell"
 close_radius = 1
+# The tower room has no way in (sagas lint L016): a door from the gate passage into the tower.
+openings = [[25, 1, 5, 28, 2, 6]]
 
 [materials]
 mode = "classes"

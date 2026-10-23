@@ -275,13 +275,54 @@ local function cmd_export(name, args)
 	return true, S("Exported to @1", path)
 end
 
-local HELP = S(
-	"Usage: /saga list [saga] | place <id> [0|90|180|270] [--no-foundation] | undo | here | "
-		.. "sites <id> [radius] | mark | export <name> | info <id>"
-)
+-- Subcommands added by other files (tour.lua, explore.lua): name -> {params, func(name, args)}.
+local extra = {}
+sagas.subcommands = extra
+
+-- One line per subcommand: what to type, then what it does.
+local function help()
+	local lines = {
+		S("/saga subcommands:"),
+		"  list [saga]: " .. S("registered landmarks"),
+		"  info <id>: " .. S("size, site, biomes, author and licence"),
+		"  place <id> [0|90|180|270] [--no-foundation]: " .. S("place at the node you point at"),
+		"  undo: " .. S("revert the last place"),
+		"  here: " .. S("landmarks at your position"),
+		"  sites <id> [radius]: " .. S("mark spots where the landmark's site fits"),
+		"  mark, export <name>: " .. S("punch two corners, then save them as a schematic"),
+	}
+	for _, sub in ipairs({ "placed", "tp", "tour", "waypoints", "find", "stats" }) do
+		if extra[sub] then
+			lines[#lines + 1] = ("  %s %s: %s"):format(sub, extra[sub].params, extra[sub].desc)
+		end
+	end
+	return table.concat(lines, "\n")
+end
+
+core.register_on_mods_loaded(function()
+	local explore, tour = sagas.explore, sagas.tour
+	extra.placed = { params = "[id] [radius]", desc = S("placed landmarks, nearest first"), func = explore.placed }
+	extra.tp = {
+		params = "<n>|<id>",
+		desc = S("go to entry n of /saga placed, or the next copy of a landmark"),
+		func = explore.tp,
+	}
+	extra.tour = {
+		params = "[n|id] [--static] [--times 0.5,0]|stop",
+		desc = S("fly around placed landmarks"),
+		func = tour.command,
+	}
+	extra.waypoints = { params = "[radius]|off", desc = S("markers on screen"), func = explore.waypoints }
+	extra.find = {
+		params = "<id> [km]|stop",
+		desc = S("generate the map around you until a landmark appears"),
+		func = explore.find,
+	}
+	extra.stats = { params = "[id]", desc = S("placement statistics of this session"), func = explore.stats }
+end)
 
 core.register_chatcommand("saga", {
-	params = "list [saga] | place <id> [rotation] | undo | here | sites <id> | mark | export <name> | info <id>",
+	params = "[subcommand] (/saga alone lists them)",
 	description = S("Place and inspect landmarks"),
 	privs = { sagas = true },
 	func = function(name, param)
@@ -320,7 +361,9 @@ core.register_chatcommand("saga", {
 					def.license or "?",
 					def.source_url or ""
 				)
+		elseif extra[sub] then
+			return extra[sub].func(name, rest)
 		end
-		return false, HELP
+		return false, help()
 	end,
 })

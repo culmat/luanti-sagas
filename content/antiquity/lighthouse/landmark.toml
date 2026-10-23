@@ -27,6 +27,8 @@ anchor = "bottom-center"
 mode = "shell"
 texture = "ptol_struct.png"
 alpha = "ignore"
+# The model paints its door on the texture (sagas lint L016): through the plinth, facing the forecourt.
+openings = [[7, 1, 11, 8, 2, 12]]
 
 [materials]
 mode = "classes"

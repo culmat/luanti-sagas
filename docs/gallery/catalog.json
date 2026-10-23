@@ -365,37 +365,6 @@
     "preview": "../../content/ruins/menlo_gate/preview.png"
   },
   {
-    "id": "sagas_ruins:pillar",
-    "title": "Fallen pillar",
-    "saga": "ruins",
-    "size": [
-      3,
-      10,
-      3
-    ],
-    "nodes": 74,
-    "materials": "classes",
-    "site": [
-      "plain",
-      "slope"
-    ],
-    "exposure": "any",
-    "biomes": [
-      "grassland",
-      "savanna",
-      "desert",
-      "forest"
-    ],
-    "rarity": 120,
-    "large": false,
-    "author": "Ron Kapaun / 3TD Studios",
-    "license": "CC0-1.0",
-    "source_url": "https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip",
-    "ai": "none",
-    "lore": "",
-    "preview": "../../content/ruins/pillar/preview.png"
-  },
-  {
     "id": "sagas_ruins:ruin_arch",
     "title": "Broken aqueduct arch",
     "saga": "ruins",
@@ -536,8 +505,10 @@
     "nodes": 354,
     "materials": "classes",
     "site": [
-      "plain",
-      "slope"
+      "cave_mouth+against_rock",
+      "slope+against_rock",
+      "cliff+against_rock",
+      "plain+against_rock"
     ],
     "exposure": "any",
     "biomes": [

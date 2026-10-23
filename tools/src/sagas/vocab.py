@@ -56,7 +56,7 @@ def class_names() -> list[str]:
 
 def site_primitives() -> list[str]:
     s = vocabulary()["sites"]
-    return [*s["terrain"], *s["water"], *s["layer"], *s["any"]]
+    return [*s["terrain"], *s["water"], *s["layer"], *s.get("contact", []), *s["any"]]
 
 
 def parse_site(expr: str) -> list[str]:

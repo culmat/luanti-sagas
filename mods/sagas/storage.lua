@@ -34,16 +34,21 @@ for _, key in ipairs(keys) do
 	end
 end
 
-function records.add(id, anchor, p1, p2, rot, site)
+-- biome: biome name at the anchor (looked up from the biome noise when not given).
+function records.add(id, anchor, p1, p2, rot, site, biome)
 	local key = "r:" .. util.pos_key(anchor)
-	local rec = { id = id, anchor = anchor, p1 = p1, p2 = p2, rot = rot, site = site, t = os.time() }
+	if not biome then
+		local bd = core.get_biome_data(anchor)
+		biome = bd and core.get_biome_name(bd.biome) or nil
+	end
+	local rec = { id = id, anchor = anchor, p1 = p1, p2 = p2, rot = rot, site = site, biome = biome, t = os.time() }
 	if by_key[key] then
 		index:remove_area(by_key[key].area_id)
 	else
 		order[#order + 1] = key
 	end
 	add_to_index(key, rec)
-	local saved = { id = id, anchor = anchor, p1 = p1, p2 = p2, rot = rot, site = site, t = rec.t }
+	local saved = { id = id, anchor = anchor, p1 = p1, p2 = p2, rot = rot, site = site, biome = biome, t = rec.t }
 	storage:set_string(key, core.write_json(saved))
 	while #order > MAX_RECORDS do
 		local old = table.remove(order, 1)
@@ -118,6 +123,76 @@ end
 
 function records.count()
 	return #order
+end
+
+-- All records, oldest first (a new list; the records themselves are shared, do not modify them).
+-- With id, only records of that landmark.
+function records.all(id)
+	local out = {}
+	for _, key in ipairs(order) do
+		local rec = by_key[key]
+		if rec and (not id or rec.id == id) then
+			out[#out + 1] = rec
+		end
+	end
+	return out
+end
+
+local function hdist(a, b)
+	local dx, dz = a.x - b.x, a.z - b.z
+	return math.sqrt(dx * dx + dz * dz)
+end
+records.hdist = hdist
+
+-- Records sorted by horizontal distance of their anchor from pos (nearest first), optionally only
+-- of landmark id and within radius. Returns the list and a parallel list of distances.
+function records.nearest(pos, id, radius)
+	local list, dist = {}, {}
+	for _, rec in ipairs(records.all(id)) do
+		local d = hdist(pos, rec.anchor)
+		if not radius or d <= radius then
+			list[#list + 1] = rec
+			dist[rec] = d
+		end
+	end
+	table.sort(list, function(a, b)
+		return dist[a] < dist[b]
+	end)
+	local ds = {}
+	for i, rec in ipairs(list) do
+		ds[i] = dist[rec]
+	end
+	return list, ds
+end
+
+-- Per landmark id: { count, nn_mean, nn_min }, where nn is the horizontal distance from each copy to
+-- the nearest other copy of the same landmark (nil with fewer than two copies).
+function records.spread()
+	local groups = {}
+	for _, rec in ipairs(records.all()) do
+		groups[rec.id] = groups[rec.id] or {}
+		table.insert(groups[rec.id], rec.anchor)
+	end
+	local out = {}
+	for id, anchors in pairs(groups) do
+		local s = { count = #anchors }
+		if #anchors > 1 then
+			local sum, min = 0, math.huge
+			for i, a in ipairs(anchors) do
+				local best = math.huge
+				for j, b in ipairs(anchors) do
+					if i ~= j then
+						best = math.min(best, hdist(a, b))
+					end
+				end
+				sum = sum + best
+				min = math.min(min, best)
+			end
+			s.nn_mean, s.nn_min = sum / #anchors, min
+		end
+		out[id] = s
+	end
+	return out
 end
 
 records.storage = storage

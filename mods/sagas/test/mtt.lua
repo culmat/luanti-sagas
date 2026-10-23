@@ -434,7 +434,7 @@ mtt.register("sagas: mapgen places sagas", {
 		end
 		local def = sagas.registered_landmarks["sagas:test_box"]
 		def.enabled = true
-		sagas.engine.configure({ rarity_scale = 1, only = { "sagas:test_box" } })
+		sagas.engine.configure({ rarity_scale = 1, only = { "sagas:test_box" }, survey = true })
 		local before = sagas.engine.placed
 		local c = { x = 3000, y = 0, z = 3000 }
 		core.emerge_area(
@@ -443,7 +443,7 @@ mtt.register("sagas: mapgen places sagas", {
 			function(_, _, remaining)
 				if remaining == 0 then
 					def.enabled = false
-					sagas.engine.configure({ only = false })
+					sagas.engine.configure({ only = false, survey = false })
 					local placed = sagas.engine.placed - before
 					core.log("action", ("[sagas] mapgen test: %d landmark(s) placed"):format(placed))
 					if placed < 1 then
@@ -453,9 +453,385 @@ mtt.register("sagas: mapgen places sagas", {
 					if #recs < 1 then
 						return callback("placements were not recorded")
 					end
+					local st = sagas.engine.stats["sagas:test_box"]
+					if not st or st.placed < placed or st.rolls < st.placed then
+						return callback("placement stats not counted: " .. dump(st))
+					end
+					local pr = sagas.engine.probe["sagas:test_box"]
+					if not pr or pr.chunks < 1 or pr.tries < pr.chunks then
+						return callback("survey probe not counted: " .. dump(pr))
+					end
+					if not sagas.explore.report("sagas:test_box"):find("survey fits", 1, true) then
+						return callback("report lacks the survey line")
+					end
 					callback()
 				end
 			end
 		)
 	end,
 })
+
+mtt.register("sagas: records list, nearest and spread", function(callback)
+	local records = sagas.records
+	local base = records.count()
+	local id = "sagas:test_arrow"
+	local function box(x)
+		return { x = x, y = 5, z = 20000 }, { x = x + 2, y = 5, z = 20001 }
+	end
+	for _, x in ipairs({ 20000, 20100, 20400 }) do
+		local p1, p2 = box(x)
+		records.add(id, { x = x, y = 5, z = 20000 }, p1, p2, 0, "test", "testbiome")
+	end
+	local ok, err = pcall(function()
+		assert(records.count() == base + 3, "count")
+		assert(#records.all(id) == 3, "all(id)")
+		local list, dist = records.nearest({ x = 20390, y = 0, z = 20000 }, id)
+		assert(list[1].anchor.x == 20400 and math.abs(dist[1] - 10) < 0.01, "nearest first")
+		assert(list[3].anchor.x == 20000, "farthest last")
+		assert(#records.nearest({ x = 20390, y = 0, z = 20000 }, id, 50) == 1, "radius")
+		assert(list[1].biome == "testbiome", "biome kept")
+		local s = records.spread()[id]
+		assert(s.count == 3 and s.nn_min == 100, "spread min " .. dump(s))
+		assert(math.abs(s.nn_mean - 500 / 3) < 0.01, "spread mean " .. tostring(s.nn_mean))
+	end)
+	for _, x in ipairs({ 20000, 20100, 20400 }) do
+		records.remove_at({ x = x, y = 5, z = 20000 })
+	end
+	assert(records.count() == base, "records removed")
+	callback(not ok and err or nil)
+end)
+
+mtt.register("sagas: tour viewpoints look at the landmark from above", function(callback)
+	local rec = { p1 = { x = 0, y = 10, z = 0 }, p2 = { x = 28, y = 29, z = 44 } }
+	local center = { x = 14, y = 10 + 20 * 0.35, z = 22 }
+	for k = 0, 7 do
+		local eye, yaw, pitch, c = sagas.tour.vantage(rec, k * math.pi / 4)
+		assert(vector.distance(c, center) < 0.01, "center")
+		assert(eye.y > rec.p2.y, "camera above the roof")
+		local d = math.sqrt((eye.x - c.x) ^ 2 + (eye.z - c.z) ^ 2)
+		assert(d > 45 / 2 + 10, "camera outside the footprint")
+		local deg = math.deg(pitch)
+		assert(deg > 15 and deg < 45, "pitch " .. deg)
+		-- The look direction for yaw/pitch points at the center.
+		local dir = { x = -math.sin(yaw) * math.cos(pitch), y = -math.sin(pitch), z = math.cos(yaw) * math.cos(pitch) }
+		local to = vector.normalize(vector.subtract(c, eye))
+		assert(vector.distance(dir, to) < 0.001, "looks at the landmark")
+	end
+	local lifted = sagas.tour.vantage(rec, 0, 10)
+	assert(lifted.y == sagas.tour.vantage(rec, 0).y + 10, "lift raises the camera")
+	local near, _, p_near, c = sagas.tour.vantage(rec, 0, 0, 0.5)
+	local far, _, p_far = sagas.tour.vantage(rec, 0, 0, 2)
+	local function hd(e)
+		return math.sqrt((e.x - c.x) ^ 2 + (e.z - c.z) ^ 2)
+	end
+	assert(math.abs(hd(far) - 4 * hd(near)) < 0.01, "zoom scales the distance")
+	assert(math.abs(p_near - p_far) < 0.001, "zoom keeps the viewing angle")
+	callback()
+end)
+
+mtt.register("sagas: find walks square rings of tiles", function(callback)
+	local seen = {}
+	for r = 0, 3 do
+		local tiles = sagas.explore.ring_tiles(r)
+		assert(#tiles == math.max(1, 8 * r), "ring " .. r .. " has " .. #tiles)
+		for _, t in ipairs(tiles) do
+			assert(math.max(math.abs(t[1]), math.abs(t[2])) == r, "tile on ring")
+			local k = t[1] .. "," .. t[2]
+			assert(not seen[k], "duplicate tile " .. k)
+			seen[k] = true
+		end
+	end
+	callback()
+end)
+
+mtt.register("sagas: /saga help has one line per subcommand", function(callback)
+	local ok, text = core.registered_chatcommands.saga.func("singleplayer", "")
+	assert(not ok, "no subcommand is an error")
+	local lines = 0
+	for _ in text:gmatch("[^\n]+") do
+		lines = lines + 1
+	end
+	assert(lines >= 14, "help lines: " .. lines)
+	for _, sub in ipairs({ "place", "placed", "tp", "tour", "waypoints", "find", "stats" }) do
+		assert(
+			text:find("\n  " .. sub .. " ", 1, true) or text:find("\n  " .. sub .. ":", 1, true),
+			"help lists " .. sub
+		)
+	end
+	callback()
+end)
+
+mtt.register("sagas: contact sites need rock above the ground or a cave next door", function(callback)
+	local sites = sagas.sites
+	local stone = core.get_content_id(sagas.materials.resolved.fixed.rock.name)
+	assert(sagas.sites.kinds()[stone].rock, sagas.materials.resolved.fixed.rock.name .. " counts as rock")
+	local air = core.CONTENT_AIR
+	local def = {
+		size = { x = 7, y = 5, z = 7 },
+		anchor = { x = 3, y = 0, z = 3 },
+		y_min = -100,
+		y_max = 300,
+		exposure = "any",
+	}
+	-- Terrain: stone up to H(x, z), air above, minus `holes`; extra stone in `extra`.
+	local function ctx_for(H, extra, holes)
+		local function key(x, y, z)
+			return x .. "," .. y .. "," .. z
+		end
+		return {
+			minp = { x = 0, y = -32, z = 0 },
+			maxp = { x = 79, y = 47, z = 79 },
+			water_level = 1,
+			H = function(x, z)
+				if x < 0 or x > 79 or z < 0 or z > 79 then
+					return nil
+				end
+				return H(x, z)
+			end,
+			biome = function()
+				return nil
+			end,
+			node = function(x, y, z)
+				if holes and holes[key(x, y, z)] then
+					return air
+				end
+				if extra and extra[key(x, y, z)] then
+					return stone
+				end
+				return y <= H(x, z) and stone or air
+			end,
+			key = key,
+		}
+	end
+	local function check(expr, ctx)
+		def.site = { expr }
+		def.site_parsed = { {} }
+		for prim in expr:gmatch("[^+]+") do
+			table.insert(def.site_parsed[1], prim)
+		end
+		return sites.evaluate(def, ctx, 40, 40, 0)
+	end
+	local flat = function()
+		return 10
+	end
+	-- footprint x/z 37..43, box y 10..14 on flat stone ground
+	assert(not check("plain+against_rock", ctx_for(flat)), "stony flat ground is no rock face")
+	local pillar = {}
+	for y = 0, 14 do
+		pillar["36," .. y .. ",36"] = true
+	end
+	assert(check("plain+against_rock", ctx_for(flat, pillar)) == 10, "rock next to an upper corner")
+	local hill = function(x)
+		return x >= 46 and 30 or 10
+	end
+	assert(not check("plain+cave_mouth", ctx_for(hill)), "a solid hill is no cave mouth")
+	local holes = {}
+	for x = 46, 50 do
+		for z = 39, 41 do
+			for y = 11, 13 do
+				holes[x .. "," .. y .. "," .. z] = true
+			end
+		end
+	end
+	assert(check("plain+cave_mouth", ctx_for(hill, nil, holes)) == 10, "cave opening next to the landmark")
+	callback()
+end)
+
+mtt.register("sagas: snow covers the landmark's top surfaces", function(callback)
+	local stone = core.get_content_id(sagas.materials.resolved.fixed.rock.name)
+	local dust = core.get_content_id("sagas:color")
+	local air = core.CONTENT_AIR
+	local area = VoxelArea({ x = 0, y = 0, z = 0 }, { x = 4, y = 30, z = 4 })
+	local data, param2s = {}, {}
+	for i in area:iterp(area.MinEdge, area.MaxEdge) do
+		data[i], param2s[i] = air, 0
+	end
+	for y = 0, 5 do
+		data[area:index(1, y, 1)] = stone -- a wall top at 5
+	end
+	data[area:index(2, 3, 2)] = stone
+	data[area:index(2, 24, 2)] = stone -- overhang at the top of the cleared space: no dust below it
+	local plant
+	for name, d in pairs(core.registered_nodes) do
+		if d.drawtype == "plantlike" and d.walkable == false then
+			plant = core.get_content_id(name)
+			break
+		end
+	end
+	if plant then
+		data[area:index(3, 2, 3)] = plant
+	end
+	local n = sagas.placement.dust(data, param2s, area, { x = 0, y = 0, z = 0 }, { x = 4, y = 8, z = 4 }, dust)
+	assert(data[area:index(1, 6, 1)] == dust, "dust on the wall top")
+	assert(data[area:index(2, 4, 2)] == air, "no dust under an overhang")
+	if plant then
+		assert(data[area:index(3, 3, 3)] == air, "no dust on plants")
+	end
+	assert(n == 1, "one column covered, got " .. n)
+	callback()
+end)
+
+mtt.register("sagas: snowy biomes give their dust to landmarks", function(callback)
+	local checked = 0
+	local by_id = core.ipc_get and core.ipc_get("mcl_biomes:biome_dust_cids") or {}
+	for name, b in pairs(core.registered_biomes) do
+		local want = b.node_dust and (core.registered_aliases[b.node_dust] or b.node_dust)
+		local cid = type(by_id) == "table" and by_id[core.get_biome_id(name)]
+		want = want or (cid and core.get_name_from_content_id(cid))
+		if want and core.registered_nodes[want] then
+			local ctx = sagas.materials.site_context(name)
+			assert(ctx.dust == want, name .. ": dust " .. tostring(ctx.dust) .. ", want " .. want)
+			checked = checked + 1
+		end
+	end
+	core.log("action", ("[sagas] dust test: %d biome(s) with dust"):format(checked))
+	callback()
+end)
+
+mtt.register("sagas: schematic bases: lowest node per column, room floors", function(callback)
+	local box = sagas.placement.base(sagas.registered_landmarks["sagas:test_box"])
+	for k = 0, 7 * 7 - 1 do
+		assert(box.lowest[k] == 0 and not box.floor[k], "test box stands on its bottom layer, column " .. k)
+	end
+	local rh = sagas.registered_landmarks["sagas_antiquity:roundhouse"]
+	if rh then
+		local b = sagas.placement.base(rh)
+		local carved, porch = 0, 0
+		for k = 0, rh.size.x * rh.size.z - 1 do
+			if b.floor[k] == 0 then
+				carved = carved + 1
+			end
+			if b.lowest[k] == 2 then
+				porch = porch + 1
+			end
+		end
+		assert(carved > 20, "roundhouse has a room floor: " .. carved)
+		assert(porch > 0, "roundhouse porch starts 2 up")
+	end
+	callback()
+end)
+
+mtt.register("sagas: anchoring fills room floors and one-node gaps, not overhangs", function(callback)
+	local stone = core.get_content_id(sagas.materials.resolved.fixed.rock.name)
+	local air = core.CONTENT_AIR
+	local area = VoxelArea({ x = 0, y = -6, z = 0 }, { x = 6, y = 6, z = 2 })
+	local data, param2s = {}, {}
+	for i in area:iterp(area.MinEdge, area.MaxEdge) do
+		data[i], param2s[i] = (area:position(i).y <= -4) and stone or air, 0
+	end
+	local function set(x, y, n)
+		data[area:index(x, y, 1)] = n
+	end
+	-- local columns x = 0..3 at world x = 1..4, z = 1: wall, room, one-node gap, porch (two up)
+	local base = { lowest = { [0] = 0, [2] = 1, [3] = 2 }, floor = { [1] = -1 } }
+	for y = 0, 2 do
+		set(1, y, stone)
+	end
+	set(2, 2, stone)
+	set(3, 1, stone)
+	set(3, -1, stone) -- ground right under the gap
+	set(4, 2, stone)
+	set(4, -1, stone)
+	local p1 = { x = 1, y = 0, z = 1 }
+	local n = sagas.placement.anchor(data, param2s, area, base, { x = 4, y = 3, z = 1 }, p1, 0, 12, stone)
+	local function at(x, y)
+		return data[area:index(x, y, 1)]
+	end
+	assert(at(2, -1) == stone and at(2, -3) == stone, "room floor filled down to the ground")
+	assert(at(3, 0) == stone, "one-node gap filled")
+	assert(at(4, 0) == air and at(4, 1) == air, "porch two up stays an overhang")
+	assert(n == 4, "filled " .. n)
+	callback()
+end)
+
+mtt.register("sagas: landmarks sit a little into sloping ground", function(callback)
+	local def = {
+		size = { x = 7, y = 12, z = 7 },
+		anchor = { x = 3, y = 0, z = 3 },
+		y_min = -100,
+		y_max = 300,
+		exposure = "any",
+		site = { "slope" },
+		site_parsed = { { "slope" } },
+	}
+	local function ctx_for(hfun)
+		return {
+			minp = { x = 0, y = -32, z = 0 },
+			maxp = { x = 79, y = 47, z = 79 },
+			water_level = 1,
+			H = hfun,
+			node = function() end,
+			biome = function() end,
+		}
+	end
+	local ramp = function(x)
+		return 10 + math.floor((x - 37) * 0.8)
+	end
+	local s = sagas.sites.stats(ctx_for(ramp), { x = 37, z = 37 }, { x = 43, z = 43 })
+	local y = sagas.sites.evaluate(def, ctx_for(ramp), 40, 40, 0)
+	local want = s.median - math.min(2, math.floor((s.median - s.min) / 2)) -- half the drop, at most 2
+	assert(want < s.median, "the ramp is steep enough to sink")
+	assert(y == want, ("sunk into the slope: y %s, want %s, median %s"):format(tostring(y), want, s.median))
+	def.embed = 0
+	assert(sagas.sites.evaluate(def, ctx_for(ramp), 40, 40, 0) == s.median, "embed = 0 keeps the median")
+	assert(sagas.sites.embed({ size = { y = 5 } }, { min = 0 }, 4) == 0, "short landmarks are not sunk")
+	callback()
+end)
+
+mtt.register("sagas: only hidden landmarks stand in deep forest", function(callback)
+	local sites = sagas.sites
+	local leaves
+	for cid, k in pairs(sites.kinds()) do
+		if k.leaves then
+			leaves = cid
+			break
+		end
+	end
+	if not leaves then
+		return callback() -- a game without leaves
+	end
+	local stone = core.get_content_id(sagas.materials.resolved.fixed.rock.name)
+	local function ctx_for(canopy)
+		return {
+			minp = { x = 0, y = -32, z = 0 },
+			maxp = { x = 79, y = 47, z = 79 },
+			water_level = 1,
+			H = function(x, z)
+				if x < 0 or x > 79 or z < 0 or z > 79 then
+					return nil
+				end
+				return 10
+			end,
+			biome = function() end,
+			node = function(x, y, z)
+				if y == 16 and canopy(x, z) then
+					return leaves
+				end
+				return y <= 10 and stone or core.CONTENT_AIR
+			end,
+		}
+	end
+	local def = {
+		size = { x = 7, y = 5, z = 7 },
+		anchor = { x = 3, y = 0, z = 3 },
+		y_min = -100,
+		y_max = 300,
+		site = { "plain" },
+		site_parsed = { { "plain" } },
+	}
+	local forest = ctx_for(function()
+		return true
+	end)
+	local edge = ctx_for(function(x)
+		return x < 36 -- trees only west of the landmark
+	end)
+	for _, e in ipairs({ "any", "prominent" }) do
+		def.exposure = e
+		assert(not sites.evaluate(def, forest, 40, 40, 0), e .. " landmark kept out of deep forest")
+	end
+	def.exposure = "any"
+	assert(sites.evaluate(def, edge, 40, 40, 0) == 10, "a forest edge is fine")
+	def.exposure = "hidden"
+	assert(sites.evaluate(def, forest, 40, 40, 0) == 10, "hidden landmarks may stand in deep forest")
+	callback()
+end)

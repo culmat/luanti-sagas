@@ -120,6 +120,7 @@ def render(res: BuildResult, size: int = 1024) -> Image.Image:
     label = (
         f"{res.landmark.qualified_id}  {x}x{y}x{z}  {res.node_count} nodes  "
         f"materials: {res.landmark.materials.mode}  site: {', '.join(res.landmark.placement.site)}"
+        + (f"  door: {res.door}" if res.door else "")
     )
     d.text((8, size + 8), label, fill=INK)
     d.text((8, 6), "top", fill=INK)

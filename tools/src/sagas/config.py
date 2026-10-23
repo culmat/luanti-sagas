@@ -74,6 +74,9 @@ class Voxel:
     exclude: list[str] = field(default_factory=list)  # globs on part or material names (collision meshes, LODs)
     texture: str = ""  # image applied to UV-mapped parts without a texture (e.g. 0 A.D. actor textures)
     alpha: str = "cutout"  # cutout: transparent texels are holes; ignore: alpha is not transparency
+    # auto: sealed rooms get a doorway where the model shows an entrance (porch, lintel); none: sealed on purpose
+    doorway: str = "auto"
+    openings: list[list[int]] = field(default_factory=list)  # [x1, y1, z1, x2, y2, z2] cut to air (schematic coords)
 
 
 @dataclass
@@ -300,6 +303,11 @@ def validate(s: Landmark) -> None:
         raise ConfigError(f"{w}: voxel.interior must be 'carve' or 'keep'")
     if v.alpha not in ("cutout", "ignore"):
         raise ConfigError(f"{w}: voxel.alpha must be 'cutout' or 'ignore'")
+    if v.doorway not in ("auto", "none"):
+        raise ConfigError(f"{w}: voxel.doorway must be 'auto' or 'none'")
+    for i, box in enumerate(v.openings):
+        if not (isinstance(box, list) and len(box) == 6 and all(isinstance(n, int) and n >= 0 for n in box)):
+            raise ConfigError(f"{w}: voxel.openings[{i}] must be [x1, y1, z1, x2, y2, z2] (whole numbers >= 0)")
     for i, extra in enumerate(src.extra_files):
         if not isinstance(extra, dict) or not extra.get("file") or set(extra) - {"url", "file", "sha256"}:
             raise ConfigError(f"{w}: source.extra_files[{i}] needs file (and url, sha256) only")

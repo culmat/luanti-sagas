@@ -32,6 +32,7 @@ CODES = {
     "L013": "licence text hints at NC/ND restrictions",
     "L014": "file too large to commit",
     "L015": "very low rarity (more than one per 20 mapchunks)",
+    "L016": "rooms are sealed: no way in at ground level",
 }
 
 
@@ -106,6 +107,15 @@ def check_saga(landmark: Landmark, built: BuildResult | None = None, strict: boo
             )
         for msg in built.findings:
             add("L005", msg)
+        if built.sealed:
+            add(
+                "L016",
+                "the rooms have no way in at ground level and the model shows no entrance (porch or lintel)"
+                " to put a doorway under; add voxel.openings = [[x1, y1, z1, x2, y2, z2]] (layers 1-2 are"
+                ' door height) or set voxel.doorway = "none" if it is sealed on purpose'
+                + (f". Doorway per side: {'; '.join(built.suggestions)}" if built.suggestions else ""),
+                "warn",
+            )
     return out
 
 

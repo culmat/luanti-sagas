@@ -84,7 +84,10 @@ add a rule such as `match = { part = "mymod:roof_tile" }` with `class = "roof_re
 - Mod: `luacheck mods`, `stylua --check mods/sagas`, and `avanti test mods`
   ([avanti-luanti](https://github.com/culmat/avanti-luanti)) for the headless game tests.
 - Play-test while developing: `avanti play mods --game minetest` runs your working copy in game;
-  quit and rerun after each change (`--fresh` for a new map).
+  quit and rerun after each change (`--fresh` for a new map). You start flying fast, with every privilege.
+- Balance: `avanti survey mods --game minetest --set sagas_survey=true --keep` reports how often each
+  landmark appears, how far apart copies are and in which biomes; `/saga tour` in the kept world shows
+  them. See [docs/placement.md](docs/placement.md#testing-a-placement).
 - The vocabulary (classes, sites, biome tags) lives in `tools/src/sagas/data/vocabulary.json`;
   run `sagas sync-core` after changing it so the mod gets the same copy.
 

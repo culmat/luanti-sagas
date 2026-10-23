@@ -33,6 +33,80 @@ function placement.samples(data, area, p1, p2, y)
 	return out
 end
 
+-- Per landmark: for every schematic column (index z * size.x + x), the lowest placed node's y
+-- (`lowest`), or, for a room at ground level, the y of its floor (`floor`): the cell below the
+-- room's carved air, which is the terrain itself (-1 or 0). Read once from the schematic file.
+local bases = {}
+function placement.base(def)
+	local b = bases[def.schematic]
+	if b then
+		return b
+	end
+	b = { lowest = {}, floor = {} }
+	local s = core.read_schematic(def.schematic, { write_yslice_prob = "none" })
+	if s and s.data then
+		local sx, sy, sz = s.size.x, s.size.y, s.size.z
+		for z = 0, sz - 1 do
+			for x = 0, sx - 1 do
+				local k = z * sx + x
+				for y = 0, sy - 1 do
+					local n = s.data[(z * sy + y) * sx + x + 1] -- data is ordered z, y, x
+					if (n.prob or n.param1 or 255) > 1 then
+						if n.name ~= "air" then
+							b.lowest[k] = y
+						elseif y <= 1 then
+							b.floor[k] = y - 1
+						end
+						break
+					end
+				end
+			end
+		end
+	end
+	bases[def.schematic] = b
+	return b
+end
+
+-- Anchor a placed landmark to the ground (box corner p1, rotation rot), besides the foundation under
+-- its bottom layer: the floor of every ground-level room gets the same foundation, down to
+-- `depth` nodes, and a node that hangs exactly one node above the ground gets a support node, so
+-- nothing seems to hover. Higher overhangs (eaves, porches, door lintels) stay as they are.
+-- Returns the number of nodes filled.
+function placement.anchor(data, param2s, area, base, size, p1, rot, depth, fcid)
+	local kinds = sagas.sites.kinds()
+	local function solid(vi)
+		local k = kinds[data[vi]]
+		return k and k.solid
+	end
+	local filled = 0
+	local emin = area.MinEdge
+	for z = 0, size.z - 1 do
+		for x = 0, size.x - 1 do
+			local k = z * size.x + x
+			local r = util.rotate_local({ x = x, y = 0, z = z }, size, rot)
+			local wx, wz = p1.x + r.x, p1.z + r.z
+			local low = base.lowest[k]
+			if base.floor[k] then
+				for y = p1.y + base.floor[k], math.max(emin.y, p1.y - depth), -1 do
+					local vi = area:index(wx, y, wz)
+					if solid(vi) then
+						break
+					end
+					data[vi], param2s[vi] = fcid, 0
+					filled = filled + 1
+				end
+			elseif low and low > 0 and area:contains(wx, p1.y + low - 2, wz) then
+				local vi = area:index(wx, p1.y + low - 1, wz)
+				if not solid(vi) and solid(vi - area.ystride) then
+					data[vi], param2s[vi] = fcid, 0
+					filled = filled + 1
+				end
+			end
+		end
+	end
+	return filled
+end
+
 -- Place def with its anchor at `anchor` into vm (VoxelArea `area`). opts:
 --   rot (0/90/180/270), foundation (max depth), clear_above (bool), ctx (materials.site_context), pr (PcgRandom)
 -- Returns p1, p2 (placed box) and the number of foundation nodes.
@@ -68,6 +142,7 @@ function placement.place_on_vm(vm, area, def, anchor, opts)
 	local filled = 0
 	if depth > 0 then
 		local fnode = materials.foundation_target(def, opts.ctx)
+		filled = placement.anchor(data, param2s, area, placement.base(def), def.size, p1, rot, depth, fnode.cid)
 		local emin = area.MinEdge
 		for z = p1.z, p2.z do
 			for x = p1.x, p2.x do
@@ -88,9 +163,59 @@ function placement.place_on_vm(vm, area, def, anchor, opts)
 	end
 	local map = materials.remap(def, opts.ctx)
 	materials.apply(data, param2s, area, p1, p2, map, opts.pr or PcgRandom(util.hash32(def.id, anchor.x, anchor.z)))
+	if opts.ctx and opts.ctx.dust and opts.dust ~= false then
+		placement.dust(data, param2s, area, p1, p2, core.get_content_id(opts.ctx.dust))
+	end
 	vm:set_data(data)
 	vm:set_param2_data(param2s)
 	return p1, p2, filled
+end
+
+-- Nodes that can carry dust: the engine's rule for terrain (cubic and walkable).
+local holds_dust = {}
+core.register_on_mods_loaded(function()
+	local cubic = {
+		normal = true,
+		allfaces = true,
+		allfaces_optional = true,
+		glasslike = true,
+		glasslike_framed = true,
+		glasslike_framed_optional = true,
+	}
+	for name, def in pairs(core.registered_nodes) do
+		if cubic[def.drawtype or "normal"] and def.walkable ~= false then
+			holds_dust[core.get_content_id(name)] = true
+		end
+	end
+end)
+
+-- Cover the topmost surface of every column over the footprint p1..p2 with `dust` (a content id),
+-- like the mapgen covers terrain in snowy biomes. Clearing the vegetation above a landmark also
+-- removes the snow there, so terrain columns in the footprint get theirs back too.
+function placement.dust(data, param2s, area, p1, p2, dust)
+	local air = core.CONTENT_AIR
+	local top = math.min(area.MaxEdge.y - 1, p2.y + CLEAR_ABOVE)
+	local covered = 0
+	for z = p1.z, p2.z do
+		for x = p1.x, p2.x do
+			local vi = area:index(x, top, z)
+			if data[vi] == air then
+				for y = top - 1, math.max(area.MinEdge.y, p1.y - 1), -1 do
+					vi = vi - area.ystride
+					local c = data[vi]
+					if c ~= air then
+						if holds_dust[c] and c ~= dust and y < top then
+							data[vi + area.ystride] = dust
+							param2s[vi + area.ystride] = 0
+							covered = covered + 1
+						end
+						break
+					end
+				end
+			end
+		end
+	end
+	return covered
 end
 
 local function run_callbacks(def, anchor, p1, p2, rot)

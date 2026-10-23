@@ -30,10 +30,17 @@ Combine primitives with `+` (all must hold); list alternatives in an array.
 | `cave_floor`, `cave_ceiling` | the floor or ceiling of an underground cave (set `y_max` below -10) |
 | `carve` | solid rock below the surface: the landmark's interior is carved out (dwarven halls) |
 | `floatland` | on mgv7 floatlands |
+| `against_rock` | an upper corner of the landmark touches natural rock: a wall running into a hillside, a cliff or a cave mouth (ruins may sink up to 3 nodes to reach it) |
+| `cave_mouth` | a cave opens into the hill right next to the landmark, at its ground level |
 | `any` | anywhere the surface is known |
 
+`against_rock` and `cave_mouth` are contact checks: they test the height another primitive chose
+(`slope+against_rock`), or the footprint's median height when used alone.
+
 `exposure = "prominent"` additionally wants nothing higher close by (or the sea on one side);
-`hidden` wants a valley, tree cover, or an underground site.
+`hidden` wants a valley, tree cover, or an underground site. Only `hidden` landmarks stand in deep
+forest: for `any` and `prominent`, at most 40% of the ground within 8 nodes may lie under tree canopy,
+so in forest biomes they end up in clearings and at forest edges instead of buried in leaves.
 
 ## Biome tags
 
@@ -54,11 +61,18 @@ Landmarks never overlap, and rare landmarks (rarity 400+) keep a distance from c
 ## What the mod does on placement
 
 1. Clears trees and plants in the footprint and up to 16 nodes above.
-2. Places the schematic (walls replace terrain, outside air keeps it, rooms are carved).
-3. Builds a foundation of the site's rock under every column that starts on the landmark's bottom layer,
-   down to the ground (at most `foundation` nodes).
-4. Replaces material placeholders with the nodes of the site (see [materials.md](materials.md)).
-5. Records the placement (for `/saga here`, lore messages and spacing) and calls
+2. On uneven ground, sets the landmark a little into the ground: half the drop from the chosen height
+   to the lowest point of the footprint, at most 2 nodes and a sixth of its height. The uphill side is
+   buried slightly, the downhill side hangs less.
+3. Places the schematic (walls replace terrain, outside air keeps it, rooms are carved).
+4. Builds a foundation of the site's rock under every column that starts on the landmark's bottom layer
+   and under the floor of every ground-level room, down to the ground (at most `foundation` nodes).
+   A node that would hang exactly one node above the ground gets a support node; higher overhangs
+   such as eaves, porches and lintels stay as they are.
+5. Replaces material placeholders with the nodes of the site (see [materials.md](materials.md)).
+6. In biomes that dust their terrain (snow in cold biomes), covers the landmark's top surfaces with
+   the same node, as the mapgen does for terrain.
+7. Records the placement (for `/saga here`, lore messages and spacing) and calls
    `sagas.register_on_placed` callbacks, which other mods can use to add loot or mobs.
 
 ## Large landmarks
@@ -76,6 +90,60 @@ level generator, automatic placement is off; `/saga place` still works.
 
 ## Testing a placement
 
+One landmark, by hand:
+
 - `/saga sites <id> [radius]` marks every spot around you where the site expression holds.
 - `/saga place <id> [rotation]` places at the node you point at; `/saga undo` reverts.
 - `sagas_debug = true` logs every automatic placement.
+
+What map generation really does: run a survey, then visit the result.
+
+```sh
+avanti survey mods --game minetest --set sagas_survey=true --keep
+avanti play mods --game minetest --world ~/.avanti/worlds/survey-luanti-sagas-minetest-avanti/world --lite
+```
+
+`--lite` renders the 3D world at half resolution; use it on integrated graphics or 4K screens, where
+the tour otherwise stutters. `avanti play` starts you flying fast, with every privilege.
+
+`avanti survey` ([avanti-luanti](https://github.com/culmat/avanti-luanti)) generates about 6 km2
+headlessly with a fixed seed and prints the surface biomes, every landmark's count, density and
+distance to its nearest copy, and balance findings from the `sagas_survey` tool mod
+(`mods/tools/survey`, never released). `sagas_survey = true` also tests every landmark's site in every
+chunk without placing it, so even rare landmarks show how often and in which biomes they would fit.
+
+| Finding | Meaning |
+|---|---|
+| SV001 | Copies of a landmark are closer than its target (large builds 2 km, medium 1 km) |
+| SV002 | The landmark fits in under 1% of surface chunks, although its biomes were there |
+| SV003 | None of the landmark's biomes were in the surveyed area: survey another seed or `--spacing 2000` |
+| SV004 | Most rolls in surface chunks find no site, so the landmark is much rarer than `rarity` says |
+| SV005 | More than 0.5 lit landmarks per km2: lamps take the darkness out of survival nights |
+| SV006 | A landmark with the `lamp` class has no light-emitting node after material mapping |
+| SV010 | Automatic placement is off in this world (singlenode, Mineclonia levelgen) |
+
+In game (privilege `sagas`, which singleplayer has):
+
+| Command | Does |
+|---|---|
+| `/saga placed [id] [radius]` | Recorded landmarks, nearest first, with distance, direction, biome and site |
+| `/saga tp <n>` or `/saga tp <id>` | Go to entry n of that list, or to the next copy of a landmark, facing it |
+| `/saga tour [n or id] [--times 0.5,0]` | Fly around each landmark in turn, from entry n of `/saga placed` or only copies of one landmark |
+| `/saga waypoints [radius]` | HUD markers on landmarks within radius (default 400); `off` |
+| `/saga find <id> [km]` | Generate the map around you in rings until that landmark appears (default 1 km) |
+| `/saga stats [id]` | Placement attempts this session: rolls, placements, why candidates failed, survey fit rates |
+
+The tour attaches you to an invisible camera that circles each landmark once (30 s, `--period`) and
+then moves on. If a game does not keep players attached, it switches to fixed viewpoints by itself
+(`--static` forces them). The keys are shown at the top of the screen:
+
+| Key | During the tour |
+|---|---|
+| A / D | previous / next landmark |
+| W / S (hold) | closer / farther |
+| Space | time of day: noon, dusk, midnight, dawn (to check lamps) |
+| E | pause: fly around freely (K toggles flying); E again resumes from where you are |
+| Shift | end the tour and go back to where it started |
+
+`/saga tour pause`, `resume`, `next`, `prev` and `stop` do the same from chat; stopping while paused
+leaves you where you flew to. The tour restores your HUD and the time of day.

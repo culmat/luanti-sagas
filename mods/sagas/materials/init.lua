@@ -128,7 +128,25 @@ function materials.site_context(biome_name, samples)
 			break
 		end
 	end
-	return { family = family or (resolved.families.stone and "stone"), wood = wood or tables.wood_of_tag.any }
+	-- What the biome dusts its terrain with (snow in cold biomes); landmarks get the same cover.
+	local dust = bdef and bdef.node_dust
+	if not dust and bdef and core.ipc_get then
+		-- Mineclonia's ersatz level generator moves node_dust out of the biome definitions and
+		-- publishes it per biome id instead (mcl_biomes/init.lua); read it without depending on it.
+		local by_id = core.ipc_get("mcl_biomes:biome_dust_cids")
+		local cid = type(by_id) == "table" and by_id[core.get_biome_id(biome_name)]
+		dust = cid and core.get_name_from_content_id(cid) or nil
+	end
+	dust = dust and (core.registered_aliases[dust] or dust)
+	if dust and not core.registered_nodes[dust] then
+		dust = nil
+	end
+	return {
+		family = family or (resolved.families.stone and "stone"),
+		wood = wood or tables.wood_of_tag.any,
+		biome = biome_name,
+		dust = dust,
+	}
 end
 
 local function debris_mix(fam)

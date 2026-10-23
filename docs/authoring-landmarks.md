@@ -31,12 +31,14 @@ Run the CLI as `uv run --project tools sagas ...` from the repository root.
 | by a river, bridge, ford | `"plain+river"` or `"river"` |
 | lake, pond | `"lake"`; near a waterfall: `"waterfall"` |
 | flat field, meadow, village | `"plain"`; hillside: `"slope"` |
+| built against the rock, leaning on a hillside, propped up by stone | `"slope+against_rock"`, `"cliff+against_rock"` |
+| at a cave entrance, guarding a cave | `"cave_mouth"` (with `"against_rock"` to touch the rock too) |
 | sunken, wreck, sea floor | `"underwater"` |
 | in a cave, on the cave floor | `"cave_floor"`, hanging from it: `"cave_ceiling"`; set `y_max = -20` |
 | carved into the mountain, dwarven halls | `"carve"`, `y_max` below the surface (e.g. -20) |
 | on floating islands | `"floatland"` |
 | a landmark, visible from afar, watching over | `exposure = "prominent"` |
-| hidden, secret, deep in the forest, in a valley | `exposure = "hidden"` |
+| hidden, secret, deep in the forest, in a valley | `exposure = "hidden"` (the only way into dense forest) |
 | common / rare / very rare, unique | `rarity` about 120 / 600 / 3000+ |
 | deserts, jungles, cold north, mountains | `biomes = ["desert"]`, `["jungle"]`, `["tundra", "snow", "taiga"]`, `["mountain"]` |
 
@@ -76,10 +78,29 @@ Read `preview.png` (top, front, side, isometric) and fix:
 | holes in a scan | `voxel.close_radius = 1` |
 | everything one class | add rules; check `material` names with `sagas inspect` |
 | a blob instead of the object | wrong file or package: check the source really is that object |
+| a house, temple or tower with no door | see "Doors" below |
+
+### Doors
+
+Game models often paint the door onto the wall, so the voxelized building is closed. The build
+cuts a doorway (2 wide, 2 high) into sealed rooms where the model shows an entrance, under a porch
+roof or lintel, and `sagas build` prints `doorway cut facing ...`. Check that it is where the door
+belongs. When the model shows no entrance, `sagas lint` warns with L016 and lists one doorway box per
+side. Pick the side the building faces (columns, steps, a forecourt, a path), or look up a photo of
+the real building, and add it:
+
+```toml
+[voxel]
+openings = [[16, 1, 29, 17, 2, 29]]   # [x1, y1, z1, x2, y2, z2]; several boxes for a gate and a door
+```
+
+A tomb or vault may stay closed: `doorway = "none"`. Players break in, so put something worth it
+inside (a treasure mod via `sagas.register_on_placed`).
 
 ## 5. Check and hand over
 
-- `sagas lint <saga>/<id>` must pass; `sagas build --check` must report packs up to date.
+- `sagas lint <saga>/<id>` must pass without warnings (L016: rooms without a door);
+  `sagas build --check` must report packs up to date.
 - Commit `landmark.toml`, `voxels.vx.gz`, `preview.png` and `mods/sagas_<saga>/`. Never commit `sources/`.
 - In game (optional): `avanti test mods`, or a creative world with `/saga place <id>` and `/saga sites <id>`.
 - Never publish (ContentDB, forums, upstream issues) without the maintainer's explicit approval.

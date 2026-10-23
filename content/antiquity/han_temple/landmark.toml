@@ -27,6 +27,9 @@ anchor = "bottom-center"
 mode = "shell"
 texture = "han_struct_02.png"
 alpha = "ignore"
+# The model paints its doors on the texture (sagas lint L016): on the centre line, the hall door and
+# the gate in the south wall of the courtyard in front of it.
+openings = [[16, 1, 29, 17, 2, 29], [16, 1, 38, 17, 2, 38]]
 
 [materials]
 mode = "classes"

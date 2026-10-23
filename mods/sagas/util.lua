@@ -12,6 +12,7 @@ util.settings = {
 	real_water = settings:get_bool("sagas_real_water", false),
 	disable_mapgen = settings:get_bool("sagas_disable_mapgen", false),
 	debug = settings:get_bool("sagas_debug", false),
+	survey = settings:get_bool("sagas_survey", false),
 }
 for item in (settings:get("sagas_disabled") or ""):gmatch("[^,%s]+") do
 	util.settings.disabled[item] = true

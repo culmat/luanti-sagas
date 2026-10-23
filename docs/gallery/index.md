@@ -106,14 +106,6 @@ Ruined temples, a cathedral, arches and stone circles from the CC0 3TD Fantasy R
 - Placement: plain or plain+river or slope; exposure any; biomes grassland, forest, swamp; about one per 900 mapchunks
 - Source: [galway3d](https://sketchfab.com/3d-models/entrance-gates-to-menlo-castle-co-galway-03786e366204470c92655c2889a93ee6), CC0-1.0
 
-### Fallen pillar (`sagas_ruins:pillar`)
-
-![Fallen pillar](../../content/ruins/pillar/preview.png)
-
-- Size: 3 x 10 x 3 nodes, 74 nodes, materials: classes
-- Placement: plain or slope; exposure any; biomes grassland, savanna, desert, forest; about one per 120 mapchunks
-- Source: [Ron Kapaun / 3TD Studios](https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip), CC0-1.0
-
 ### Broken aqueduct arch (`sagas_ruins:ruin_arch`)
 
 ![Broken aqueduct arch](../../content/ruins/ruin_arch/preview.png)
@@ -151,5 +143,5 @@ Ruined temples, a cathedral, arches and stone circles from the CC0 3TD Fantasy R
 ![Ruined wall](../../content/ruins/wall_segment/preview.png)
 
 - Size: 21 x 9 x 2 nodes, 354 nodes, materials: classes
-- Placement: plain or slope; exposure any; biomes grassland, forest, taiga, mountain; about one per 140 mapchunks
+- Placement: cave_mouth+against_rock or slope+against_rock or cliff+against_rock or plain+against_rock; exposure any; biomes grassland, forest, taiga, mountain; about one per 140 mapchunks
 - Source: [Ron Kapaun / 3TD Studios](https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip), CC0-1.0

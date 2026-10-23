@@ -167,22 +167,9 @@
    ]
   },
   {
-   "id": "sagas_ruins:pillar",
-   "anchor": [
-    0,
-    180,
-    390
-   ],
-   "size": [
-    3,
-    10,
-    3
-   ]
-  },
-  {
    "id": "sagas_ruins:ruin_arch",
    "anchor": [
-    130,
+    0,
     180,
     390
    ],
@@ -195,7 +182,7 @@
   {
    "id": "sagas_ruins:speaking_stones",
    "anchor": [
-    260,
+    130,
     180,
     390
    ],
@@ -208,7 +195,7 @@
   {
    "id": "sagas_ruins:temple_ruin_01",
    "anchor": [
-    390,
+    260,
     180,
     390
    ],
@@ -221,9 +208,9 @@
   {
    "id": "sagas_ruins:temple_ruin_02",
    "anchor": [
-    0,
+    390,
     180,
-    520
+    390
    ],
    "size": [
     30,
@@ -234,7 +221,7 @@
   {
    "id": "sagas_ruins:wall_segment",
    "anchor": [
-    130,
+    0,
     180,
     520
    ],

@@ -21,3 +21,7 @@ sagas_disable_mapgen (No automatic placement) bool false
 
 # Log placements and mark candidate sites.
 sagas_debug (Debug output) bool false
+
+# Development: also test every landmark's site in every generated mapchunk without placing it, and
+# count fits and rejection reasons (/saga stats, avanti survey). Slows map generation down.
+sagas_survey (Survey site fit) bool false

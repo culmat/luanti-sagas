@@ -26,7 +26,12 @@ Exit codes: 0 ok, 1 error, 2 bad config, 3 lint errors, 4 source missing, 5 stal
 4. **Ruin** (build, optional): erosion, per-placement variation, debris, moss.
 5. **Interior** (build): air enclosed by walls (doors and windows are bridged) is carved, so terrain
    and trees never fill a hall. The ground layer stays natural ground.
-6. **Write**: `.mts` schematics with only `air`, `sagas:color` and `sagas:m_<class>` nodes; outside air
+6. **Doorways** (build): many game models paint the door onto the wall texture, so the voxelized wall
+   is closed. When a room a player could stand in has no 2-high way in at ground level, the build cuts
+   a doorway 2 wide and 2 high where the model shows an entrance: through the wall under a porch roof
+   or lintel. Without such a cue it cuts nothing and `sagas lint` warns (L016), suggesting a doorway
+   box per side. `voxel.openings` cuts given boxes instead; `voxel.doorway = "none"` keeps it sealed.
+7. **Write**: `.mts` schematics with only `air`, `sagas:color` and `sagas:m_<class>` nodes; outside air
    has probability 0 (keeps terrain), solid nodes and carved air are force-placed.
 
 ## landmark.toml
@@ -61,7 +66,10 @@ Top level: `schema = 1`, `id`, `saga` (both `^[a-z][a-z0-9_]{2,31}$`, matching t
 gaps in scans), `min_component` (drop floating specks smaller than N voxels), `exclude` (globs on part
 or material names, e.g. collision meshes or low-detail LODs), `texture` (image for UV-mapped parts
 without one), `alpha` (`cutout`/`ignore`), `interior` (`carve`/`keep`), `interior_close` (door width
-bridged when finding rooms).
+bridged when finding rooms), `doorway` (`auto`: cut a doorway into sealed rooms under a porch or
+lintel; `none`: sealed on purpose, like a tomb), `openings` (boxes `[x1, y1, z1, x2, y2, z2]` in
+schematic coordinates cut to air, e.g. `[[16, 1, 29, 17, 2, 29]]`; layer 0 is the ground, layers 1-2
+are door height).
 
 ### [materials]
 
