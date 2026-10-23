@@ -34,6 +34,8 @@ or vikings; a landmark is one structure). To create or change a landmark, follow
   the engine. `mods/tools/survey` is the bridge; like `mods/tools/showcase` it is never released.
 - Visiting placements needs the Luanti window (`avanti play ... --world <kept survey world>`, then
   `/saga tour`): ask the maintainer first, it takes over their screen.
+- Size and detail: `sagas view <saga>/<id> --no-open --png <file>` writes the 3D page for the person and
+  a still for you (all sizes at true scale next to the games' trees). Opening the page is the person's call.
 - Test fixtures for the mod are generated: `SAGAS_WRITE_FIXTURES=1 uv run pytest tests/test_core_fixtures.py`.
 
 ## Rules

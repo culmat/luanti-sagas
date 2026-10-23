@@ -30,10 +30,13 @@ A **saga** is a theme (ruins, antiquity, vikings, dragon fantasy); a **landmark*
 6. **Voxelize and build**: `sagas voxelize medieval/watchtower` then `sagas build medieval`.
    Open `content/medieval/watchtower/preview.png` and adjust `landmark.toml` until it looks right
    (size, up axis, material rules, ruin options). Rebuild with `sagas voxelize --force`.
-7. **Say where it belongs**: fill `[placement]` with your hints, in words (`hints`) and as fields
+7. **Pick the size**: `sagas view medieval/watchtower` opens a 3D view of the landmark at several
+   sizes next to a player and the trees and houses of your games. Turn it, zoom in, and set the size
+   that reads well as `target_size` ([how to decide](docs/authoring-landmarks.md#5-size-and-detail)).
+8. **Say where it belongs**: fill `[placement]` with your hints, in words (`hints`) and as fields
    (`site`, `exposure`, `biomes`, `rarity`). See [docs/placement.md](docs/placement.md).
-8. **Check**: `sagas lint medieval/watchtower`.
-9. **Commit** `landmark.toml`, `voxels.vx.gz`, `preview.png` and the regenerated `mods/sagas_medieval/`,
+9. **Check**: `sagas lint medieval/watchtower`.
+10. **Commit** `landmark.toml`, `voxels.vx.gz`, `preview.png` and the regenerated `mods/sagas_medieval/`,
    then open a pull request. CI rebuilds everything and runs the game tests.
 
 Try it in game: `avanti play mods --game minetest` (or `mineclonia`, `mineclone2`) opens Luanti
@@ -74,6 +77,7 @@ add a rule such as `match = { part = "mymod:roof_tile" }` with `class = "roof_re
 
 - [ ] Licence is CC0, CC-BY, CC-BY-SA or MIT, with author and URL in `landmark.toml`
 - [ ] `sagas lint` passes and `preview.png` looks right
+- [ ] Size checked next to the game's trees (`sagas view`)
 - [ ] Placement hints describe where the landmark belongs
 - [ ] AI use declared (or `ai = "none"`)
 - [ ] Commits are signed off (`git commit -s`, see DCO below)

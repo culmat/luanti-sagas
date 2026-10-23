@@ -58,6 +58,7 @@ class Transform:
     mirror: str = ""
     target_size: int = 48
     scale: float = 0.0
+    real_size: float = 0.0  # metres: longest side of the real object (0 = unknown); sagas view shows x life size
     anchor: str = "bottom-center"
     trim_below: float = 0.0
     trim_above: float = 1.0
@@ -294,6 +295,8 @@ def validate(s: Landmark) -> None:
         raise ConfigError(f"{w}: transform.anchor must be one of {', '.join(ANCHORS)}")
     if not 4 <= t.target_size <= 400:
         raise ConfigError(f"{w}: transform.target_size must be between 4 and 400")
+    if not 0.0 <= t.real_size <= 10000.0:
+        raise ConfigError(f"{w}: transform.real_size must be metres between 0 (unknown) and 10000")
     if not 0.0 <= t.trim_below < t.trim_above <= 1.0:
         raise ConfigError(f"{w}: need 0 <= transform.trim_below < trim_above <= 1")
     v = s.voxel

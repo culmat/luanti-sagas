@@ -80,7 +80,7 @@ Looking for models? [docs/sources.md](docs/sources.md) lists where free, realist
 
 | Path | What |
 |---|---|
-| `tools/` | Python pipeline, CLI `sagas` (voxelize, build, preview, lint, scout) |
+| `tools/` | Python pipeline, CLI `sagas` (voxelize, build, preview, view, lint, scout) |
 | `content/<saga>/<id>/` | One landmark: `landmark.toml` (source of truth), `voxels.vx.gz`, `preview.png` |
 | `mods/sagas/` | The core mod: material mapping, site evaluation, placement, commands |
 | `mods/sagas_<saga>/` | Generated content packs (schematics + registry + licences) |

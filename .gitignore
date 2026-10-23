@@ -16,5 +16,5 @@ __pycache__/
 # full-size screenshots for ContentDB uploads (avanti screenshot mods); curated JPEGs live in docs/screenshots
 /mods/screenshots/*.png
 
-# dev worlds of avanti play
+# dev worlds of avanti play, sagas view pages (they embed the installed games' schematics)
 /.dev/

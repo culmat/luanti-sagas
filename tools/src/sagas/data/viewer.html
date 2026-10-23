@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sagas view</title>
+<!-- Written by `sagas view` (tools/src/sagas/viewer.py). Local use only: it embeds schematics of the
+     games installed on the author's machine. -->
+<style>
+:root {
+  --ink: #1f2328; --muted: #59636e; --card: rgba(255, 255, 255, 0.9); --line: #d1d9e0;
+  --accent: #1f6feb; --warn: #9a6700; --chip: #f6f8fa;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #e6edf3; --muted: #9198a1; --card: rgba(22, 27, 34, 0.9); --line: #3d444d;
+    --accent: #4493f8; --warn: #d29922; --chip: #262c36;
+  }
+}
+html, body { margin: 0; height: 100%; overflow: hidden; }
+body {
+  font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink);
+  background: linear-gradient(#8fb9e3, #e3eef8 70%);
+}
+canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+canvas:active { cursor: grabbing; }
+#panel {
+  position: fixed; top: 12px; left: 12px; width: 310px; max-height: calc(100% - 24px); overflow: auto;
+  box-sizing: border-box; padding: 10px 14px 12px; background: var(--card); border: 1px solid var(--line);
+  border-radius: 10px; backdrop-filter: blur(6px);
+}
+#panel.min > :not(.head) { display: none; }
+.head { display: flex; align-items: baseline; gap: 8px; }
+.head b { font-size: 15px; flex: 1; }
+.head button { border: 0; background: none; color: var(--muted); font-size: 16px; cursor: pointer; }
+h3 { margin: 12px 0 4px; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.muted { color: var(--muted); }
+.warn { color: var(--warn); }
+code { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip {
+  min-width: 34px; padding: 3px 7px; border: 1px solid var(--line); border-radius: 6px; background: var(--chip);
+  color: var(--ink); font: inherit; cursor: pointer;
+}
+.chip.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); font-weight: 600; }
+.chip.now::after { content: " •"; color: var(--accent); }
+button.copy {
+  padding: 0 6px; border: 1px solid var(--line); border-radius: 4px; background: var(--chip); color: var(--ink);
+  font: 11px system-ui, sans-serif; cursor: pointer;
+}
+label { display: block; cursor: pointer; }
+label .h { color: var(--muted); }
+.group { margin-top: 4px; color: var(--muted); font-size: 12px; }
+#cut { width: 100%; }
+#status {
+  position: fixed; left: 12px; bottom: 12px; max-width: calc(100% - 24px); padding: 6px 10px; box-sizing: border-box;
+  background: var(--card); border: 1px solid var(--line); border-radius: 8px; display: none;
+}
+#sizeinfo > div { margin-top: 2px; }
+.small { font-size: 12px; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="panel">
+  <div class="head"><b id="title">sagas view</b><button id="fold" title="Fold the panel">–</button></div>
+  <div id="sub" class="muted"></div>
+  <h3>Size <span style="text-transform:none;letter-spacing:0">(longest side in nodes, • = landmark.toml)</span></h3>
+  <div id="sizes" class="chips"></div>
+  <div id="sizeinfo"></div>
+  <h3>Compare with</h3>
+  <div id="refs"></div>
+  <h3>View</h3>
+  <label><input type="checkbox" id="edges" checked> node edges</label>
+  <label><input type="checkbox" id="ao" checked> smooth lighting</label>
+  <label><input type="checkbox" id="ground" checked> ground</label>
+  <label><input type="checkbox" id="carved"> carved air (rooms, doorways)</label>
+  <label>cut above layer <span id="cutv"></span><input type="range" id="cut" min="0" max="1" value="1"></label>
+  <h3>Mouse and keys</h3>
+  <div class="muted small">drag: turn · shift-drag or right-drag: move · wheel or pinch: zoom ·
+    double-click: zoom to a node · click: node coordinates · shift-click: box for voxel.openings ·
+    1-9: size · R: reset view</div>
+  <div id="notes" class="muted small"></div>
+</div>
+<div id="status"></div>
+<script>
+const DATA = /*SAGAS_DATA*/null;
+window.addEventListener("error", (ev) => {
+  const n = document.getElementById("notes");
+  if (n) n.insertAdjacentHTML("beforeend", `<div class="warn">${String(ev.message).replace(/</g, "&lt;")}</div>`);
+});
+(function () {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const canvas = $("c");
+  const gl = canvas.getContext("webgl2", { antialias: true, preserveDrawingBuffer: true });
+  if (!DATA || !gl) {
+    $("sub").innerHTML = !DATA ? "No data: write this page with <code>sagas view</code>."
+      : "This page needs WebGL 2 (a current Firefox, Chrome or Safari).";
+    return;
+  }
+  const D = DATA;
+  const FOV = (45 * Math.PI) / 180;
+  // Luanti's face shading (src/client/mesh.cpp applyFacesShading): +x -x +y -y +z -z
+  const SHADE = [0.67082, 0.67082, 1.0, 0.447213, 0.83666, 0.83666];
+  const AO = [0.58, 0.72, 0.86, 1.0];
+  const DIRS = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]];
+  const TAN = [[[0, 1, 0], [0, 0, 1]], [[0, 1, 0], [0, 0, 1]], [[1, 0, 0], [0, 0, 1]],
+    [[1, 0, 0], [0, 0, 1]], [[1, 0, 0], [0, 1, 0]], [[1, 0, 0], [0, 1, 0]]];
+  const GRASS = [0.37, 0.58, 0.24];
+
+  // ---------------------------------------------------------------- voxel data
+  function decode(v) {
+    const [X, Y, Z] = v.dims;
+    const cells = new Uint16Array(X * Y * Z);
+    const bin = atob(v.cells);
+    let o = 0;
+    for (let i = 0; i + 3 < bin.length; i += 4) {
+      const m = bin.charCodeAt(i) | (bin.charCodeAt(i + 1) << 8);
+      const n = bin.charCodeAt(i + 2) | (bin.charCodeAt(i + 3) << 8);
+      if (m) cells.fill(m, o, o + n);
+      o += n;
+    }
+    return { dims: v.dims, cells, mats: v.mats, carved: v.carved || 0, scale: v.scale || 1 };
+  }
+
+  // Exposed faces only, with per-corner ambient occlusion (the corner darkening of smooth lighting).
+  function mesh(vox, opt) {
+    const [X, Y, Z] = vox.dims, c = vox.cells, carved = vox.carved;
+    const top = Math.min(Y - 1, opt.cut == null ? Y - 1 : opt.cut);
+    const want = opt.carved ? (m) => m !== 0 && m === carved : (m) => m !== 0 && m !== carved;
+    const solid = (x, y, z) => x >= 0 && y >= 0 && z >= 0 && x < X && y <= top && z < Z && want(c[x + X * (y + Y * z)]);
+    let faces = 0;
+    for (let z = 0; z < Z; z++) for (let y = 0; y <= top; y++) for (let x = 0; x < X; x++) {
+      if (!want(c[x + X * (y + Y * z)])) continue;
+      for (let f = 0; f < 6; f++) { const d = DIRS[f]; if (!solid(x + d[0], y + d[1], z + d[2])) faces++; }
+    }
+    const V = new Float32Array(faces * 36), I = new Uint32Array(faces * 6);
+    let vi = 0, ii = 0, nv = 0;
+    const ao = [0, 0, 0, 0];
+    for (let z = 0; z < Z; z++) for (let y = 0; y <= top; y++) for (let x = 0; x < X; x++) {
+      const m = c[x + X * (y + Y * z)];
+      if (!want(m)) continue;
+      const rgb = vox.mats[m][1];
+      for (let f = 0; f < 6; f++) {
+        const d = DIRS[f], nx = x + d[0], ny = y + d[1], nz = z + d[2];
+        if (solid(nx, ny, nz)) continue;
+        const u = TAN[f][0], v = TAN[f][1];
+        const ox = x + (d[0] > 0 ? 1 : 0), oy = y + (d[1] > 0 ? 1 : 0), oz = z + (d[2] > 0 ? 1 : 0);
+        for (let k = 0; k < 4; k++) {
+          const i = k === 1 || k === 2 ? 1 : 0, j = k >= 2 ? 1 : 0;
+          let a = 3;
+          if (opt.ao) {
+            const su = i ? 1 : -1, sv = j ? 1 : -1;
+            const s1 = solid(nx + su * u[0], ny + su * u[1], nz + su * u[2]);
+            const s2 = solid(nx + sv * v[0], ny + sv * v[1], nz + sv * v[2]);
+            const s3 = solid(nx + su * u[0] + sv * v[0], ny + su * u[1] + sv * v[1], nz + su * u[2] + sv * v[2]);
+            a = s1 && s2 ? 0 : 3 - (s1 + s2 + s3);
+          }
+          ao[k] = a;
+          V[vi] = ox + i * u[0] + j * v[0]; V[vi + 1] = oy + i * u[1] + j * v[1]; V[vi + 2] = oz + i * u[2] + j * v[2];
+          V[vi + 3] = rgb[0] / 255; V[vi + 4] = rgb[1] / 255; V[vi + 5] = rgb[2] / 255;
+          V[vi + 6] = SHADE[f] * AO[a]; V[vi + 7] = i; V[vi + 8] = j;
+          vi += 9;
+        }
+        // split along the brighter diagonal, so a dark corner stays in its own triangle
+        if (ao[0] + ao[2] >= ao[1] + ao[3]) { I[ii] = nv; I[ii + 1] = nv + 1; I[ii + 2] = nv + 2; I[ii + 3] = nv; I[ii + 4] = nv + 2; I[ii + 5] = nv + 3; }
+        else { I[ii] = nv + 1; I[ii + 1] = nv + 2; I[ii + 2] = nv + 3; I[ii + 3] = nv + 1; I[ii + 4] = nv + 3; I[ii + 5] = nv; }
+        ii += 6; nv += 4;
+      }
+    }
+    return { V, I, count: ii };
+  }
+
+  // ---------------------------------------------------------------- math (column-major 4x4)
+  function perspective(fovy, aspect, near, far) {
+    const f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
+    return new Float32Array([f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far + near) * nf, -1, 0, 0, 2 * far * near * nf, 0]);
+  }
+  function lookAt(e, t) {
+    let zx = e[0] - t[0], zy = e[1] - t[1], zz = e[2] - t[2];
+    let l = Math.hypot(zx, zy, zz); zx /= l; zy /= l; zz /= l;
+    let xx = zz, xy = 0, xz = -zx; // up (0, 1, 0) x z
+    l = Math.hypot(xx, xy, xz) || 1; xx /= l; xy /= l; xz /= l;
+    const yx = zy * xz - zz * xy, yy = zz * xx - zx * xz, yz = zx * xy - zy * xx;
+    return new Float32Array([xx, yx, zx, 0, xy, yy, zy, 0, xz, yz, zz, 0,
+      -(xx * e[0] + xy * e[1] + xz * e[2]), -(yx * e[0] + yy * e[1] + yz * e[2]), -(zx * e[0] + zy * e[1] + zz * e[2]), 1]);
+  }
+  function mul(a, b) {
+    const o = new Float32Array(16);
+    for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) {
+      let s = 0;
+      for (let k = 0; k < 4; k++) s += a[k * 4 + r] * b[c * 4 + k];
+      o[c * 4 + r] = s;
+    }
+    return o;
+  }
+  function invert(a) {
+    const [a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, a30, a31, a32, a33] = a;
+    const b00 = a00 * a11 - a01 * a10, b01 = a00 * a12 - a02 * a10, b02 = a00 * a13 - a03 * a10;
+    const b03 = a01 * a12 - a02 * a11, b04 = a01 * a13 - a03 * a11, b05 = a02 * a13 - a03 * a12;
+    const b06 = a20 * a31 - a21 * a30, b07 = a20 * a32 - a22 * a30, b08 = a20 * a33 - a23 * a30;
+    const b09 = a21 * a32 - a22 * a31, b10 = a21 * a33 - a23 * a31, b11 = a22 * a33 - a23 * a32;
+    let det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
+    if (!det) return null;
+    det = 1 / det;
+    return new Float32Array([
+      (a11 * b11 - a12 * b10 + a13 * b09) * det, (a02 * b10 - a01 * b11 - a03 * b09) * det,
+      (a31 * b05 - a32 * b04 + a33 * b03) * det, (a22 * b04 - a21 * b05 - a23 * b03) * det,
+      (a12 * b08 - a10 * b11 - a13 * b07) * det, (a00 * b11 - a02 * b08 + a03 * b07) * det,
+      (a32 * b02 - a30 * b05 - a33 * b01) * det, (a20 * b05 - a22 * b02 + a23 * b01) * det,
+      (a10 * b10 - a11 * b08 + a13 * b06) * det, (a01 * b08 - a00 * b10 - a03 * b06) * det,
+      (a30 * b04 - a31 * b02 + a33 * b00) * det, (a21 * b02 - a20 * b04 - a23 * b00) * det,
+      (a11 * b07 - a10 * b09 - a12 * b06) * det, (a00 * b09 - a01 * b07 + a02 * b06) * det,
+      (a31 * b01 - a30 * b03 - a32 * b00) * det, (a20 * b03 - a21 * b01 + a22 * b00) * det]);
+  }
+  const place = (s, t) => new Float32Array([s, 0, 0, 0, 0, s, 0, 0, 0, 0, s, 0, t[0], t[1], t[2], 1]);
+
+  // ---------------------------------------------------------------- GL
+  function program(vs, fs) {
+    const p = gl.createProgram();
+    for (const [type, src] of [[gl.VERTEX_SHADER, vs], [gl.FRAGMENT_SHADER, fs]]) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+      gl.attachShader(p, s);
+    }
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    const u = {};
+    for (let i = 0; i < gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS); i++) {
+      const name = gl.getActiveUniform(p, i).name;
+      u[name] = gl.getUniformLocation(p, name);
+    }
+    return { p, u };
+  }
+  const VOX = program(`#version 300 es
+    layout(location = 0) in vec3 aPos; layout(location = 1) in vec3 aCol;
+    layout(location = 2) in float aShade; layout(location = 3) in vec2 aUv;
+    uniform mat4 uVP, uM;
+    out vec3 vCol; out float vShade; out vec2 vUv;
+    void main() { vCol = aCol; vShade = aShade; vUv = aUv; gl_Position = uVP * uM * vec4(aPos, 1.0); }`, `#version 300 es
+    precision highp float;
+    in vec3 vCol; in float vShade; in vec2 vUv;
+    uniform float uEdges, uAlpha;
+    out vec4 o;
+    void main() {
+      vec3 c = vCol * vShade;
+      if (uEdges > 0.5) {
+        vec2 fw = fwidth(vUv);
+        vec2 g = smoothstep(vec2(0.0), fw * 1.2, min(vUv, 1.0 - vUv));
+        float px = 1.0 / max(max(fw.x, fw.y), 1e-4);   // node size on screen
+        c *= mix(1.0, mix(0.74, 1.0, min(g.x, g.y)), clamp((px - 4.0) / 6.0, 0.0, 1.0));
+      }
+      o = vec4(c * uAlpha, uAlpha);
+    }`);
+  const GROUND = program(`#version 300 es
+    layout(location = 0) in vec3 aPos; uniform mat4 uVP; out vec3 vW;
+    void main() { vW = aPos; gl_Position = uVP * vec4(aPos, 1.0); }`, `#version 300 es
+    precision highp float;
+    in vec3 vW; uniform vec3 uEye, uGrass; uniform float uFar; out vec4 o;
+    float grid(vec2 p) {
+      vec2 d = abs(fract(p - 0.5) - 0.5) / max(fwidth(p), vec2(1e-4));
+      return 1.0 - clamp(min(d.x, d.y), 0.0, 1.0);
+    }
+    void main() {
+      vec2 w = fwidth(vW.xz);
+      float px = 1.0 / max(max(w.x, w.y), 1e-4);
+      float line = grid(vW.xz) * clamp((px - 3.0) / 6.0, 0.0, 1.0);
+      vec3 c = uGrass * (1.0 - 0.10 * line - 0.16 * grid(vW.xz / 10.0));
+      float a = 1.0 - smoothstep(uFar * 0.5, uFar, distance(vW, uEye));
+      o = vec4(c * a, a);
+    }`);
+  const LINES = program(`#version 300 es
+    layout(location = 0) in vec3 aPos; uniform mat4 uVP;
+    void main() { gl_Position = uVP * vec4(aPos, 1.0); }`, `#version 300 es
+    precision highp float; uniform vec4 uColor; out vec4 o;
+    void main() { o = vec4(uColor.rgb * uColor.a, uColor.a); }`);
+
+  function upload(m) {
+    const vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+    const vb = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vb);
+    gl.bufferData(gl.ARRAY_BUFFER, m.V, gl.STATIC_DRAW);
+    for (const [loc, n, off] of [[0, 3, 0], [1, 3, 12], [2, 1, 24], [3, 2, 28]]) {
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, n, gl.FLOAT, false, 36, off);
+    }
+    const ib = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, m.I, gl.STATIC_DRAW);
+    gl.bindVertexArray(null);
+    return { vao, vb, ib, count: m.count };
+  }
+  function release(g) {
+    if (!g) return;
+    gl.deleteVertexArray(g.vao);
+    gl.deleteBuffer(g.vb);
+    gl.deleteBuffer(g.ib);
+  }
+  const lineVao = gl.createVertexArray(), lineBuf = gl.createBuffer();
+  gl.bindVertexArray(lineVao);
+  gl.bindBuffer(gl.ARRAY_BUFFER, lineBuf);
+  gl.enableVertexAttribArray(0);
+  gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 12, 0);
+  const groundVao = gl.createVertexArray(), groundBuf = gl.createBuffer();
+  gl.bindVertexArray(groundVao);
+  gl.bindBuffer(gl.ARRAY_BUFFER, groundBuf);
+  gl.enableVertexAttribArray(0);
+  gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 12, 0);
+  gl.bindVertexArray(null);
+
+  // ---------------------------------------------------------------- scene
+  const S = { size: Math.max(0, D.sizes.findIndex((s) => s.current)), edges: true, ao: true, ground: true,
+    carved: false, cut: null, hover: null, sel: null, sel2: null };
+  const models = D.sizes.map((s) => ({ entry: s, vox: null, gpu: null, meshKey: "", carvedGpu: null, carvedKey: "" }));
+  const refs = D.refs.map((r) => ({ key: r.key, group: r.group, label: r.label, height: r.height, src: r.vox,
+    vox: null, gpu: null, meshKey: "", off: [0, 0, 0] }));
+  const on = new Set(D.refs.filter((r) => r.on).map((r) => r.key));
+  // References stand in a row beside the model's long side, and the camera starts broadside to it.
+  const biggest = D.sizes[D.sizes.length - 1].vox.dims;
+  const ROW = biggest[2] > biggest[0] ? 2 : 0;
+  const reach = Math.max(...D.sizes.map((s) => s.vox.dims[ROW]));
+  const YAW = ROW === 2 ? Math.PI / 2 + 0.5 : 0.5;
+
+  const model = () => {
+    const m = models[S.size];
+    if (!m.vox) m.vox = decode(m.entry.vox);
+    return m;
+  };
+  const modelOffset = (vox) => [-Math.floor(vox.dims[0] / 2), 0, -Math.floor(vox.dims[2] / 2)];
+  const extent = (vox) => vox.dims.map((n) => n * vox.scale);
+
+  function layout() {
+    // along -x when the model is wider than deep, else along +z: on the left of the screen either way
+    const across = 2 - ROW;
+    let at = Math.ceil(reach / 2) + 4;
+    for (const r of refs) {
+      if (!on.has(r.key)) continue;
+      if (!r.vox) r.vox = decode(r.src);
+      const e = extent(r.vox), off = [0, 0, 0];
+      off[across] = -Math.floor(e[across] / 2);
+      off[ROW] = ROW === 0 ? -at - Math.ceil(e[ROW]) : at;
+      r.off = off;
+      at += Math.ceil(e[ROW]) + 3;
+    }
+  }
+
+  function bounds() {
+    const m = model(), o = modelOffset(m.vox);
+    const lo = [o[0], 0, o[2]], hi = [o[0] + m.vox.dims[0], m.vox.dims[1], o[2] + m.vox.dims[2]];
+    for (const r of refs) {
+      if (!on.has(r.key) || !r.vox) continue;
+      const e = extent(r.vox);
+      for (let a = 0; a < 3; a++) { lo[a] = Math.min(lo[a], r.off[a]); hi[a] = Math.max(hi[a], r.off[a] + e[a]); }
+    }
+    return { lo, hi };
+  }
+
+  // ---------------------------------------------------------------- camera
+  const cam = { yaw: YAW, pitch: 0.36, dist: 60, t: [0, 6, 0] };
+  function frame() {
+    const { lo, hi } = bounds();
+    cam.t = [(lo[0] + hi[0]) / 2, hi[1] * 0.4, (lo[2] + hi[2]) / 2];
+    const r = Math.hypot(hi[0] - lo[0], hi[1] - lo[1], hi[2] - lo[2]) / 2;
+    const aspect = Math.max(0.3, canvas.clientWidth / Math.max(1, canvas.clientHeight));
+    cam.dist = (r / Math.sin(FOV / 2)) * (aspect < 1 ? 1.1 / aspect : 1.0);
+    cam.yaw = YAW;
+    cam.pitch = 0.36;
+  }
+  function eye() {
+    const cp = Math.cos(cam.pitch);
+    return [cam.t[0] + cam.dist * cp * Math.sin(cam.yaw), cam.t[1] + cam.dist * Math.sin(cam.pitch),
+      cam.t[2] + cam.dist * cp * Math.cos(cam.yaw)];
+  }
+  function viewProj() {
+    const e = eye(), { lo, hi } = bounds();
+    const span = Math.hypot(hi[0] - lo[0], hi[1] - lo[1], hi[2] - lo[2]);
+    const aspect = canvas.width / Math.max(1, canvas.height);
+    const P = perspective(FOV, aspect, Math.max(0.05, cam.dist * 0.004), cam.dist * 4 + span * 8 + 400);
+    return { VP: mul(P, lookAt(e, cam.t)), eye: e, span };
+  }
+
+  // ---------------------------------------------------------------- drawing
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(1, Math.round((canvas.clientWidth || window.innerWidth) * dpr));
+    const h = Math.max(1, Math.round((canvas.clientHeight || window.innerHeight) * dpr));
+    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+  }
+  function modelGpu() {
+    const m = model();
+    const key = `${S.cut}|${S.ao}`;
+    if (m.meshKey !== key) { release(m.gpu); m.gpu = upload(mesh(m.vox, { cut: S.cut, ao: S.ao })); m.meshKey = key; }
+    if (S.carved && m.vox.carved && m.carvedKey !== `${S.cut}`) {
+      release(m.carvedGpu);
+      m.carvedGpu = upload(mesh(m.vox, { cut: S.cut, carved: true }));
+      m.carvedKey = `${S.cut}`;
+    }
+    return m;
+  }
+  function refGpu(r) {
+    const key = `${S.ao}`;
+    if (r.meshKey !== key) { release(r.gpu); r.gpu = upload(mesh(r.vox, { ao: S.ao })); r.meshKey = key; }
+    return r.gpu;
+  }
+  function drawVox(g, VP, M, edges, alpha) {
+    gl.useProgram(VOX.p);
+    gl.uniformMatrix4fv(VOX.u.uVP, false, VP);
+    gl.uniformMatrix4fv(VOX.u.uM, false, M);
+    gl.uniform1f(VOX.u.uEdges, edges ? 1 : 0);
+    gl.uniform1f(VOX.u.uAlpha, alpha);
+    gl.bindVertexArray(g.vao);
+    gl.drawElements(gl.TRIANGLES, g.count, gl.UNSIGNED_INT, 0);
+  }
+  function boxLines(lo, hi) {
+    const p = [];
+    const c = (i) => [i & 1 ? hi[0] : lo[0], i & 2 ? hi[1] : lo[1], i & 4 ? hi[2] : lo[2]];
+    for (const [a, b] of [[0, 1], [2, 3], [4, 5], [6, 7], [0, 2], [1, 3], [4, 6], [5, 7], [0, 4], [1, 5], [2, 6], [3, 7]]) p.push(...c(a), ...c(b));
+    return p;
+  }
+  function draw() {
+    resize();
+    layout();
+    const { VP, eye: e, span } = viewProj();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    if (S.ground) {
+      const far = Math.max(150, span * 3, cam.dist * 3);
+      const g = [-far, 0, -far, far, 0, -far, far, 0, far, -far, 0, -far, far, 0, far, -far, 0, far];
+      for (let i = 0; i < g.length; i += 3) { g[i] += cam.t[0]; g[i + 2] += cam.t[2]; }
+      gl.useProgram(GROUND.p);
+      gl.uniformMatrix4fv(GROUND.u.uVP, false, VP);
+      gl.uniform3fv(GROUND.u.uEye, e);
+      gl.uniform3fv(GROUND.u.uGrass, GRASS);
+      gl.uniform1f(GROUND.u.uFar, far);
+      gl.bindVertexArray(groundVao);
+      gl.bindBuffer(gl.ARRAY_BUFFER, groundBuf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(g), gl.DYNAMIC_DRAW);
+      gl.enable(gl.POLYGON_OFFSET_FILL);
+      gl.polygonOffset(1, 1);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      gl.disable(gl.POLYGON_OFFSET_FILL);
+    }
+    for (const r of refs) {
+      if (!on.has(r.key)) continue;
+      drawVox(refGpu(r), VP, place(r.vox.scale, r.off), S.edges && r.vox.scale === 1, 1);
+    }
+    const m = modelGpu(), off = modelOffset(m.vox), M = place(1, off);
+    drawVox(m.gpu, VP, M, S.edges, 1);
+    if (S.carved && m.carvedGpu) {
+      gl.depthMask(false);
+      drawVox(m.carvedGpu, VP, M, false, 0.3);
+      gl.depthMask(true);
+    }
+    const lines = [];
+    const cellBox = (c) => boxLines([off[0] + c[0] - 0.02, c[1] - 0.02, off[2] + c[2] - 0.02], [off[0] + c[0] + 1.02, c[1] + 1.02, off[2] + c[2] + 1.02]);
+    if (S.hover) lines.push([cellBox(S.hover.cell), [0.1, 0.1, 0.1, 0.9]]);
+    if (S.sel) {
+      const a = S.sel, b = S.sel2 || S.sel;
+      const lo = [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.min(a[2], b[2])];
+      const hi = [Math.max(a[0], b[0]) + 1, Math.max(a[1], b[1]) + 1, Math.max(a[2], b[2]) + 1];
+      lines.push([boxLines([off[0] + lo[0] - 0.04, lo[1] - 0.04, off[2] + lo[2] - 0.04], [off[0] + hi[0] + 0.04, hi[1] + 0.04, off[2] + hi[2] + 0.04]), [1.0, 0.45, 0.1, 1]]);
+    }
+    if (lines.length) {
+      gl.disable(gl.DEPTH_TEST);
+      gl.useProgram(LINES.p);
+      gl.uniformMatrix4fv(LINES.u.uVP, false, VP);
+      gl.bindVertexArray(lineVao);
+      gl.bindBuffer(gl.ARRAY_BUFFER, lineBuf);
+      for (const [p, col] of lines) {
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(p), gl.DYNAMIC_DRAW);
+        gl.uniform4fv(LINES.u.uColor, col);
+        gl.drawArrays(gl.LINES, 0, p.length / 3);
+      }
+    }
+    gl.bindVertexArray(null);
+  }
+  let pending = false;
+  function request() {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => { pending = false; draw(); });
+  }
+
+  // ---------------------------------------------------------------- picking
+  function ray(ev) {
+    const rect = canvas.getBoundingClientRect();
+    const x = ((ev.clientX - rect.left) / rect.width) * 2 - 1, y = 1 - ((ev.clientY - rect.top) / rect.height) * 2;
+    const inv = invert(viewProj().VP);
+    if (!inv) return null;
+    const un = (z) => {
+      const w = inv[3] * x + inv[7] * y + inv[11] * z + inv[15];
+      return [(inv[0] * x + inv[4] * y + inv[8] * z + inv[12]) / w, (inv[1] * x + inv[5] * y + inv[9] * z + inv[13]) / w,
+        (inv[2] * x + inv[6] * y + inv[10] * z + inv[14]) / w];
+    };
+    const a = un(-1), b = un(1);
+    const d = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], l = Math.hypot(d[0], d[1], d[2]);
+    return { o: a, d: d.map((v) => v / l) };
+  }
+  // Amanatides-Woo walk through the model's grid; cells above the cut and carved air are empty.
+  function pick(ev) {
+    const r = ray(ev);
+    if (!r) return null;
+    const m = model(), vox = m.vox, [X, Y, Z] = vox.dims, off = modelOffset(vox);
+    const top = Math.min(Y, S.cut == null ? Y : S.cut + 1);
+    const hi = [X, top, Z], o = [r.o[0] - off[0], r.o[1] - off[1], r.o[2] - off[2]], d = r.d;
+    let t0 = 0, t1 = Infinity;
+    for (let a = 0; a < 3; a++) {
+      if (Math.abs(d[a]) < 1e-12) { if (o[a] < 0 || o[a] > hi[a]) return null; continue; }
+      let ta = (0 - o[a]) / d[a], tb = (hi[a] - o[a]) / d[a];
+      if (ta > tb) [ta, tb] = [tb, ta];
+      t0 = Math.max(t0, ta); t1 = Math.min(t1, tb);
+      if (t0 > t1) return null;
+    }
+    const p = [0, 1, 2].map((a) => o[a] + d[a] * (t0 + 1e-6));
+    const c = [0, 1, 2].map((a) => Math.min(hi[a] - 1, Math.max(0, Math.floor(p[a]))));
+    const step = d.map((v) => (v > 0 ? 1 : -1));
+    const next = [0, 1, 2].map((a) => (d[a] > 0 ? (c[a] + 1 - p[a]) / d[a] : d[a] < 0 ? (p[a] - c[a]) / -d[a] : Infinity));
+    const delta = d.map((v) => (v !== 0 ? Math.abs(1 / v) : Infinity));
+    for (let n = 0; n < X + Y + Z + 3; n++) {
+      const mi = vox.cells[c[0] + X * (c[1] + Y * c[2])];
+      if (mi && mi !== vox.carved) return { cell: c.slice(), mat: vox.mats[mi][0] };
+      const a = next[0] < next[1] ? (next[0] < next[2] ? 0 : 2) : next[1] < next[2] ? 1 : 2;
+      c[a] += step[a];
+      if (c[a] < 0 || c[a] >= hi[a]) return null;
+      next[a] += delta[a];
+    }
+    return null;
+  }
+
+  // ---------------------------------------------------------------- panel
+  const lifeText = (f) => (f >= 0.75 && f <= 1.34 ? "about life size"
+    : f > 1 ? `${f.toFixed(1)} × life size` : `${(1 / f).toFixed(1)} × smaller than life`);
+  function compareText(h) {
+    const shown = refs.filter((r) => on.has(r.key) && r.key !== "player").sort((a, b) => a.height - b.height);
+    if (!shown.length) return "";
+    const lower = shown.filter((r) => r.height <= h), higher = shown.filter((r) => r.height > h);
+    const name = (r) => `the ${esc(r.label)} (${r.height})`;
+    if (!higher.length) return `${h} high: taller than everything shown`;
+    if (!lower.length) return `${h} high: lower than ${name(higher[0])}`;
+    return `${h} high: between ${name(lower[lower.length - 1])} and ${name(higher[0])}`;
+  }
+  function copyButton(text) {
+    return `<button class="copy" data-copy="${esc(text)}">copy</button>`;
+  }
+  function sizeInfo() {
+    const s = D.sizes[S.size], [x, y, z] = s.vox.dims, out = [];
+    out.push(`<b>${x} × ${y} × ${z}</b> nodes (wide × high × deep), ${s.nodes.toLocaleString("en")} placed`);
+    out.push(s.life ? `${lifeText(s.life)} <span class="muted">(real object ${D.real_size} m long)</span>`
+      : `<span class="muted">real size unknown: add <code>real_size = …</code> (metres) to [transform]</span>`);
+    const cmp = compareText(y);
+    if (cmp) out.push(cmp);
+    if (!s.fits) out.push(`<span class="warn">bigger than a map chunk: needs <code>placement.large = true</code></span>`);
+    out.push(s.current ? `<span class="muted">this is the size in landmark.toml</span>`
+      : `to use it: <code>target_size = ${s.target}</code> ${copyButton(`target_size = ${s.target}`)}`);
+    if (s.sealed) out.push(`<span class="warn">rooms without a door at this size</span>`);
+    else if (s.door) out.push(`<span class="muted">door: ${esc(s.door)}</span>`);
+    if (s.note) out.push(`<span class="muted">${esc(s.note)}</span>`);
+    for (const f of s.findings) out.push(`<span class="warn">${esc(f)}</span>`);
+    $("sizeinfo").innerHTML = out.map((h) => `<div>${h}</div>`).join("");
+  }
+  function sizeChips() {
+    $("sizes").innerHTML = D.sizes.map((s, i) => `<button class="chip${i === S.size ? " on" : ""}${s.current ? " now" : ""}" data-size="${i}">${s.target}</button>`).join("");
+  }
+  function refList() {
+    let html = "", group = null;
+    for (const r of refs) {
+      if (r.group !== group) {
+        group = r.group;
+        if (group) html += `<div class="group">${esc(group)}</div>`;
+      }
+      html += `<label><input type="checkbox" data-ref="${esc(r.key)}"${on.has(r.key) ? " checked" : ""}> ${esc(r.label)} <span class="h">${r.height} high</span></label>`;
+    }
+    $("refs").innerHTML = html;
+  }
+  function cutSlider() {
+    const Y = D.sizes[S.size].vox.dims[1], el = $("cut");
+    el.max = Y - 1;
+    el.value = S.cut == null ? Y - 1 : S.cut;
+    $("cutv").textContent = S.cut == null ? "(none)" : S.cut;
+  }
+  function status() {
+    const el = $("status"), parts = [];
+    const at = D.sizes[S.size].current ? "" : ` <span class="muted">(at size ${D.sizes[S.size].target})</span>`;
+    if (S.hover) parts.push(`x ${S.hover.cell[0]} · y ${S.hover.cell[1]} · z ${S.hover.cell[2]} — ${esc(S.hover.mat)}`);
+    if (S.sel && S.sel2) {
+      const a = S.sel, b = S.sel2;
+      const box = `[${Math.min(a[0], b[0])}, ${Math.min(a[1], b[1])}, ${Math.min(a[2], b[2])}, ${Math.max(a[0], b[0])}, ${Math.max(a[1], b[1])}, ${Math.max(a[2], b[2])}]`;
+      parts.push(`box <code>${box}</code>${at} ${copyButton(`openings = [${box}]`)}`);
+    } else if (S.sel) parts.push(`selected x ${S.sel[0]} · y ${S.sel[1]} · z ${S.sel[2]}${at} <span class="muted">(shift-click a second node for a box)</span>`);
+    el.innerHTML = parts.join("<br>");
+    el.style.display = parts.length ? "block" : "none";
+  }
+  function selectSize(i) {
+    if (i < 0 || i >= D.sizes.length) return;
+    S.size = i; S.cut = null; S.hover = null; S.sel = S.sel2 = null;
+    sizeChips(); sizeInfo(); cutSlider(); status(); request();
+  }
+
+  $("title").textContent = D.title;
+  $("sub").innerHTML = `${esc(D.id)} <span class="muted">· sagas ${esc(D.version)}</span>`;
+  $("notes").innerHTML = D.notes.map((n) => `<div class="warn">${esc(n)}</div>`).join("");
+  document.title = `${D.title} · sagas view`;
+  sizeChips(); sizeInfo(); refList(); cutSlider(); status();
+
+  document.addEventListener("click", (ev) => {
+    const t = ev.target;
+    if (t.dataset && t.dataset.size !== undefined) selectSize(+t.dataset.size);
+    if (t.dataset && t.dataset.copy !== undefined) {
+      const text = t.dataset.copy;
+      const done = () => { t.textContent = "copied"; setTimeout(() => { t.textContent = "copy"; }, 1200); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => fallbackCopy(text, done));
+      else fallbackCopy(text, done);
+    }
+  });
+  function fallbackCopy(text, done) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.append(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) { /* the text stays visible in the status line */ }
+    ta.remove();
+  }
+  $("refs").addEventListener("change", (ev) => {
+    const k = ev.target.dataset.ref;
+    if (!k) return;
+    if (ev.target.checked) on.add(k); else on.delete(k);
+    sizeInfo(); request();
+  });
+  for (const id of ["edges", "ao", "ground", "carved"]) {
+    $(id).addEventListener("change", (ev) => { S[id] = ev.target.checked; request(); });
+  }
+  $("cut").addEventListener("input", (ev) => {
+    const Y = D.sizes[S.size].vox.dims[1], v = +ev.target.value;
+    S.cut = v >= Y - 1 ? null : v;
+    $("cutv").textContent = S.cut == null ? "(none)" : S.cut;
+    S.hover = null;
+    request();
+  });
+  $("fold").addEventListener("click", () => {
+    const p = $("panel");
+    p.classList.toggle("min");
+    $("fold").textContent = p.classList.contains("min") ? "+" : "–";
+  });
+
+  // ---------------------------------------------------------------- input
+  const pointers = new Map();
+  let drag = null, hoverQueued = false, lastMove = null;
+  canvas.addEventListener("contextmenu", (ev) => ev.preventDefault());
+  canvas.addEventListener("pointerdown", (ev) => {
+    try { canvas.setPointerCapture(ev.pointerId); } catch (e) { /* a pointer that is already gone */ }
+    pointers.set(ev.pointerId, [ev.clientX, ev.clientY]);
+    if (pointers.size === 1) drag = { x: ev.clientX, y: ev.clientY, sx: ev.clientX, sy: ev.clientY, button: ev.button, moved: false };
+    if (pointers.size === 2 && drag) {
+      const [a, b] = [...pointers.values()];
+      drag.pinch = Math.hypot(a[0] - b[0], a[1] - b[1]);
+      drag.moved = true;
+    }
+  });
+  canvas.addEventListener("pointermove", (ev) => {
+    if (!drag) {
+      lastMove = ev;
+      if (!hoverQueued) {
+        hoverQueued = true;
+        requestAnimationFrame(() => {
+          hoverQueued = false;
+          const h = pick(lastMove);
+          const same = (h && S.hover && h.cell.join() === S.hover.cell.join()) || (!h && !S.hover);
+          if (!same) { S.hover = h; status(); request(); }
+        });
+      }
+      return;
+    }
+    if (pointers.has(ev.pointerId)) pointers.set(ev.pointerId, [ev.clientX, ev.clientY]);
+    if (pointers.size === 2 && drag.pinch) {
+      const [a, b] = [...pointers.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]);
+      cam.dist = Math.min(5000, Math.max(1, cam.dist * (drag.pinch / Math.max(1, d))));
+      drag.pinch = d;
+      request();
+      return;
+    }
+    const dx = ev.clientX - drag.x, dy = ev.clientY - drag.y;
+    drag.x = ev.clientX; drag.y = ev.clientY;
+    if (Math.abs(ev.clientX - drag.sx) + Math.abs(ev.clientY - drag.sy) > 4) drag.moved = true;
+    if (!drag.moved) return;
+    if (drag.button === 1 || drag.button === 2 || ev.shiftKey) {
+      const k = (cam.dist * 2 * Math.tan(FOV / 2)) / Math.max(1, canvas.clientHeight);
+      const sy = Math.sin(cam.yaw), cy = Math.cos(cam.yaw), sp = Math.sin(cam.pitch), cp = Math.cos(cam.pitch);
+      const right = [cy, 0, -sy], up = [-sp * sy, cp, -sp * cy];
+      cam.t = cam.t.map((v, i) => v - right[i] * dx * k + up[i] * dy * k);
+    } else {
+      cam.yaw -= dx * 0.008;
+      cam.pitch = Math.min(1.55, Math.max(-1.55, cam.pitch + dy * 0.008));
+    }
+    request();
+  });
+  const up = (ev) => {
+    pointers.delete(ev.pointerId);
+    if (drag && !drag.moved && pointers.size === 0 && drag.button === 0) {
+      const h = pick(ev);
+      if (!h) { S.sel = S.sel2 = null; }
+      else if (ev.shiftKey && S.sel) S.sel2 = h.cell;
+      else { S.sel = h.cell; S.sel2 = null; }
+      status();
+      request();
+    }
+    if (pointers.size === 0) drag = null;
+  };
+  canvas.addEventListener("pointerup", up);
+  canvas.addEventListener("pointercancel", up);
+  canvas.addEventListener("dblclick", (ev) => {
+    const h = pick(ev);
+    if (!h) return;
+    const off = modelOffset(model().vox);
+    cam.t = [off[0] + h.cell[0] + 0.5, h.cell[1] + 0.5, off[2] + h.cell[2] + 0.5];
+    cam.dist = Math.max(3, cam.dist * 0.45);
+    request();
+  });
+  canvas.addEventListener("wheel", (ev) => {
+    ev.preventDefault();
+    const k = Math.exp(ev.deltaY * (ev.ctrlKey ? 0.01 : 0.0015) * (ev.deltaMode === 1 ? 16 : 1));
+    cam.dist = Math.min(5000, Math.max(1, cam.dist * k));
+    request();
+  }, { passive: false });
+  window.addEventListener("keydown", (ev) => {
+    if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
+    const k = ev.key;
+    if (k === "r" || k === "R") frame();
+    else if (k === "ArrowLeft") cam.yaw += 0.1;
+    else if (k === "ArrowRight") cam.yaw -= 0.1;
+    else if (k === "ArrowUp") cam.pitch = Math.min(1.55, cam.pitch + 0.08);
+    else if (k === "ArrowDown") cam.pitch = Math.max(-1.55, cam.pitch - 0.08);
+    else if (k === "+" || k === "=") cam.dist = Math.max(1, cam.dist / 1.2);
+    else if (k === "-" || k === "_") cam.dist = Math.min(5000, cam.dist * 1.2);
+    else if (/^[1-9]$/.test(k)) { selectSize(+k - 1); return; }
+    else return;
+    ev.preventDefault();
+    request();
+  });
+  window.addEventListener("resize", request);
+
+  layout();
+  frame();
+  draw();
+  // for the browser console and tests: sagasView.selectSize(2); sagasView.cam.yaw = 1; sagasView.draw()
+  window.sagasView = { state: S, cam, refsOn: on, draw, frame, selectSize, pick };
+})();
+</script>
+</body>
+</html>

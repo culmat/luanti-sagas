@@ -29,6 +29,33 @@ def source_file(landmark: Landmark, repo: Repo) -> Path:
     )
 
 
+def load_mesh(landmark: Landmark, repo: Repo):
+    """The source mesh of a `kind = "mesh"` landmark, with `voxel.texture` applied."""
+    from . import fetch, load
+
+    path = source_file(landmark, repo)
+    if landmark.source.member:
+        path = fetch.extract_member(path, landmark.source.member, fetch.extract_dir(path, landmark.source.member))
+    mesh = load.load_model(path)
+    if landmark.voxel.texture or landmark.voxel.alpha == "ignore":
+        tex = None
+        if landmark.voxel.texture:
+            for cand in (
+                path.parent / landmark.voxel.texture,
+                source_file(landmark, repo).parent / landmark.voxel.texture,
+                landmark.dir / landmark.voxel.texture,
+            ):
+                if cand.exists():
+                    tex = cand
+                    break
+            if tex is None:
+                raise SourceMissing(
+                    f"{landmark.qualified_id}: texture {landmark.voxel.texture} not found (sagas fetch)"
+                )
+        load.apply_texture(mesh, tex, landmark.voxel.alpha)
+    return mesh
+
+
 def voxelize(landmark: Landmark, repo: Repo) -> voxels.VoxelModel:
     kind = landmark.source.kind
     if kind == "voxels":
@@ -49,30 +76,9 @@ def voxelize(landmark: Landmark, repo: Repo) -> voxels.VoxelModel:
 
         model = vox.read_vox(source_file(landmark, repo), landmark.transform)
     elif kind == "mesh":
-        from . import fetch, load
         from . import voxelize as vz
 
-        path = source_file(landmark, repo)
-        if landmark.source.member:
-            path = fetch.extract_member(path, landmark.source.member, fetch.extract_dir(path, landmark.source.member))
-        mesh = load.load_model(path)
-        if landmark.voxel.texture or landmark.voxel.alpha == "ignore":
-            tex = None
-            if landmark.voxel.texture:
-                for cand in (
-                    path.parent / landmark.voxel.texture,
-                    source_file(landmark, repo).parent / landmark.voxel.texture,
-                    landmark.dir / landmark.voxel.texture,
-                ):
-                    if cand.exists():
-                        tex = cand
-                        break
-                if tex is None:
-                    raise SourceMissing(
-                        f"{landmark.qualified_id}: texture {landmark.voxel.texture} not found (sagas fetch)"
-                    )
-            load.apply_texture(mesh, tex, landmark.voxel.alpha)
-        model = vz.voxelize(mesh, landmark.transform, landmark.voxel)
+        model = vz.voxelize(load_mesh(landmark, repo), landmark.transform, landmark.voxel)
     else:
         raise SagasError(f"{landmark.qualified_id}: source.kind {kind!r} cannot be voxelized")
     if landmark.source.sha256:

@@ -5,6 +5,7 @@ sagas fetch     download the source (sha256-checked) into sources/        needs 
 sagas inspect   parts, materials, textures, size of the source
 sagas voxelize  source -> content/<saga>/<id>/voxels.vx.gz               needs the source
 sagas build     voxels.vx.gz -> mods/sagas_<saga>/ + preview.png         reproducible, no source needed
+sagas view      3D page: the landmark at several sizes next to game trees  other sizes need the source
 sagas lint      licence, attribution, size, value budget, drift checks
 sagas catalog   docs/gallery/ (index.md, catalog.json)
 ```
@@ -58,6 +59,7 @@ Top level: `schema = 1`, `id`, `saga` (both `^[a-z][a-z0-9_]{2,31}$`, matching t
 
 `up` (`auto` = from the file: DAE up_axis, glTF Y, STL Z, OBJ Y), `rotate_y` (0/90/180/270),
 `mirror` (`x`/`z`), `target_size` (longest side in nodes) or `scale` (nodes per model unit),
+`real_size` (longest side of the real object in metres, for the life-size factor in `sagas view`),
 `anchor` (`bottom-center`, `bottom-min`, `center`), `trim_below`/`trim_above` (fraction of height).
 
 ### [voxel]

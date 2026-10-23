@@ -348,6 +348,63 @@ def preview(
             typer.echo(str(pipeline.write_preview(res, size)))
 
 
+@app.command()
+@guarded
+def view(
+    target: Annotated[str, typer.Argument(help="One landmark: <saga>/<id>")],
+    sizes: Annotated[
+        str, typer.Option(help="Sizes to compare, e.g. 16,24,32 (default: 12 to 64 and the current)")
+    ] = "",
+    out: Annotated[Path | None, typer.Option(help="Page to write (default: .dev/view/<saga>-<id>.html)")] = None,
+    png: Annotated[Path | None, typer.Option(help="Also write a still: all sizes at true scale, for agents")] = None,
+    games: Annotated[
+        list[Path] | None, typer.Option("--games", help="Folder holding Luanti games (repeatable)")
+    ] = None,
+    open_page: Annotated[
+        bool | None, typer.Option("--open/--no-open", help="Open the page (default: when run in a terminal)")
+    ] = None,
+):
+    """Turn and zoom a landmark at several sizes, next to the player, trees and houses of your games."""
+    import webbrowser
+
+    from . import viewer
+
+    r = repo()
+    chosen = r.select(target)
+    if len(chosen) != 1:
+        raise SagasError(f"{target!r} selects {len(chosen)} landmarks; name one as <saga>/<id>")
+    landmark = chosen[0]
+    try:
+        wanted = [int(s) for s in sizes.split(",") if s.strip()]
+    except ValueError:
+        raise SagasError(f"--sizes: expected numbers like 16,24,32, got {sizes!r}") from None
+    if any(not 4 <= s <= 400 for s in wanted):
+        raise SagasError("--sizes: every size must be between 4 and 400")
+
+    def show(s: viewer.ModelSize) -> None:
+        x, y, z = s.vox.dims
+        life = f", x{s.life:.1f} life size" if s.life else ""
+        mark = "  (landmark.toml)" if s.current else ""
+        typer.echo(f"  {s.target:>3}: {x}x{y}x{z}, {s.nodes} nodes{life}{mark}")
+
+    results, notes = viewer.model_sizes(landmark, r, wanted or None, on_size=show)
+    refs = viewer.references(games)
+    path = out or viewer.default_path(r, landmark)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(viewer.page(viewer.page_data(landmark, results, refs, notes)), encoding="utf-8")
+    games_found = sorted({ref.group for ref in refs if ref.group and ref.group != "generic"})
+    typer.echo(
+        f"  compare with: {', '.join(games_found) if games_found else 'stand-in trees (no game found; --games)'}"
+    )
+    for n in notes:
+        typer.secho(f"  ! {n}", fg="yellow")
+    if png:
+        typer.echo(str(viewer.still(results, refs, png)))
+    typer.echo(str(path))
+    if open_page if open_page is not None else sys.stdout.isatty():
+        webbrowser.open(path.resolve().as_uri())
+
+
 @app.command("lint")
 @guarded
 def lint_cmd(

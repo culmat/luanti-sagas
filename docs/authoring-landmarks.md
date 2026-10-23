@@ -73,7 +73,8 @@ Read `preview.png` (top, front, side, isometric) and fix:
 | Looks like | Fix |
 |---|---|
 | lying on its side | `transform.up = "z"` (or `"y"`); `"auto"` reads DAE up_axis, glTF Y, STL Z |
-| too small to read, thin parts missing | raise `target_size` (keep within 72 x 96 x 72, else `placement.large = true`) |
+| too small to read, thin parts missing | raise `target_size` after comparing sizes (section 5); keep within 72 x 96 x 72, else `placement.large = true` |
+| towers over the trees, dwarfs the houses | lower `target_size` (section 5) |
 | ghost copies, boxes around it | `voxel.exclude = ["*collision*", "*LOD1*"]` (names from `sagas inspect`) |
 | holes in a scan | `voxel.close_radius = 1` |
 | everything one class | add rules; check `material` names with `sagas inspect` |
@@ -97,7 +98,46 @@ openings = [[16, 1, 29, 17, 2, 29]]   # [x1, y1, z1, x2, y2, z2]; several boxes 
 A tomb or vault may stay closed: `doorway = "none"`. Players break in, so put something worth it
 inside (a treasure mod via `sagas.register_on_placed`).
 
-## 5. Check and hand over
+## 5. Size and detail
+
+Too small and the detail is gone; too big and the landmark towers over the forest and dwarfs every
+house. Decide the size on purpose, with the creator:
+
+```sh
+sagas view <saga>/<id>                          # 3D page in the browser (.dev/view/<saga>-<id>.html)
+sagas view <saga>/<id> --sizes 16,24,32 --png sizes.png --no-open   # plus a still of all sizes
+```
+
+The page shows the landmark as `sagas build` makes it, at several sizes (• marks the one in
+landmark.toml), next to a player and the trees and village houses of the games installed on your
+machine. Drag to turn it, zoom in to judge the detail, cut it open layer by layer, show the carved
+air of rooms and doorways, and click a node for its coordinates (shift-click a second node for a
+`voxel.openings` box). Other sizes need the source (`sagas fetch`). The page embeds the games'
+schematics, so it stays on your machine: `.dev/` is never committed. Coding agents cannot turn the
+page: they read the `--png` still and give the person the page's path.
+
+1. **Note the real size**: `real_size` in `[transform]`, the longest side of the real object in
+   metres, from the source (a museum record, the building's dimensions). `sagas inspect` shows the
+   model's extents; 5081 with no unit is usually millimetres. The view then says "x N life size".
+2. **Pick the scale** with the creator:
+
+| Scale | For | Rule of thumb |
+|---|---|---|
+| life size (1 node is about 1 m) | buildings, ships, anything players enter | doors 2 high, storeys 3 to 4 |
+| enlarged (2 to 5 times) | skeletons, statues, small objects whose detail vanishes at life size | no taller than the trees around it |
+| giant (more) | only when title and lore say so ("Giant ...", a titan's bones) | the lore explains the size |
+
+3. **Keep the parts that matter**: tusks, legs, columns and spires need at least one node. If they
+   only survive at giant size, make it a giant on purpose, or show it another way (half buried, as a
+   ruin).
+
+Heights in nodes, from the games' own schematics: player 1.75, doors 2; Minetest Game trees 8 (apple)
+to 17 (jungle), the emergent jungle tree 37; Mineclonia trees 7 to 15, huge spruce and jungle trees
+19 to 30, village houses 7 to 10, the village church 13; a map chunk is 80.
+
+Set the chosen size as `target_size`, then `sagas voxelize <saga>/<id> --force` and `sagas build <saga>`.
+
+## 6. Check and hand over
 
 - `sagas lint <saga>/<id>` must pass without warnings (L016: rooms without a door);
   `sagas build --check` must report packs up to date.

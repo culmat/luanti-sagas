@@ -23,6 +23,7 @@ notes = "Woolly mammoth skeleton, National Museum of Natural History; released C
 [transform]
 up = "auto"
 target_size = 52
+real_size = 5.1  # the scan's longest side: 5081 (mm, the glTF has no unit)
 anchor = "bottom-center"
 
 [voxel]
