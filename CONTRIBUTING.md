@@ -39,7 +39,7 @@ A **saga** is a theme (ruins, antiquity, vikings, dragon fantasy); a **landmark*
 Try it in game: `avanti play mods --game minetest` (or `mineclonia`, `mineclone2`) opens Luanti
 straight into a creative world that loads `mods/` from your checkout, linked rather than copied
 ([avanti-luanti](https://github.com/culmat/avanti-luanti); the world lives in `.dev/`, which is ignored).
-Point at the ground and run `/saga place watchtower`. Luanti has no hot reload: after `sagas build`
+Point at the ground and run `/saga place watchtower`. To see where map generation itself would put it, run `/saga find watchtower`: fresh map is generated around you until it is placed, and you are taken there. Luanti has no hot reload: after `sagas build`
 or a Lua edit, quit and run the command again.
 
 ## Four ways in

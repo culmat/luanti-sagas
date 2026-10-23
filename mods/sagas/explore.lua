@@ -11,7 +11,6 @@ sagas.explore = explore
 
 local LIST_MAX = 20
 local last_list = {} -- player name -> records shown by /saga placed
-local finds = {} -- player name -> search state
 local waypoints = {} -- player name -> {radius, huds = {key -> hud id}}
 
 local function compass(from, to)
@@ -154,82 +153,226 @@ local function ring_tiles(r)
 end
 explore.ring_tiles = ring_tiles
 
-local function find_step(name)
-	local st = finds[name]
-	if not st then
+-- A search generates the map in square rings of tiles around `origin` until landmark `id` is
+-- placed. While it runs the engine is focused on that landmark: no other landmark is placed and it
+-- rolls in every new mapchunk (rarity 1), but its site, biome, spacing and anchoring work exactly as
+-- in normal map generation. Tiles whose biomes the landmark cannot use are skipped without
+-- generating them. One search at a time (the focus is global).
+local search -- the running search, or nil
+
+local function restore_focus(st)
+	engine.configure({ only = st.saved_only or false, rarity_scale = st.saved_scale })
+end
+
+local function stop_search(st, rec)
+	if search ~= st then
+		return
+	end
+	search = nil
+	restore_focus(st)
+	st.on_done(rec, st)
+end
+
+-- Could the landmark's biomes be in the tile around (x, z)? Samples five points at the likely ground
+-- height (biome noise only, nothing is generated).
+local function tile_has_biome(def, x, z)
+	if not def.biome_filter then
+		return true
+	end
+	local water = tonumber(core.get_mapgen_setting("water_level")) or 1
+	for _, o in ipairs({ { 0, 0 }, { -60, -60 }, { 60, -60 }, { -60, 60 }, { 60, 60 } }) do
+		local px, pz = x + o[1], z + o[2]
+		local y = core.get_spawn_level(px, pz) or water + 8
+		local bd = core.get_biome_data({ x = px, y = y, z = pz })
+		if bd and def.biome_filter[bd.biome] then
+			return true
+		end
+	end
+	return false
+end
+explore.tile_has_biome = tile_has_biome
+
+local function search_step(st)
+	if search ~= st then
 		return
 	end
 	if st.k > #st.ring then
 		st.r, st.k = st.r + 1, 1
 		st.ring = ring_tiles(st.r)
 		if st.r * TILE > st.radius then
-			finds[name] = nil
-			core.chat_send_player(
-				name,
-				S("No @1 within @2 m (@3 tiles generated). Rarer than you think?", title(st.id), st.radius, st.tiles)
-			)
-			return
+			return stop_search(st, nil)
 		end
 	end
 	local t = st.ring[st.k]
 	st.k = st.k + 1
 	local c = { x = st.origin.x + t[1] * TILE, z = st.origin.z + t[2] * TILE }
+	if not tile_has_biome(st.def, c.x, c.z) then
+		st.skipped = st.skipped + 1
+		return core.after(0, search_step, st)
+	end
 	local p1 = { x = c.x - TILE / 2, y = Y1, z = c.z - TILE / 2 }
 	local p2 = { x = c.x + TILE / 2 - 1, y = Y2, z = c.z + TILE / 2 - 1 }
 	core.emerge_area(p1, p2, function(_, _, remaining)
-		if remaining > 0 or finds[name] ~= st then
+		if remaining > 0 or search ~= st then
 			return
 		end
 		st.tiles = st.tiles + 1
-		for _, rec in ipairs(records.in_box(vector.offset(p1, 0, -200, 0), vector.offset(p2, 0, 400, 0))) do
-			if rec.id == st.id then
-				finds[name] = nil
-				core.chat_send_player(
-					name,
-					S("Found @1 after @2 tile(s): @3. /saga tp @4", title(st.id), st.tiles, tour.describe(rec), st.word)
-				)
-				return
-			end
+		if st.on_progress and st.tiles % 10 == 0 then
+			st.on_progress(st)
 		end
-		if st.tiles % 10 == 0 then
-			core.chat_send_player(name, S("... @1 tile(s) searched, @2 m out.", st.tiles, st.r * TILE))
-		end
-		core.after(0, find_step, name)
+		core.after(0, search_step, st) -- a placement found meanwhile has stopped the search
 	end)
 end
 
-function explore.find(name, args)
-	local player = core.get_player_by_name(name)
-	local word, km = args:match("^(%S*)%s*([%d%.]*)$")
-	if word == "stop" then
-		finds[name] = nil
-		return true, S("Search stopped.")
+-- Landmarks are placed from mapgen callbacks (large ones after an extra emerge); the placement
+-- callback tells the search.
+sagas.register_on_placed(function(id, anchor)
+	local st = search
+	if st and id == st.id then
+		core.after(0, function()
+			stop_search(st, records.at(anchor)[1] or { id = id, anchor = anchor, p1 = anchor, p2 = anchor })
+		end)
 	end
-	local id = sagas.resolve_id(word)
-	if not id or not player then
-		return false, S("Usage: /saga find <id> [km] | stop")
-	end
-	local near, dist = records.nearest(player:get_pos(), id)
-	if near[1] then
-		return true,
-			S("Already recorded: @1, @2 m away. /saga tp @3", tour.describe(near[1]), math.floor(dist[1]), word)
+end)
+
+-- opts: id, origin, radius (nodes), on_done(rec or nil, state), on_progress(state), owner (player
+-- name: the search ends when they leave).
+-- Returns the search state, or nil and an error message.
+function explore.search(opts)
+	if search then
+		return nil, S("Another search for @1 is running.", title(search.id))
 	end
 	if engine.mode ~= "sampler" then
-		return false, S("Automatic placement is off in this world, so searching cannot find anything.")
+		return nil, S("Automatic placement is off in this world, so searching cannot find anything.")
 	end
-	local radius = math.floor(math.min(4, math.max(0.2, tonumber(km) or 1)) * 1000)
-	finds[name] = {
-		id = id,
-		word = word,
-		origin = vector.round(player:get_pos()),
-		radius = radius,
+	local def = sagas.registered_landmarks[opts.id]
+	local st = {
+		id = opts.id,
+		def = def,
+		origin = vector.round(opts.origin),
+		radius = opts.radius,
+		on_done = opts.on_done,
+		on_progress = opts.on_progress,
 		r = 0,
 		k = 1,
 		ring = ring_tiles(0),
 		tiles = 0,
+		skipped = 0,
+		saved_only = engine.only and table.copy(engine.only) or nil,
+		saved_scale = engine.scale,
+		owner = opts.owner,
 	}
-	core.after(0, find_step, name)
-	return true, S("Generating map around you, up to @1 m, until @2 appears (/saga find stop).", radius, title(id))
+	if st.saved_only then
+		local list = {}
+		for k in pairs(st.saved_only) do
+			list[#list + 1] = k
+		end
+		st.saved_only = list
+	end
+	search = st
+	engine.configure({ only = { opts.id }, rarity_scale = 1 / math.max(1, def.rarity) })
+	core.after(0, search_step, st)
+	return st
+end
+
+function explore.stop_search()
+	if search then
+		stop_search(search, nil)
+		return true
+	end
+	return false
+end
+
+local function find_usage()
+	return S("Usage: /saga find <id> [km] [--new] | stop")
+end
+
+function explore.find(name, args)
+	local player = core.get_player_by_name(name)
+	if args:match("^stop") then
+		return explore.stop_search(), S("Search stopped.")
+	end
+	local word, km, new
+	for w in args:gmatch("%S+") do
+		if w == "--new" then
+			new = true
+		elseif not word then
+			word = w
+		elseif tonumber(w) then
+			km = tonumber(w)
+		else
+			return false, find_usage()
+		end
+	end
+	local id = sagas.resolve_id(word)
+	if not id or not player then
+		return false, find_usage()
+	end
+	if not new then
+		local near, dist = records.nearest(player:get_pos(), id)
+		if near[1] then
+			return true,
+				S(
+					"Already recorded: @1, @2 m away. /saga tp @3 goes there; --new searches fresh land.",
+					tour.describe(near[1]),
+					math.floor(dist[1]),
+					word
+				)
+		end
+	end
+	local radius = math.floor(math.min(16, math.max(0.2, km or 3)) * 1000)
+	local st, err = explore.search({
+		id = id,
+		owner = name,
+		origin = player:get_pos(),
+		radius = radius,
+		on_progress = function(s)
+			core.chat_send_player(
+				name,
+				S("... @1 tile(s) generated, @2 skipped (other biomes), @3 m out.", s.tiles, s.skipped, s.r * TILE)
+			)
+		end,
+		on_done = function(rec, s)
+			local p = core.get_player_by_name(name)
+			if not rec then
+				if p then
+					core.chat_send_player(
+						name,
+						S(
+							"No @1 within @2 m (@3 tile(s) generated, @4 without its biomes skipped).",
+							title(id),
+							s.radius,
+							s.tiles,
+							s.skipped
+						)
+					)
+				end
+				return
+			end
+			if p then
+				core.chat_send_player(
+					name,
+					S(
+						"Placed by map generation after @1 tile(s): @2. /saga tour @3 circles it.",
+						s.tiles,
+						tour.describe(rec),
+						word
+					)
+				)
+				explore.go(p, rec)
+			end
+		end,
+	})
+	if not st then
+		return false, err
+	end
+	return true,
+		S(
+			"Generating fresh map around you, up to @1 m, until map generation places @2 "
+				.. "(only it, in every chunk where it fits). /saga find stop ends the search.",
+			radius,
+			title(id)
+		)
 end
 
 -- ------------------------------------------------------------------ waypoints
@@ -285,7 +428,10 @@ end)
 
 core.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
-	waypoints[name], finds[name], last_list[name] = nil, nil, nil
+	waypoints[name], last_list[name] = nil, nil
+	if search and search.owner == name then
+		explore.stop_search()
+	end
 end)
 
 function explore.waypoints(name, args)

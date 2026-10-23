@@ -314,8 +314,8 @@ core.register_on_mods_loaded(function()
 	}
 	extra.waypoints = { params = "[radius]|off", desc = S("markers on screen"), func = explore.waypoints }
 	extra.find = {
-		params = "<id> [km]|stop",
-		desc = S("generate the map around you until a landmark appears"),
+		params = "<id> [km] [--new]|stop",
+		desc = S("generate fresh map until map generation places that landmark, then show it"),
 		func = explore.find,
 	}
 	extra.stats = { params = "[id]", desc = S("placement statistics of this session"), func = explore.stats }

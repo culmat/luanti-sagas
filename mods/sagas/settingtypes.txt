@@ -25,3 +25,7 @@ sagas_debug (Debug output) bool false
 # Development: also test every landmark's site in every generated mapchunk without placing it, and
 # count fits and rejection reasons (/saga stats, avanti survey). Slows map generation down.
 sagas_survey (Survey site fit) bool false
+
+# Development: place nothing but these landmarks (comma-separated ids, e.g. "sagas_ruins:mammoth_skeleton"),
+# to see in a fresh world where map generation puts them. Combine with a low sagas_rarity_scale.
+sagas_only (Only these landmarks) string

@@ -835,3 +835,45 @@ mtt.register("sagas: only hidden landmarks stand in deep forest", function(callb
 	assert(sites.evaluate(def, forest, 40, 40, 0) == 10, "hidden landmarks may stand in deep forest")
 	callback()
 end)
+
+mtt.register("sagas: find has map generation place one landmark, then restores placement", {
+	timeout = 240,
+	func = function(callback)
+		local engine = sagas.engine
+		if engine.mode ~= "sampler" then
+			return callback()
+		end
+		local def = sagas.registered_landmarks["sagas:test_box"]
+		def.enabled = true
+		local scale, only = engine.scale, engine.only
+		assert(sagas.explore.tile_has_biome(def, 0, 0), "a landmark for any biome fits every tile")
+		local st, err = sagas.explore.search({
+			id = "sagas:test_box",
+			origin = { x = -6000, y = 0, z = 6000 },
+			radius = 1000,
+			on_done = function(rec, s)
+				def.enabled = false
+				if not rec then
+					return callback("not placed after " .. s.tiles .. " tile(s)")
+				end
+				if rec.id ~= "sagas:test_box" or math.abs(rec.anchor.x + 6000) > 1100 then
+					return callback("unexpected placement " .. dump(rec))
+				end
+				if engine.only ~= only or engine.scale ~= scale then
+					return callback("normal placement not restored")
+				end
+				callback()
+			end,
+		})
+		if not st then
+			return callback(err)
+		end
+		local again = sagas.explore.search({ id = "sagas:test_arrow", origin = { x = 0, y = 0, z = 0 }, radius = 100 })
+		if again then
+			return callback("a second search started while one runs")
+		end
+		if not engine.only or not engine.only["sagas:test_box"] then
+			return callback("the engine is not focused on the landmark")
+		end
+	end,
+})

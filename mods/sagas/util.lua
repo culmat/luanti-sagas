@@ -13,7 +13,11 @@ util.settings = {
 	disable_mapgen = settings:get_bool("sagas_disable_mapgen", false),
 	debug = settings:get_bool("sagas_debug", false),
 	survey = settings:get_bool("sagas_survey", false),
+	only = {}, -- sagas_only: place nothing but these landmarks (testing a landmark in a fresh world)
 }
+for item in (settings:get("sagas_only") or ""):gmatch("[^,%s]+") do
+	util.settings.only[#util.settings.only + 1] = item
+end
 for item in (settings:get("sagas_disabled") or ""):gmatch("[^,%s]+") do
 	util.settings.disabled[item] = true
 end

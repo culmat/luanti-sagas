@@ -87,12 +87,22 @@ survey.register_on_finish(function(ctx)
 		)
 	end
 	local spread = records.spread()
+	-- With sagas_only or a lowered rarity scale the survey shows where a landmark fits, not how often
+	-- players would meet it: repeat findings would be noise.
+	local boosted = engine.only ~= nil or engine.scale < 1
+	if boosted then
+		survey.finding(
+			"info",
+			"SV011",
+			"placement boosted for testing (sagas_only or sagas_rarity_scale below 1): repeat findings (SV001) skipped"
+		)
+	end
 	local lit_count, lights = 0, nil
 	for _, def in ipairs(sagas.landmark_list) do
 		if def.enabled then
 			local sp = spread[def.id] or { count = 0 }
 			local target = spacing_target(def)
-			if target and sp.nn_mean and sp.nn_mean < target then
+			if target and sp.nn_mean and sp.nn_mean < target and not boosted then
 				survey.finding(
 					"warn",
 					"SV001",

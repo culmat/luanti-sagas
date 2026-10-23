@@ -280,6 +280,14 @@ core.register_on_mods_loaded(function()
 	if engine.mode == "off" then
 		util.log("action", "automatic placement is off in this world (mapgen or setting); /saga place still works")
 	end
+	if #util.settings.only > 0 then
+		local ids = {}
+		for _, name in ipairs(util.settings.only) do
+			ids[#ids + 1] = sagas.resolve_id(name) or name
+		end
+		engine.configure({ only = ids })
+		util.log("action", "sagas_only: placing only %s", table.concat(ids, ", "))
+	end
 end)
 
 core.register_on_generated(function(minp, maxp, blockseed)

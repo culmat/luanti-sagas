@@ -102,5 +102,9 @@ inside (a treasure mod via `sagas.register_on_placed`).
 - `sagas lint <saga>/<id>` must pass without warnings (L016: rooms without a door);
   `sagas build --check` must report packs up to date.
 - Commit `landmark.toml`, `voxels.vx.gz`, `preview.png` and `mods/sagas_<saga>/`. Never commit `sources/`.
-- In game (optional): `avanti test mods`, or a creative world with `/saga place <id>` and `/saga sites <id>`.
+- In game (optional): `avanti play mods`, then `/saga find <id>`: fresh map is generated around you
+  until map generation places your landmark, and you are taken to it (`/saga tour <id>` circles it,
+  Space switches the time of day). `/saga place <id>` places it where you point, `/saga sites <id>`
+  marks where its site fits. For many placements at once: `avanti survey mods --set sagas_only=<id>
+  --set sagas_rarity_scale=0.001 --keep` (see [placement.md](placement.md)).
 - Never publish (ContentDB, forums, upstream issues) without the maintainer's explicit approval.

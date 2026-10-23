@@ -121,6 +121,7 @@ chunk without placing it, so even rare landmarks show how often and in which bio
 | SV005 | More than 0.5 lit landmarks per km2: lamps take the darkness out of survival nights |
 | SV006 | A landmark with the `lamp` class has no light-emitting node after material mapping |
 | SV010 | Automatic placement is off in this world (singlenode, Mineclonia levelgen) |
+| SV011 | Placement was boosted for testing (`sagas_only`, `sagas_rarity_scale`): repeat findings skipped |
 
 In game (privilege `sagas`, which singleplayer has):
 
@@ -130,8 +131,26 @@ In game (privilege `sagas`, which singleplayer has):
 | `/saga tp <n>` or `/saga tp <id>` | Go to entry n of that list, or to the next copy of a landmark, facing it |
 | `/saga tour [n or id] [--times 0.5,0]` | Fly around each landmark in turn, from entry n of `/saga placed` or only copies of one landmark |
 | `/saga waypoints [radius]` | HUD markers on landmarks within radius (default 400); `off` |
-| `/saga find <id> [km]` | Generate the map around you in rings until that landmark appears (default 1 km) |
+| `/saga find <id> [km] [--new]` | Generate fresh map around you until map generation places that landmark, then take you there (see below) |
 | `/saga stats [id]` | Placement attempts this session: rolls, placements, why candidates failed, survey fit rates |
+
+### Seeing one landmark placed by map generation
+
+`/saga find <id>` generates fresh map in rings around you (up to 3 km, `[km]` up to 16) until map
+generation places that landmark, then takes you to a viewpoint facing it. While it searches, the
+engine places only this landmark and rolls it in every new mapchunk; its site, biomes, spacing,
+anchoring and snow work exactly as in normal map generation. Tiles without its biomes are skipped
+without generating them, so cold-climate landmarks are found kilometres away. If a copy is already
+recorded, `find` points to it; `--new` searches fresh land anyway. `/saga find stop` ends a search.
+
+Headless, for many placements at once (all in one fresh world, kept to visit):
+
+```sh
+avanti survey mods --game minetest --set sagas_only=mammoth_skeleton --set sagas_rarity_scale=0.001 --keep
+```
+
+The report says how many fitted and in which biomes; `avanti play ... --world <kept world> --lite`
+and `/saga tour mammoth_skeleton` show them. `sagas_only` takes ids separated by commas.
 
 The tour attaches you to an invisible camera that circles each landmark once (30 s, `--period`) and
 then moves on. If a game does not keep players attached, it switches to fixed viewpoints by itself
