@@ -71,6 +71,7 @@ moss = 0.15
 [placement]
 site = ["cave_mouth+against_rock", "slope+against_rock", "cliff+against_rock", "plain+against_rock"]
 exposure = "any"
-biomes = ["grassland", "forest", "taiga", "mountain"]
+biomes = ["grassland", "forest", "taiga"]
 rarity = 140
-hints = "Common filler: a piece of wall in the countryside. At least one upper corner rests on rock; at a cave entrance it looks best."
+y_max = 40
+hints = "Common filler: a piece of wall in the countryside, never on mountain tops. At least one upper corner rests on rock; at a cave entrance it looks best."
