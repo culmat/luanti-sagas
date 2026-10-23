@@ -206,6 +206,7 @@ survey.register_on_finish(function(ctx)
 		}
 	end
 	return {
+		visit = "/saga placed lists the landmarks, /saga tp 1 goes to the nearest, /saga tour flies around them all",
 		mode = engine.mode,
 		rarity_scale = engine.scale,
 		lit_landmarks = lit_count,
