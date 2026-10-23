@@ -110,9 +110,9 @@ sagas view <saga>/<id> --sizes 16,24,32 --png sizes.png --no-open   # plus a sti
 
 The page shows the landmark as `sagas build` makes it, at several sizes (• marks the one in
 landmark.toml), next to a player and the trees and village houses of the games installed on your
-machine. Drag to turn it, zoom in to judge the detail, cut it open layer by layer, show the carved
-air of rooms and doorways, and click a node for its coordinates (shift-click a second node for a
-`voxel.openings` box). Other sizes need the source (`sagas fetch`). The page embeds the games'
+machine. Drag to turn it, zoom in to judge the detail, press M to swap in the source model and see
+what the nodes keep, cut it open layer by layer, show the carved air of rooms and doorways, and
+click a node for its coordinates (shift-click a second node for a `voxel.openings` box). Other sizes need the source (`sagas fetch`). The page embeds the games'
 schematics, so it stays on your machine: `.dev/` is never committed. Coding agents cannot turn the
 page: they read the `--png` still and give the person the page's path.
 

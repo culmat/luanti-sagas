@@ -75,11 +75,12 @@ label .h { color: var(--muted); }
   <label><input type="checkbox" id="ao" checked> smooth lighting</label>
   <label><input type="checkbox" id="ground" checked> ground</label>
   <label><input type="checkbox" id="carved"> carved air (rooms, doorways)</label>
+  <label id="sourcebox" hidden><input type="checkbox" id="source"> source model instead of nodes <span class="h" id="sourceinfo"></span></label>
   <label>cut above layer <span id="cutv"></span><input type="range" id="cut" min="0" max="1" value="1"></label>
   <h3>Mouse and keys</h3>
   <div class="muted small">drag: turn · shift-drag or right-drag: move · wheel or pinch: zoom ·
     double-click: zoom to a node · click: node coordinates · shift-click: box for voxel.openings ·
-    1-9: size · R: reset view</div>
+    1-9: size · M: source model · R: reset view</div>
   <div id="notes" class="muted small"></div>
 </div>
 <div id="status"></div>
@@ -273,6 +274,18 @@ window.addEventListener("error", (ev) => {
       float a = 1.0 - smoothstep(uFar * 0.5, uFar, distance(vW, uEye));
       o = vec4(c * a, a);
     }`);
+  // The source model, lit by the sun; flat normals from screen derivatives (no normal data needed).
+  const MESH = program(`#version 300 es
+    layout(location = 0) in vec3 aPos; uniform mat4 uVP, uM; out vec3 vW;
+    void main() { vec4 w = uM * vec4(aPos, 1.0); vW = w.xyz; gl_Position = uVP * w; }`, `#version 300 es
+    precision highp float;
+    in vec3 vW; uniform vec3 uEye; out vec4 o;
+    void main() {
+      vec3 n = normalize(cross(dFdx(vW), dFdy(vW)));
+      if (dot(n, uEye - vW) < 0.0) n = -n;
+      float sun = max(dot(n, normalize(vec3(0.35, 0.85, 0.4))), 0.0);
+      o = vec4(vec3(0.86, 0.84, 0.8) * (0.42 + 0.5 * sun + 0.08 * (n.y * 0.5 + 0.5)), 1.0);
+    }`);
   const LINES = program(`#version 300 es
     layout(location = 0) in vec3 aPos; uniform mat4 uVP;
     void main() { gl_Position = uVP * vec4(aPos, 1.0); }`, `#version 300 es
@@ -301,6 +314,36 @@ window.addEventListener("error", (ev) => {
     gl.deleteBuffer(g.vb);
     gl.deleteBuffer(g.ib);
   }
+  let sourceMesh = null;
+  function sourceGpu() {
+    if (sourceMesh) return sourceMesh;
+    const bytes = (b64) => { const t = atob(b64), u = new Uint8Array(t.length); for (let i = 0; i < t.length; i++) u[i] = t.charCodeAt(i); return u.buffer; };
+    const q = new Uint16Array(bytes(D.mesh.verts)), pos = new Float32Array(q.length);
+    for (let i = 0; i < q.length; i++) pos[i] = q[i] / 65535;
+    const idx = D.mesh.wide ? new Uint32Array(bytes(D.mesh.faces)) : new Uint16Array(bytes(D.mesh.faces));
+    const vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, pos, gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 12, 0);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW);
+    gl.bindVertexArray(null);
+    sourceMesh = { vao, count: idx.length, type: D.mesh.wide ? gl.UNSIGNED_INT : gl.UNSIGNED_SHORT };
+    return sourceMesh;
+  }
+  // grid = A (verts * s) + b, then the model's offset on the ground
+  function meshMatrix(aff, off) {
+    const M = new Float32Array(16);
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 3; c++) M[c * 4 + r] = aff.A[r * 3 + c] * aff.s;
+      M[12 + r] = aff.b[r] + off[r];
+    }
+    M[15] = 1;
+    return M;
+  }
+  const showSource = () => S.source && D.mesh && D.sizes[S.size].mesh;
   const lineVao = gl.createVertexArray(), lineBuf = gl.createBuffer();
   gl.bindVertexArray(lineVao);
   gl.bindBuffer(gl.ARRAY_BUFFER, lineBuf);
@@ -315,7 +358,7 @@ window.addEventListener("error", (ev) => {
 
   // ---------------------------------------------------------------- scene
   const S = { size: Math.max(0, D.sizes.findIndex((s) => s.current)), edges: true, ao: true, ground: true,
-    carved: false, cut: null, hover: null, sel: null, sel2: null };
+    carved: false, source: false, cut: null, hover: null, sel: null, sel2: null };
   const models = D.sizes.map((s) => ({ entry: s, vox: null, gpu: null, meshKey: "", carvedGpu: null, carvedKey: "" }));
   const refs = D.refs.map((r) => ({ key: r.key, group: r.group, label: r.label, height: r.height, src: r.vox,
     vox: null, gpu: null, meshKey: "", off: [0, 0, 0] }));
@@ -453,12 +496,23 @@ window.addEventListener("error", (ev) => {
       if (!on.has(r.key)) continue;
       drawVox(refGpu(r), VP, place(r.vox.scale, r.off), S.edges && r.vox.scale === 1, 1);
     }
-    const m = modelGpu(), off = modelOffset(m.vox), M = place(1, off);
-    drawVox(m.gpu, VP, M, S.edges, 1);
-    if (S.carved && m.carvedGpu) {
-      gl.depthMask(false);
-      drawVox(m.carvedGpu, VP, M, false, 0.3);
-      gl.depthMask(true);
+    const off = modelOffset(model().vox);
+    if (showSource()) {
+      const g = sourceGpu();
+      gl.useProgram(MESH.p);
+      gl.uniformMatrix4fv(MESH.u.uVP, false, VP);
+      gl.uniformMatrix4fv(MESH.u.uM, false, meshMatrix(D.sizes[S.size].mesh, off));
+      gl.uniform3fv(MESH.u.uEye, e);
+      gl.bindVertexArray(g.vao);
+      gl.drawElements(gl.TRIANGLES, g.count, g.type, 0);
+    } else {
+      const m = modelGpu(), M = place(1, off);
+      drawVox(m.gpu, VP, M, S.edges, 1);
+      if (S.carved && m.carvedGpu) {
+        gl.depthMask(false);
+        drawVox(m.carvedGpu, VP, M, false, 0.3);
+        gl.depthMask(true);
+      }
     }
     const lines = [];
     const cellBox = (c) => boxLines([off[0] + c[0] - 0.02, c[1] - 0.02, off[2] + c[2] - 0.02], [off[0] + c[0] + 1.02, c[1] + 1.02, off[2] + c[2] + 1.02]);
@@ -507,6 +561,7 @@ window.addEventListener("error", (ev) => {
   }
   // Amanatides-Woo walk through the model's grid; cells above the cut and carved air are empty.
   function pick(ev) {
+    if (showSource()) return null;
     const r = ray(ev);
     if (!r) return null;
     const m = model(), vox = m.vox, [X, Y, Z] = vox.dims, off = modelOffset(vox);
@@ -635,8 +690,16 @@ window.addEventListener("error", (ev) => {
     if (ev.target.checked) on.add(k); else on.delete(k);
     sizeInfo(); request();
   });
-  for (const id of ["edges", "ao", "ground", "carved"]) {
-    $(id).addEventListener("change", (ev) => { S[id] = ev.target.checked; request(); });
+  if (D.mesh) {
+    $("sourcebox").hidden = false;
+    $("sourceinfo").textContent = `(${D.mesh.triangles.toLocaleString("en")} triangles)`;
+  }
+  for (const id of ["edges", "ao", "ground", "carved", "source"]) {
+    $(id).addEventListener("change", (ev) => {
+      S[id] = ev.target.checked;
+      if (id === "source") { S.hover = null; status(); }
+      request();
+    });
   }
   $("cut").addEventListener("input", (ev) => {
     const Y = D.sizes[S.size].vox.dims[1], v = +ev.target.value;
@@ -740,6 +803,7 @@ window.addEventListener("error", (ev) => {
     else if (k === "ArrowDown") cam.pitch = Math.max(-1.55, cam.pitch - 0.08);
     else if (k === "+" || k === "=") cam.dist = Math.max(1, cam.dist / 1.2);
     else if (k === "-" || k === "_") cam.dist = Math.min(5000, cam.dist * 1.2);
+    else if ((k === "m" || k === "M") && D.mesh) { S.source = !S.source; $("source").checked = S.source; S.hover = null; status(); }
     else if (/^[1-9]$/.test(k)) { selectSize(+k - 1); return; }
     else return;
     ev.preventDefault();

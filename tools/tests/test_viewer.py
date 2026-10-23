@@ -94,6 +94,43 @@ def test_stand_in_trees_without_games(no_games):
     assert [r.height for r in refs[1:]] == [8, 16, 37]
 
 
+def write_boxes_obj(path, boxes):
+    """Closed boxes [(x0, y0, z0, x1, y1, z1)] as one OBJ."""
+    lines, n = [], 0
+    for x0, y0, z0, x1, y1, z1 in boxes:
+        lines += [f"v {x} {y} {z}" for x in (x0, x1) for y in (y0, y1) for z in (z0, z1)]
+        quads = [(0, 1, 3, 2), (4, 6, 7, 5), (0, 4, 5, 1), (2, 3, 7, 6), (0, 2, 6, 4), (1, 5, 7, 3)]
+        for a, b, c, d in quads:
+            lines += [f"f {n + a + 1} {n + b + 1} {n + c + 1}", f"f {n + a + 1} {n + c + 1} {n + d + 1}"]
+        n += 8
+    path.write_text("\n".join(lines) + "\n")
+    return path
+
+
+@pytest.mark.parametrize("rotate_y", [0, 90, 180, 270])
+@pytest.mark.parametrize("mirror", ["", "x", "z"])
+def test_source_model_sits_on_its_nodes(tmp_path, rotate_y, mirror):
+    """A small box beside a big one: placed by mesh_affine, it must land among the small box's nodes."""
+    from scipy import ndimage
+
+    from sagas import load
+    from sagas import voxelize as vz
+
+    mesh = load.load_model(write_boxes_obj(tmp_path / "boxes.obj", [(0, 0, 0, 4, 2, 3), (5, 0, 2, 6, 1, 3)]))
+    t = config.Transform(target_size=12, rotate_y=rotate_y, mirror=mirror)
+    v = config.Voxel(min_component=1)
+    occ = vz.voxelize(mesh, t, v).occ
+    labels, n = ndimage.label(occ)
+    assert n == 2
+    small = np.argmin(np.bincount(labels.ravel())[1:]) + 1
+    src = viewer.source_mesh(mesh, t, v, 256)
+    aff = viewer.mesh_affine(src, t, src.big / 12)
+    unit = (np.array([5.5, 0.5, 2.5]) - 0.0) / src.big  # the small box's centre; the model starts at 0
+    grid = np.array(aff["A"]).reshape(3, 3) @ (unit * aff["s"]) + np.array(aff["b"])
+    cells = np.argwhere(labels == small)  # a hollow shell: compare with its box
+    assert (cells.min(axis=0) <= grid).all() and (grid <= cells.max(axis=0) + 1).all()
+
+
 def test_build_shows_carved_air(repo, tmp_path):
     landmark = config.load(landmark_toml(repo, "test", "box"))
     model = legacy.read_txt(box_txt(tmp_path / "box.txt", size=(7, 5, 7)))
@@ -137,6 +174,7 @@ def test_view_command(repo, tmp_path, no_games):
     assert data["current"] == 8 and [s["current"] for s in data["sizes"]] == [False, True, False]
     assert all(s["life"] > 1 for s in data["sizes"]) and data["real_size"] == 4.0
     assert data["refs"][0]["key"] == "player"
+    assert data["mesh"]["triangles"] == 12 and all(s["mesh"]["s"] > 0 for s in data["sizes"])
     assert runner.invoke(app, ["--root", str(repo.root), "view", "test/nothing", "--no-open"]).exit_code != 0
 
 

@@ -387,11 +387,11 @@ def view(
         mark = "  (landmark.toml)" if s.current else ""
         typer.echo(f"  {s.target:>3}: {x}x{y}x{z}, {s.nodes} nodes{life}{mark}")
 
-    results, notes = viewer.model_sizes(landmark, r, wanted or None, on_size=show)
+    results, notes, src = viewer.model_sizes(landmark, r, wanted or None, on_size=show)
     refs = viewer.references(games)
     path = out or viewer.default_path(r, landmark)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(viewer.page(viewer.page_data(landmark, results, refs, notes)), encoding="utf-8")
+    path.write_text(viewer.page(viewer.page_data(landmark, results, refs, notes, src)), encoding="utf-8")
     games_found = sorted({ref.group for ref in refs if ref.group and ref.group != "generic"})
     typer.echo(
         f"  compare with: {', '.join(games_found) if games_found else 'stand-in trees (no game found; --games)'}"

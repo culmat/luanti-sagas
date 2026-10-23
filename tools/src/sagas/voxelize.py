@@ -71,13 +71,18 @@ def _sample_colors(
     return None, None
 
 
-def voxelize(model: Model, t: Transform, v: Voxel) -> VoxelModel:
+def oriented(model: Model, t: Transform, v: Voxel) -> tuple[list[MeshPart], list[np.ndarray]]:
+    """The parts that are voxelized (voxel.exclude applied) and their vertices, right-handed Y-up."""
     up = model.up if t.up == "auto" else t.up
     rot = _UP[up]
     parts = [p for p in model.parts if not excluded(p, v.exclude)]
     if not parts:
         raise ValueError("all parts are excluded")
-    verts = [p.vertices @ rot.T for p in parts]
+    return parts, [p.vertices @ rot.T for p in parts]
+
+
+def voxelize(model: Model, t: Transform, v: Voxel) -> VoxelModel:
+    parts, verts = oriented(model, t, v)
     allv = np.concatenate(verts)
     lo, hi = allv.min(axis=0), allv.max(axis=0)
     ext = hi - lo

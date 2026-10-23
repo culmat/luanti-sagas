@@ -27,7 +27,7 @@ from PIL import Image, ImageDraw
 
 from . import __version__, handbuilt, palette, preview, schematic, vocab, voxels
 from . import build as buildmod
-from .config import Landmark
+from .config import Landmark, Transform, Voxel
 from .errors import SagasError, SourceMissing
 from .repo import Repo
 
@@ -78,11 +78,38 @@ class ModelSize:
     sealed: bool = False
     findings: list[str] = field(default_factory=list)
     note: str = ""
+    mesh: dict | None = None  # where the source model sits in this size's grid (mesh_affine)
 
     def json(self) -> dict:
         d = dataclasses.asdict(self)
         d["vox"] = self.vox.json()
         return d
+
+
+@dataclass
+class SourceMesh:
+    """The source model for the page, scaled to its longest side (0..1, right-handed Y-up, before
+    Luanti's X flip) and simplified by vertex clustering: enough to see what the nodes keep."""
+
+    verts: np.ndarray  # float [n, 3]
+    faces: np.ndarray  # int [m, 3]
+    ext: np.ndarray  # extents of the oriented model in source units
+    triangles: int  # before simplification
+
+    @property
+    def big(self) -> float:
+        return float(self.ext.max())
+
+    def json(self) -> dict:
+        q = np.clip(np.rint(self.verts * 65535), 0, 65535).astype("<u2")
+        wide = len(self.verts) > 65535
+        faces = self.faces.astype("<u4" if wide else "<u2")
+        return {
+            "verts": base64.b64encode(q.tobytes()).decode("ascii"),
+            "faces": base64.b64encode(faces.tobytes()).decode("ascii"),
+            "wide": wide,
+            "triangles": self.triangles,
+        }
 
 
 @dataclass
@@ -169,6 +196,49 @@ def from_build(res: buildmod.BuildResult) -> Voxels:
     return Voxels(cells, mats, carved)
 
 
+def source_mesh(mesh, t: Transform, v: Voxel, cells: int) -> SourceMesh:
+    """The voxelized parts of the source, vertices merged on a cells^3 grid over the longest side."""
+    from . import voxelize as vz
+
+    parts, verts = vz.oriented(mesh, t, v)
+    offsets = np.cumsum([0] + [len(v) for v in verts[:-1]])
+    points = np.concatenate(verts)
+    faces = np.concatenate([p.faces.astype(np.int64) + o for p, o in zip(parts, offsets, strict=True)])
+    lo = points.min(axis=0)
+    ext = points.max(axis=0) - lo
+    unit = (points - lo) / float(ext.max())
+    q = np.minimum(np.floor(unit * cells).astype(np.int64), cells)
+    _, inv = np.unique((q[:, 0] * (cells + 1) + q[:, 1]) * (cells + 1) + q[:, 2], return_inverse=True)
+    inv = inv.ravel()
+    count = np.bincount(inv)
+    merged = np.stack([np.bincount(inv, weights=unit[:, a]) / count for a in range(3)], axis=1)
+    f = inv[faces]
+    f = f[(f[:, 0] != f[:, 1]) & (f[:, 1] != f[:, 2]) & (f[:, 0] != f[:, 2])]
+    return SourceMesh(merged, np.unique(np.sort(f, axis=1), axis=0), ext, len(faces))
+
+
+def mesh_affine(src: SourceMesh, t: Transform, pitch: float) -> dict:
+    """Where the source sits in a size's node grid: grid = A (verts * s) + b. These are the steps
+    voxelize takes on the grid (Luanti's X flip, rotate_y, mirror), on continuous coordinates."""
+    dims = np.floor(src.ext / pitch) + 1
+    a, b = np.eye(3), np.zeros(3)
+
+    def flip(axis: int) -> None:
+        a[axis] *= -1
+        b[axis] = dims[axis] - b[axis]
+
+    flip(0)
+    for _ in range((t.rotate_y // 90) % 4):  # np.rot90(axes=(0, 2)): (x, z) -> (Z - z, x)
+        a[[0, 2]] = np.stack([-a[2], a[0]])
+        b[[0, 2]] = [dims[2] - b[2], b[0]]
+        dims[[0, 2]] = dims[[2, 0]]
+    if t.mirror == "x":
+        flip(0)
+    elif t.mirror == "z":
+        flip(2)
+    return {"s": src.big / pitch, "A": a.ravel().tolist(), "b": b.tolist()}
+
+
 def scaled_openings(boxes: list[list[int]], f: float) -> list[list[int]]:
     return [[int(round(c * f)) for c in b] for b in boxes]
 
@@ -184,9 +254,10 @@ def current_size(landmark: Landmark, committed: voxels.VoxelModel | None) -> int
 
 def model_sizes(
     landmark: Landmark, repo: Repo, sizes: list[int] | None = None, on_size: Callable[[ModelSize], None] | None = None
-) -> tuple[list[ModelSize], list[str]]:
+) -> tuple[list[ModelSize], list[str], SourceMesh | None]:
     """Build the landmark at each size. The current size comes from the committed voxels (what
-    ships); other sizes are voxelized from the source mesh, which must be fetched."""
+    ships); other sizes are voxelized from the source mesh, which must be fetched. Also returns the
+    simplified source mesh (None without one), placed in each size's grid by ModelSize.mesh."""
     from . import pipeline
     from . import voxelize as vz
 
@@ -206,6 +277,7 @@ def model_sizes(
     wanted = sorted(set(sizes or ladder(current)) | {current}) if mesh is not None else [current]
     t, v = landmark.transform, landmark.voxel
     real = t.real_size
+    src = source_mesh(mesh, t, v, int(min(256, max(64, 2 * max(wanted))))) if mesh is not None else None
     out = []
     for s in wanted:
         if s > MAX_SIZE and s != current:
@@ -244,9 +316,12 @@ def model_sizes(
                 note=note,
             )
         )
+        if src is not None:
+            pitch = 1.0 / t.scale if s == current and t.scale > 0 else src.big / s
+            entry.mesh = mesh_affine(src, t, pitch)
         if on_size:
             on_size(entry)
-    return out, notes
+    return out, notes, src
 
 
 # -- references: player, trees and houses of the installed games ----------------------------------
@@ -446,7 +521,13 @@ def references(roots: list[Path] | None = None) -> list[Reference]:
 # -- page and still -------------------------------------------------------------------------------
 
 
-def page_data(landmark: Landmark, sizes: list[ModelSize], refs: list[Reference], notes: list[str]) -> dict:
+def page_data(
+    landmark: Landmark,
+    sizes: list[ModelSize],
+    refs: list[Reference],
+    notes: list[str],
+    src: SourceMesh | None = None,
+) -> dict:
     return {
         "id": landmark.qualified_id,
         "title": landmark.title,
@@ -455,6 +536,7 @@ def page_data(landmark: Landmark, sizes: list[ModelSize], refs: list[Reference],
         "sizes": [s.json() for s in sizes],
         "refs": [r.json() for r in refs],
         "notes": notes,
+        "mesh": src.json() if src is not None else None,
         "version": __version__,
     }
 
