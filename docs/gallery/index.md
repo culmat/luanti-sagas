@@ -18,7 +18,7 @@ Buildings of the ancient world from the 0 A.D. game art (Wildfire Games, CC-BY-S
 
 ![Temple of the Han](../../content/antiquity/han_temple/preview.png)
 
-- Size: 33 x 36 x 41 nodes, 7963 nodes, materials: classes
+- Size: 33 x 36 x 41 nodes, 7955 nodes, materials: classes
 - Placement: plain or slope or ridge; exposure any; biomes forest, jungle, mountain, taiga, grassland; about one per 1300 mapchunks
 - Source: [Wildfire Games (0 A.D.)](https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/han_temple.dae), CC-BY-SA-3.0
 
@@ -26,7 +26,7 @@ Buildings of the ancient world from the 0 A.D. game art (Wildfire Games, CC-BY-S
 
 ![Lighthouse of the harbour](../../content/antiquity/lighthouse/preview.png)
 
-- Size: 15 x 43 x 27 nodes, 2817 nodes, materials: classes
+- Size: 15 x 43 x 27 nodes, 2809 nodes, materials: classes
 - Placement: cliff+coast or coast; exposure prominent; biomes desert, savanna, grassland, beach; about one per 1500 mapchunks
 - Source: [Wildfire Games (0 A.D.)](https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/ptol_lighthouse.dae), CC-BY-SA-3.0
 
@@ -34,7 +34,7 @@ Buildings of the ancient world from the 0 A.D. game art (Wildfire Games, CC-BY-S
 
 ![Temple by the river](../../content/antiquity/ptolemaic_temple/preview.png)
 
-- Size: 34 x 40 x 45 nodes, 11599 nodes, materials: classes
+- Size: 34 x 40 x 45 nodes, 11582 nodes, materials: classes
 - Placement: plain+river or plain; exposure any; biomes desert, savanna; about one per 1600 mapchunks
 - Source: [Wildfire Games (0 A.D.)](https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/ptol_temple.dae), CC-BY-SA-3.0
 
@@ -42,7 +42,7 @@ Buildings of the ancient world from the 0 A.D. game art (Wildfire Games, CC-BY-S
 
 ![Pyramid of Meroe](../../content/antiquity/pyramid/preview.png)
 
-- Size: 16 x 35 x 28 nodes, 4312 nodes, materials: classes
+- Size: 16 x 35 x 28 nodes, 4304 nodes, materials: classes
 - Placement: plain or slope; exposure any; biomes desert, savanna; about one per 900 mapchunks
 - Source: [Wildfire Games (0 A.D.)](https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/kush_pyramid_1.dae), CC-BY-SA-3.0
 
@@ -50,7 +50,7 @@ Buildings of the ancient world from the 0 A.D. game art (Wildfire Games, CC-BY-S
 
 ![Small pyramid](../../content/antiquity/pyramid_small/preview.png)
 
-- Size: 8 x 19 x 11 nodes, 707 nodes, materials: classes
+- Size: 8 x 19 x 11 nodes, 689 nodes, materials: classes
 - Placement: plain or slope; exposure any; biomes desert, savanna; about one per 350 mapchunks
 - Source: [Wildfire Games (0 A.D.)](https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/kush_pyramid_small_1.dae), CC-BY-SA-3.0
 
@@ -58,7 +58,7 @@ Buildings of the ancient world from the 0 A.D. game art (Wildfire Games, CC-BY-S
 
 ![Roundhouse](../../content/antiquity/roundhouse/preview.png)
 
-- Size: 12 x 14 x 15 nodes, 705 nodes, materials: classes
+- Size: 12 x 14 x 15 nodes, 693 nodes, materials: classes
 - Placement: plain or slope; exposure any; biomes grassland, forest, taiga; about one per 220 mapchunks
 - Source: [Wildfire Games (0 A.D.)](https://raw.githubusercontent.com/0ad/0ad/61a3b9507d974084e6badb88a0826bd89a6d5b8b/binaries/data/mods/public/art/meshes/structural/brit_house_01.dae), CC-BY-SA-3.0
 
@@ -102,7 +102,7 @@ Ruined temples, a cathedral, arches and stone circles from the CC0 3TD Fantasy R
 
 ![Gates of Menlo Castle](../../content/ruins/menlo_gate/preview.png)
 
-- Size: 47 x 20 x 12 nodes, 2287 nodes, materials: classes
+- Size: 47 x 20 x 12 nodes, 2276 nodes, materials: classes
 - Placement: plain or plain+river or slope; exposure any; biomes grassland, forest, swamp; about one per 900 mapchunks
 - Source: [galway3d](https://sketchfab.com/3d-models/entrance-gates-to-menlo-castle-co-galway-03786e366204470c92655c2889a93ee6), CC0-1.0
 
@@ -143,5 +143,5 @@ Ruined temples, a cathedral, arches and stone circles from the CC0 3TD Fantasy R
 ![Ruined wall](../../content/ruins/wall_segment/preview.png)
 
 - Size: 21 x 9 x 2 nodes, 354 nodes, materials: classes
-- Placement: cave_mouth+against_rock or slope+against_rock or cliff+against_rock or plain+against_rock; exposure any; biomes grassland, forest, taiga, mountain; about one per 140 mapchunks
+- Placement: cave_mouth+against_rock or slope+against_rock or cliff+against_rock or plain+against_rock; exposure any; biomes grassland, forest, taiga; about one per 140 mapchunks
 - Source: [Ron Kapaun / 3TD Studios](https://opengameart.org/sites/default/files/Fantasy%20Ruins%20Pack.zip), CC0-1.0

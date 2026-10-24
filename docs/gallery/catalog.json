@@ -40,7 +40,7 @@
       36,
       41
     ],
-    "nodes": 7963,
+    "nodes": 7955,
     "materials": "classes",
     "site": [
       "plain",
@@ -73,7 +73,7 @@
       43,
       27
     ],
-    "nodes": 2817,
+    "nodes": 2809,
     "materials": "classes",
     "site": [
       "cliff+coast",
@@ -104,7 +104,7 @@
       40,
       45
     ],
-    "nodes": 11599,
+    "nodes": 11582,
     "materials": "classes",
     "site": [
       "plain+river",
@@ -133,7 +133,7 @@
       35,
       28
     ],
-    "nodes": 4312,
+    "nodes": 4304,
     "materials": "classes",
     "site": [
       "plain",
@@ -162,7 +162,7 @@
       19,
       11
     ],
-    "nodes": 707,
+    "nodes": 689,
     "materials": "classes",
     "site": [
       "plain",
@@ -191,7 +191,7 @@
       14,
       15
     ],
-    "nodes": 705,
+    "nodes": 693,
     "materials": "classes",
     "site": [
       "plain",
@@ -342,7 +342,7 @@
       20,
       12
     ],
-    "nodes": 2287,
+    "nodes": 2276,
     "materials": "classes",
     "site": [
       "plain",
@@ -514,8 +514,7 @@
     "biomes": [
       "grassland",
       "forest",
-      "taiga",
-      "mountain"
+      "taiga"
     ],
     "rarity": 140,
     "large": false,
