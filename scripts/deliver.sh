@@ -3,14 +3,24 @@
 # then ContentDB. Called by .github/workflows/deliver.yml after the packs are built on main, so one
 # approved pull request is the only human step. Versions are dates: 2026.10.24, then 2026.10.24.2.
 #
-# Environment: GH_TOKEN (gh), CONTENTDB_TOKEN and AVANTI_CONTENTDB_USER (without a token, ContentDB
-# is skipped and the run says what it would release), AVANTI (path to the avanti CLI),
-# DRY_RUN=1 to only print the plan.
+# Environment: GH_TOKEN (gh, and pushing tags), CONTENTDB_TOKEN and AVANTI_CONTENTDB_USER (without a
+# token, ContentDB is skipped and the run says what it would release), AVANTI (path to the avanti
+# CLI), DRY_RUN=1 to only print the plan.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
 today=$(date -u +%Y.%m.%d)
 sagas() { uv run --project tools sagas "$@"; }
+
+# Tags go out with the workflow token: its pushes start no workflow, so release.yml (for manual
+# tags) doesn't release the same version again.
+push_tag() {
+	if [ -n "${GITHUB_REPOSITORY:-}" ]; then
+		git push -q "https://x-access-token:${GH_TOKEN}@github.com/$GITHUB_REPOSITORY.git" "refs/tags/$1"
+	else
+		git push -q origin "refs/tags/$1"
+	fi
+}
 
 dir_of() { if [ "$1" = sagas_pack ]; then echo mods; else echo "mods/$1"; fi; }
 
@@ -69,7 +79,7 @@ contentdb() {
 	commit=$(git commit-tree "$(git rev-parse "HEAD:$dir")" -p HEAD -m "$pkg $version: package tree of $(git rev-parse HEAD)")
 	ref="cdb/$pkg/$version"
 	git tag -a "$ref" "$commit" -m "$pkg $version for ContentDB"
-	git push -q origin "refs/tags/$ref"
+	push_tag "$ref"
 	if ! "$AVANTI" cdb release "$ref" "$dir" --title "$version"; then
 		echo "::warning::ContentDB release of $pkg $version failed"
 		local title="ContentDB: create the package $pkg"
@@ -90,9 +100,9 @@ release() {
 	fi
 	if [ "$pkg" = sagas_pack ]; then name=pack; else name=$pkg; fi
 	sagas package "$name" --version "$version" --out dist
+	notes "$pkg" >"dist/$pkg-notes.md" # before tagging: "since the last release" must not see this one
 	git tag -a "$tag" -m "$pkg $version"
-	git push -q origin "refs/tags/$tag"
-	notes "$pkg" >"dist/$pkg-notes.md"
+	push_tag "$tag"
 	gh release create "$tag" "dist/$pkg-$version.zip" --title "$pkg $version" --notes-file "dist/$pkg-notes.md"
 	contentdb "$pkg" "$version"
 }
