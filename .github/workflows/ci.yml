@@ -82,6 +82,33 @@ jobs:
           path: pictures/
           if-no-files-found: ignore
 
+  pictures:
+    # branches of this repository (the bot's intake/* branches, maintainers); forks get theirs from
+    # pictures.yml, because their CI has no write token
+    name: pictures
+    needs: content
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: scripts
+      - uses: actions/download-artifact@v7
+        continue-on-error: true
+        with:
+          name: pictures
+          path: pictures
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: scripts/post-pictures.sh pictures "$SHA"
+
   mods:
     name: mods
     # luacheck, ldg lint and headless runs of the sagas_pack modpack in every game x engine
