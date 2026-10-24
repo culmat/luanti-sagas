@@ -51,6 +51,7 @@ Top level: `schema = 1`, `id`, `saga` (both `^[a-z][a-z0-9_]{2,31}$`, matching t
 | `file` | File name of the download (or a file next to landmark.toml) |
 | `member` | File inside a zip/tar to load; its folder (textures) is extracted too |
 | `sha256` | Checksum of the download; `sagas fetch` records it (not for manual sources) |
+| `mirror` | A copy of the exact file for manual sources, e.g. the zip attached to the intake issue; `sagas fetch` uses it, so CI can rebuild |
 | `extra_files` | `[{ url, file, sha256 }]` downloaded next to `file` (e.g. textures defined elsewhere) |
 | `author`, `author_url`, `license` (SPDX), `license_url`, `notes` | Attribution; licence must be CC0-1.0, CC-BY-3.0/4.0, CC-BY-SA-3.0/4.0 or MIT |
 | `ai` | `none`, `assisted`, `generated` (name the tool in `notes`) |

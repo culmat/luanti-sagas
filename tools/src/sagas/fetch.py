@@ -61,6 +61,8 @@ def fetch(landmark: Landmark, sources: Path, src: Path | None = None, force: boo
         shutil.copyfile(src, dest)
     elif dest.exists() and not force:
         pass
+    elif landmark.source.manual and landmark.source.mirror:
+        _download(landmark.source.mirror, dest)
     elif landmark.source.manual or not landmark.source.url:
         msg = landmark.source.instructions or f"download {landmark.source.url or 'the model'} by hand"
         raise SourceMissing(

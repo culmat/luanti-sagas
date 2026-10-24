@@ -21,6 +21,7 @@ dependencies = [
     "pillow>=11.0",
     "pycollada>=0.8",
     "scipy>=1.14",
+    "tomlkit>=0.13",
     "trimesh>=4.5",
     "typer>=0.15",
 ]

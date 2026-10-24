@@ -49,6 +49,7 @@ class Source:
     ai: str = "none"
     notes: str = ""
     extra_files: list[dict] = field(default_factory=list)  # [{url, file, sha256}] fetched next to `file`
+    mirror: str = ""  # a copy of the exact file (e.g. attached to the intake issue) for manual sources
 
 
 @dataclass

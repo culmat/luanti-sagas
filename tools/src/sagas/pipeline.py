@@ -86,6 +86,18 @@ def voxelize(landmark: Landmark, repo: Repo) -> voxels.VoxelModel:
     return model
 
 
+def same_voxels(a: voxels.VoxelModel, b: voxels.VoxelModel) -> bool:
+    import numpy as np
+
+    return (
+        a.size == b.size
+        and np.array_equal(a.occ, b.occ)
+        and np.array_equal(a.rgb[a.occ], b.rgb[b.occ])
+        and np.array_equal(a.part[a.occ], b.part[b.occ])
+        and a.parts == b.parts
+    )
+
+
 @dataclass
 class ThemeBuild:
     saga: str

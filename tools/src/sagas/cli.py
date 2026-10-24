@@ -252,11 +252,29 @@ def inspect(target: str, as_json: Annotated[bool, typer.Option("--json")] = Fals
 
 @app.command()
 @guarded
-def voxelize(selector: Annotated[str, typer.Argument()] = "all", force: Annotated[bool, typer.Option()] = False):
+def voxelize(
+    selector: Annotated[str, typer.Argument()] = "all",
+    force: Annotated[bool, typer.Option()] = False,
+    stale: Annotated[
+        bool, typer.Option(help="Only where voxels.vx.gz differs from a fresh voxelize; skip missing sources")
+    ] = False,
+):
     """Source model -> content/<saga>/<id>/voxels.vx.gz."""
     r = repo()
     missing = failed = 0
     for landmark in r.select(selector):
+        if stale:
+            try:
+                fresh = pipeline.voxelize(landmark, r)
+            except SagasError as e:
+                typer.echo(f"{landmark.qualified_id}: skipped ({e})")
+                continue
+            if landmark.vx_path.exists() and pipeline.same_voxels(fresh, voxels.read(landmark.vx_path)):
+                continue
+            voxels.write(fresh, landmark.vx_path)
+            x, y, z = fresh.size
+            typer.echo(f"{landmark.qualified_id}: re-voxelized, {x}x{y}x{z}")
+            continue
         if landmark.vx_path.exists() and not force:
             typer.echo(f"{landmark.qualified_id}: {landmark.vx_path.name} exists (use --force)")
             continue
@@ -428,6 +446,104 @@ def view(
             webbrowser.open(url)
 
     viewer.serve(builder, html, port, ready)
+
+
+def _one(r: Repo, target: str) -> config.Landmark:
+    chosen = r.select(target)
+    if len(chosen) != 1:
+        raise SagasError(f"{target!r} selects {len(chosen)} landmarks; name one as <saga>/<id>")
+    return chosen[0]
+
+
+def _rebuild(r: Repo, landmark: config.Landmark) -> buildmod.BuildResult:
+    model = pipeline.voxelize(landmark, r)
+    voxels.write(model, landmark.vx_path)
+    res = buildmod.build(landmark, model)
+    pipeline.write_preview(res)
+    return res
+
+
+@app.command("set")
+@guarded
+def set_cmd(
+    target: Annotated[str, typer.Argument(help="One landmark: <saga>/<id>")],
+    assignments: Annotated[list[str], typer.Argument(help="key=value, e.g. transform.target_size=24")],
+):
+    """Change landmark.toml fields (comments are kept); the result is validated, or nothing changes."""
+    from . import edit
+
+    landmark = _one(repo(), target)
+    values = {}
+    for a in assignments:
+        key, sep, value = a.partition("=")
+        if not sep:
+            raise SagasError(f"expected key=value, got {a!r}")
+        values[key.strip()] = edit.parse_value(value.strip())
+    edit.set_values(landmark.path, values)
+    typer.echo(f"{landmark.path}: " + ", ".join(f"{k} = {v!r}" for k, v in values.items()))
+
+
+@app.command("command")
+@guarded
+def command_cmd(
+    target: Annotated[str, typer.Argument(help="One landmark: <saga>/<id>")],
+    lines: Annotated[list[str], typer.Argument(help='Commands like "/size 24" "/site cliff+coast"')],
+    rebuild: Annotated[bool, typer.Option(help="Voxelize, build and write preview.png afterwards")] = True,
+):
+    """Apply the contribution bot's comment commands to a landmark (see `sagas command x /help`)."""
+    from . import edit
+
+    r = repo()
+    landmark = _one(r, target)
+    if any(line.strip() in ("/help", "help") for line in lines):
+        typer.echo(edit.HELP)
+        return
+    done = []
+    for line in lines:
+        values, what = edit.command(landmark, line)
+        if values:
+            landmark = edit.set_values(landmark.path, values)
+        facing = line.split()[1] if line.startswith("/door") and len(line.split()) > 1 else ""
+        if facing in edit.FACINGS:
+            res = buildmod.build(landmark, pipeline.voxelize(landmark, r))
+            box = edit.door_opening(res.suggestions, facing)
+            landmark = edit.set_values(landmark.path, {"voxel.openings": [*landmark.voxel.openings, box]})
+        done.append(what)
+    if rebuild:
+        res = _rebuild(r, landmark)
+        x, y, z = res.size
+        done.append(f"now {x}x{y}x{z}, {res.node_count} nodes" + (", rooms still without a door" if res.sealed else ""))
+    typer.echo("; ".join(done))
+
+
+@app.command()
+@guarded
+def intake(
+    issue: Annotated[Path, typer.Argument(help="Issue as JSON (gh issue view N --json number,title,body,author)")],
+    summary: Annotated[Path | None, typer.Option(help="Write the result as JSON here")] = None,
+):
+    """Turn a "Model found" issue into content/<saga>/<id>/ (landmark.toml, voxels, preview)."""
+    from . import intake as intakemod
+
+    data = json.loads(issue.read_text(encoding="utf-8"))
+    author = (data.get("author") or {}).get("login", "")
+    result = intakemod.run(repo(), int(data["number"]), data.get("title", ""), data.get("body", ""), author)
+    out = json.dumps(result.__dict__, indent=2)
+    if summary:
+        summary.write_text(out + "\n", encoding="utf-8")
+    typer.echo(out)
+
+
+@app.command("hints")
+def hints_cmd(text: Annotated[str, typer.Argument(help='e.g. "on sea cliffs in the cold north, rare"')]):
+    """Placement fields for a description in your own words."""
+    from . import hints
+
+    p = hints.suggest(text)
+    for k, v in p.fields().items():
+        typer.echo(f"{k} = {json.dumps(v)}")
+    if p.matched:
+        typer.echo(f"# from: {', '.join(p.matched)}")
 
 
 @app.command("lint")

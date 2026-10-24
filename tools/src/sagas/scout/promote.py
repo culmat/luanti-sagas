@@ -82,7 +82,10 @@ def promote(
     sid: str | None = None,
     force: bool = False,
     http: Http | None = None,
+    overrides: dict[str, dict] | None = None,
 ) -> Path:
+    """Write content/<saga>/<id>/landmark.toml. `overrides` replaces fields per section (`top` for
+    title, lore and tags; `source`, `transform`, `voxel`, `placement`)."""
     if c.license not in ("CC0-1.0", "CC-BY-3.0", "CC-BY-4.0", "CC-BY-SA-3.0", "CC-BY-SA-4.0", "MIT"):
         raise SagasError(f"{c.id}: licence {c.license!r} is not allowed")
     if "licence-conflict" in c.flags and not force:
@@ -124,6 +127,8 @@ def promote(
                 "member": dl.get("member", ""),
             }
         )
+        if dl.get("mirror"):
+            source["mirror"] = dl["mirror"]
     elif "polyhaven" in dl:
         _polyhaven(http, dl["polyhaven"], source)
     elif "voyager" in dl:
@@ -135,9 +140,22 @@ def promote(
         source["file"] = dl.get("file", "")
         if c.url and c.url != source["url"]:
             source["author_url"] = source["author_url"] or c.url
+    placement: dict = {
+        "site": c.suggested_site or ["plain"],
+        "exposure": "any",
+        "biomes": c.suggested_biomes or ["any"],
+        "rarity": 600,
+        "hints": "",
+    }
+    top: dict = {"title": c.title, "tags": [], "lore": ""}
+    for name, section in (("top", top), ("source", source), ("transform", transform), ("voxel", voxel)):
+        section.update((overrides or {}).get(name, {}))
+    placement.update((overrides or {}).get("placement", {}))
     extra = source.pop("extra_files", None)
     text = (
-        f'schema = 1\nid = "{sid}"\nsaga = "{saga}"\ntitle = {_toml_value(c.title)}\ntags = []\nlore = ""\n\n'
+        f'schema = 1\nid = "{sid}"\nsaga = "{saga}"\n'
+        + "".join(f"{k} = {_toml_value(v)}\n" for k, v in top.items())
+        + "\n"
         + _table("source", source)
         + (f"extra_files = {_toml_value(extra)}\n" if extra else "")
         + "\n"
@@ -147,16 +165,7 @@ def promote(
         + "\n"
         + _table("materials", {"mode": "classes", "default": "stone", "context": "surroundings"})
         + "\n"
-        + _table(
-            "placement",
-            {
-                "site": c.suggested_site or ["plain"],
-                "exposure": "any",
-                "biomes": c.suggested_biomes or ["any"],
-                "rarity": 600,
-                "hints": "",
-            },
-        )
+        + _table("placement", placement)
     )
     d.mkdir(parents=True, exist_ok=True)
     (d / "landmark.toml").write_text(text)
