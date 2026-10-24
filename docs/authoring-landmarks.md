@@ -105,6 +105,7 @@ house. Decide the size on purpose, with the creator:
 
 ```sh
 sagas view <saga>/<id>                          # 3D page in the browser (.dev/view/<saga>-<id>.html)
+sagas view <saga>/<id> --serve                  # live: any size via -/+, the number field or the slider
 sagas view <saga>/<id> --sizes 16,24,32 --png sizes.png --no-open   # plus a still of all sizes
 ```
 
@@ -112,7 +113,10 @@ The page shows the landmark as `sagas build` makes it, at several sizes (• mar
 landmark.toml), next to a player and the trees and village houses of the games installed on your
 machine. Drag to turn it, zoom in to judge the detail, press M to swap in the source model and see
 what the nodes keep, cut it open layer by layer, show the carved air of rooms and doorways, and
-click a node for its coordinates (shift-click a second node for a `voxel.openings` box). Other sizes need the source (`sagas fetch`). The page embeds the games'
+click a node for its coordinates (shift-click a second node for a `voxel.openings` box). With `--serve`, a local server (this machine only, Ctrl-C stops it)
+builds any size you ask for in a second or two, exactly as `sagas build` would; without it the
+page has the preset sizes. Other sizes need the source (`sagas fetch`). Settings and the camera are
+remembered per landmark. The page embeds the games'
 schematics, so it stays on your machine: `.dev/` is never committed. Coding agents cannot turn the
 page: they read the `--png` still and give the person the page's path.
 

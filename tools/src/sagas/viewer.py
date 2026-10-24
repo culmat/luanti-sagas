@@ -252,40 +252,54 @@ def current_size(landmark: Landmark, committed: voxels.VoxelModel | None) -> int
     return t.target_size
 
 
-def model_sizes(
-    landmark: Landmark, repo: Repo, sizes: list[int] | None = None, on_size: Callable[[ModelSize], None] | None = None
-) -> tuple[list[ModelSize], list[str], SourceMesh | None]:
-    """Build the landmark at each size from the source mesh; without it (not fetched, or a voxel
-    source) only the committed voxels, which is what ships. Also returns the simplified source mesh
-    (None without one), placed in each size's grid by ModelSize.mesh."""
-    from . import pipeline
-    from . import voxelize as vz
+class SizeBuilder:
+    """Builds the landmark at any size, from the source mesh when it is fetched; without it (or for a
+    voxel source) only the committed voxels, which is what ships. `src` is the simplified source
+    model, placed in each size's grid by ModelSize.mesh."""
 
-    notes: list[str] = []
-    committed = voxels.read(landmark.vx_path) if landmark.vx_path.exists() else None
-    current = current_size(landmark, committed)
-    mesh = None
-    if landmark.source.kind == "mesh":
-        try:
-            mesh = pipeline.load_mesh(landmark, repo)
-        except SourceMissing:
-            notes.append(f"source not downloaded (sagas fetch {landmark.qualified_id}): only the committed size")
-    elif sizes:
-        notes.append(f"source.kind = {landmark.source.kind!r} has a fixed size: only the committed size")
-    if committed is None and mesh is None:
-        raise SagasError(f"{landmark.qualified_id}: no voxels.vx.gz and no source mesh (sagas fetch, sagas voxelize)")
-    wanted = sorted(set(sizes or ladder(current)) | {current}) if mesh is not None else [current]
-    t, v = landmark.transform, landmark.voxel
-    real = t.real_size
-    src = source_mesh(mesh, t, v, int(min(256, max(64, 2 * max(wanted))))) if mesh is not None else None
-    out = []
-    for s in wanted:
-        if s > MAX_SIZE and s != current:
-            notes.append(f"size {s} skipped (the page gets slow above {MAX_SIZE})")
-            continue
+    def __init__(self, landmark: Landmark, repo: Repo, sizes: list[int] | None = None):
+        from . import pipeline
+
+        self.landmark = landmark
+        self.notes: list[str] = []
+        self.committed = voxels.read(landmark.vx_path) if landmark.vx_path.exists() else None
+        self.current = current_size(landmark, self.committed)
+        self.mesh = None
+        if landmark.source.kind == "mesh":
+            try:
+                self.mesh = pipeline.load_mesh(landmark, repo)
+            except SourceMissing:
+                self.notes.append(
+                    f"source not downloaded (sagas fetch {landmark.qualified_id}): only the committed size"
+                )
+        elif sizes:
+            self.notes.append(f"source.kind = {landmark.source.kind!r} has a fixed size: only the committed size")
+        if self.committed is None and self.mesh is None:
+            raise SagasError(
+                f"{landmark.qualified_id}: no voxels.vx.gz and no source mesh (sagas fetch, sagas voxelize)"
+            )
+        live = self.mesh is not None
+        self.wanted = sorted(set(sizes or ladder(self.current)) | {self.current}) if live else [self.current]
+        t, v = landmark.transform, landmark.voxel
+        cells = int(min(256, max(128, 2 * max(self.wanted))))
+        self.src = source_mesh(self.mesh, t, v, cells) if live else None
+
+    @property
+    def any_size(self) -> bool:
+        return self.mesh is not None
+
+    def build(self, s: int) -> ModelSize | None:
+        """The landmark at size s; None (with a note) when it cannot be built."""
+        from . import voxelize as vz
+
+        landmark, current = self.landmark, self.current
+        t, v = landmark.transform, landmark.voxel
+        if s != current and (self.mesh is None or not 4 <= s <= MAX_SIZE):
+            self.notes.append(f"size {s}: only sizes 4 to {MAX_SIZE} from a fetched source")
+            return None
         note = ""
-        lm, model = landmark, committed
-        if mesh is not None:
+        lm, model = landmark, self.committed
+        if self.mesh is not None:
             if s != current:
                 lm = dataclasses.replace(
                     landmark,
@@ -295,37 +309,49 @@ def model_sizes(
                 if v.openings:
                     note = f"voxel.openings scaled from size {current}"
             try:
-                model = vz.voxelize(mesh, lm.transform, lm.voxel)
+                model = vz.voxelize(self.mesh, lm.transform, lm.voxel)
             except ValueError as e:
-                notes.append(f"size {s}: {e}")
-                continue
-            if s == current and committed is not None and not np.array_equal(model.occ, committed.occ):
-                notes.append(
+                self.notes.append(f"size {s}: {e}")
+                return None
+            if s == current and self.committed is not None and not np.array_equal(model.occ, self.committed.occ):
+                self.notes.append(
                     "voxels.vx.gz differs from a fresh voxelize (landmark.toml, the source or the tools changed):"
                     f" sagas voxelize {landmark.saga}/{landmark.id} --force"
                 )
         res = buildmod.build(lm, model)
         x, y, z = res.size
-        out.append(
-            entry := ModelSize(
-                target=s,
-                vox=from_build(res),
-                nodes=int(res.node_count),
-                current=s == current,
-                life=round(max(x, y, z) / real, 2) if real > 0 else 0.0,
-                fits=bool(buildmod.fits_chunk(res.size)),
-                door=res.door,
-                sealed=bool(res.sealed),
-                findings=list(res.findings),
-                note=note,
-            )
+        real = t.real_size
+        entry = ModelSize(
+            target=s,
+            vox=from_build(res),
+            nodes=int(res.node_count),
+            current=s == current,
+            life=round(max(x, y, z) / real, 2) if real > 0 else 0.0,
+            fits=bool(buildmod.fits_chunk(res.size)),
+            door=res.door,
+            sealed=bool(res.sealed),
+            findings=list(res.findings),
+            note=note,
         )
-        if src is not None:
+        if self.src is not None:
             lt = lm.transform
-            entry.mesh = mesh_affine(src, lt, 1.0 / lt.scale if lt.scale > 0 else src.big / lt.target_size)
-        if on_size:
-            on_size(entry)
-    return out, notes, src
+            entry.mesh = mesh_affine(self.src, lt, 1.0 / lt.scale if lt.scale > 0 else self.src.big / lt.target_size)
+        return entry
+
+
+def model_sizes(
+    landmark: Landmark, repo: Repo, sizes: list[int] | None = None, on_size: Callable[[ModelSize], None] | None = None
+) -> tuple[list[ModelSize], list[str], SourceMesh | None]:
+    """The landmark at the wanted sizes (see SizeBuilder), the notes, and the source model."""
+    builder = SizeBuilder(landmark, repo, sizes)
+    out = []
+    for s in builder.wanted:
+        entry = builder.build(s)
+        if entry is not None:
+            out.append(entry)
+            if on_size:
+                on_size(entry)
+    return out, builder.notes, builder.src
 
 
 # -- references: player, trees and houses of the installed games ----------------------------------
@@ -531,9 +557,13 @@ def page_data(
     refs: list[Reference],
     notes: list[str],
     src: SourceMesh | None = None,
+    live: bool = False,
 ) -> dict:
     return {
         "id": landmark.qualified_id,
+        "selector": f"{landmark.saga}/{landmark.id}",
+        "live": live,
+        "max_size": MAX_SIZE,
         "title": landmark.title,
         "real_size": landmark.transform.real_size,
         "current": next((s.target for s in sizes if s.current), 0),
@@ -616,6 +646,66 @@ def still(sizes: list[ModelSize], refs: list[Reference], path: Path, px: int = 6
     path.parent.mkdir(parents=True, exist_ok=True)
     sheet.save(path, optimize=True)
     return path
+
+
+def server(builder: SizeBuilder, html: str, port: int = 0):
+    """Live mode: an HTTP server on this machine only that serves the page and builds any size it
+    asks for (GET /size?target=N), caching each."""
+    import http.server
+    import urllib.parse
+
+    cache: dict[int, bytes] = {}
+
+    class Handler(http.server.BaseHTTPRequestHandler):
+        def reply(self, code: int, body: bytes, kind: str) -> None:
+            self.send_response(code)
+            self.send_header("Content-Type", kind)
+            self.send_header("Content-Length", str(len(body)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(body)
+
+        def fail(self, code: int, message: str) -> None:
+            self.reply(code, json.dumps({"error": message}).encode(), "application/json")
+
+        def do_GET(self) -> None:  # noqa: N802 (http.server's name)
+            url = urllib.parse.urlsplit(self.path)
+            if url.path in ("/", "/index.html"):
+                self.reply(200, html.encode("utf-8"), "text/html; charset=utf-8")
+                return
+            if url.path != "/size":
+                self.fail(404, "not found")
+                return
+            try:
+                n = int(urllib.parse.parse_qs(url.query).get("target", [""])[0])
+            except ValueError:
+                self.fail(400, "target must be a number")
+                return
+            if n not in cache:
+                seen = len(builder.notes)
+                entry = builder.build(n)
+                if entry is None:
+                    self.fail(422, "; ".join(builder.notes[seen:]) or f"size {n} cannot be built")
+                    return
+                cache[n] = json.dumps(entry.json(), separators=(",", ":")).encode()
+            self.reply(200, cache[n], "application/json")
+
+        def log_message(self, format: str, *args) -> None:  # noqa: A002 (http.server's name)
+            pass
+
+    return http.server.HTTPServer(("127.0.0.1", port), Handler)
+
+
+def serve(builder: SizeBuilder, html: str, port: int, ready: Callable[[str], None]) -> None:
+    """Run the live server until interrupted."""
+    httpd = server(builder, html, port)
+    ready(f"http://127.0.0.1:{httpd.server_address[1]}/")
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        httpd.server_close()
 
 
 def default_path(repo: Repo, landmark: Landmark) -> Path:

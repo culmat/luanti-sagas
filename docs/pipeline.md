@@ -5,7 +5,7 @@ sagas fetch     download the source (sha256-checked) into sources/        needs 
 sagas inspect   parts, materials, textures, size of the source
 sagas voxelize  source -> content/<saga>/<id>/voxels.vx.gz               needs the source
 sagas build     voxels.vx.gz -> mods/sagas_<saga>/ + preview.png         reproducible, no source needed
-sagas view      3D page: the landmark at several sizes next to game trees  other sizes need the source
+sagas view      3D page: the landmark at several sizes next to game trees  --serve: any size, live
 sagas lint      licence, attribution, size, value budget, drift checks
 sagas catalog   docs/gallery/ (index.md, catalog.json)
 ```

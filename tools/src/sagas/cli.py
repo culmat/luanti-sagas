@@ -363,6 +363,10 @@ def view(
     open_page: Annotated[
         bool | None, typer.Option("--open/--no-open", help="Open the page (default: when run in a terminal)")
     ] = None,
+    serve: Annotated[
+        bool, typer.Option("--serve", help="Live mode: a local server builds any size the page asks for")
+    ] = False,
+    port: Annotated[int, typer.Option(help="Port for --serve (default: any free port)")] = 0,
 ):
     """Turn and zoom a landmark at several sizes, next to the player, trees and houses of your games."""
     import webbrowser
@@ -387,11 +391,22 @@ def view(
         mark = "  (landmark.toml)" if s.current else ""
         typer.echo(f"  {s.target:>3}: {x}x{y}x{z}, {s.nodes} nodes{life}{mark}")
 
-    results, notes, src = viewer.model_sizes(landmark, r, wanted or None, on_size=show)
+    builder = viewer.SizeBuilder(landmark, r, wanted or None)
+    results = []
+    for size in builder.wanted:
+        entry = builder.build(size)
+        if entry is not None:
+            results.append(entry)
+            show(entry)
+    notes, src = builder.notes, builder.src
     refs = viewer.references(games)
+    live = serve and builder.any_size
+    if serve and not live:
+        typer.secho("  ! --serve needs the source mesh (sagas fetch): showing the committed size only", fg="yellow")
+    html = viewer.page(viewer.page_data(landmark, results, refs, list(notes), src, live=live))
     path = out or viewer.default_path(r, landmark)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(viewer.page(viewer.page_data(landmark, results, refs, notes, src)), encoding="utf-8")
+    path.write_text(html, encoding="utf-8")
     games_found = sorted({ref.group for ref in refs if ref.group and ref.group != "generic"})
     typer.echo(
         f"  compare with: {', '.join(games_found) if games_found else 'stand-in trees (no game found; --games)'}"
@@ -400,9 +415,19 @@ def view(
         typer.secho(f"  ! {n}", fg="yellow")
     if png:
         typer.echo(str(viewer.still(results, refs, png)))
-    typer.echo(str(path))
-    if open_page if open_page is not None else sys.stdout.isatty():
-        webbrowser.open(path.resolve().as_uri())
+    should_open = open_page if open_page is not None else sys.stdout.isatty()
+    if not serve:
+        typer.echo(str(path))
+        if should_open:
+            webbrowser.open(path.resolve().as_uri())
+        return
+
+    def ready(url: str) -> None:
+        typer.echo(f"live at {url} (any size on request; Ctrl-C to stop)")
+        if should_open:
+            webbrowser.open(url)
+
+    viewer.serve(builder, html, port, ready)
 
 
 @app.command("lint")

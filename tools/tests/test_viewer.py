@@ -210,3 +210,32 @@ def test_page_script_parses(tmp_path):
     js.write_text("\n".join(scripts))
     r = subprocess.run(["node", "--check", str(js)], capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
+
+
+def test_live_server_builds_any_size(repo, no_games):
+    import threading
+    import urllib.error
+    import urllib.request
+
+    d = repo.content / "test" / "cube"
+    d.mkdir(parents=True)
+    write_cube_obj(d)
+    (d / "landmark.toml").write_text(
+        'id = "cube"\nsaga = "test"\ntitle = "Cube"\n[source]\nkind = "mesh"\nfile = "cube.obj"\n'
+        'url = "https://example.org/cube"\nauthor = "Tester"\nlicense = "CC0-1.0"\n[transform]\ntarget_size = 8\n'
+    )
+    builder = viewer.SizeBuilder(config.load(d / "landmark.toml"), repo, [8])
+    html = viewer.page(viewer.page_data(builder.landmark, [builder.build(8)], [], [], builder.src, live=True))
+    httpd = viewer.server(builder, html, 0)
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{httpd.server_address[1]}/"
+    try:
+        assert page_data(urllib.request.urlopen(base).read().decode())["live"] is True
+        entry = json.loads(urllib.request.urlopen(base + "size?target=11").read())
+        assert entry["target"] == 11 and max(entry["vox"]["dims"]) >= 11 and entry["mesh"]["s"] > 0
+        with pytest.raises(urllib.error.HTTPError) as e:
+            urllib.request.urlopen(base + f"size?target={viewer.MAX_SIZE + 1}")
+        assert e.value.code == 422
+    finally:
+        httpd.shutdown()
+        httpd.server_close()

@@ -25,7 +25,7 @@ body {
 canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
 canvas:active { cursor: grabbing; }
 #panel {
-  position: fixed; top: 12px; left: 12px; width: 310px; max-height: calc(100% - 24px); overflow: auto;
+  position: fixed; top: 12px; left: 12px; width: 310px; max-height: calc(100% - 24px); overflow: hidden auto;
   box-sizing: border-box; padding: 10px 14px 12px; background: var(--card); border: 1px solid var(--line);
   border-radius: 10px; backdrop-filter: blur(6px);
 }
@@ -51,7 +51,14 @@ button.copy {
 label { display: block; cursor: pointer; }
 label .h { color: var(--muted); }
 .group { margin-top: 4px; color: var(--muted); font-size: 12px; }
-#cut { width: 100%; }
+#cut, #sizeslider { width: 100%; margin: 4px 0; box-sizing: border-box; }
+.tune { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 6px; }
+#sizehint { flex-basis: 100%; }
+#sizehint:empty { display: none; }
+.tune input[type="number"] {
+  width: 56px; padding: 3px 4px; border: 1px solid var(--line); border-radius: 6px; background: var(--chip);
+  color: var(--ink); font: inherit;
+}
 #status {
   position: fixed; left: 12px; bottom: 12px; max-width: calc(100% - 24px); padding: 6px 10px; box-sizing: border-box;
   background: var(--card); border: 1px solid var(--line); border-radius: 8px; display: none;
@@ -67,6 +74,13 @@ label .h { color: var(--muted); }
   <div id="sub" class="muted"></div>
   <h3>Size <span style="text-transform:none;letter-spacing:0">(longest side in nodes, • = landmark.toml)</span></h3>
   <div id="sizes" class="chips"></div>
+  <div class="tune">
+    <button class="chip" id="minus" title="Smaller (shift: by 4)">−</button>
+    <input type="number" id="sizein" min="4" step="1" title="Any size: type it and press Enter">
+    <button class="chip" id="plus" title="Bigger (shift: by 4)">+</button>
+    <span id="sizehint" class="muted small"></span>
+  </div>
+  <input type="range" id="sizeslider" min="4" step="1" hidden>
   <div id="sizeinfo"></div>
   <h3>Compare with</h3>
   <div id="refs"></div>
@@ -366,7 +380,7 @@ window.addEventListener("error", (ev) => {
   // References stand in a row beside the model's long side, and the camera starts broadside to it.
   const biggest = D.sizes[D.sizes.length - 1].vox.dims;
   const ROW = biggest[2] > biggest[0] ? 2 : 0;
-  const reach = Math.max(...D.sizes.map((s) => s.vox.dims[ROW]));
+  const reach = () => Math.max(...D.sizes.map((s) => s.vox.dims[ROW]));
   const YAW = ROW === 2 ? Math.PI / 2 + 0.5 : 0.5;
 
   const model = () => {
@@ -380,7 +394,7 @@ window.addEventListener("error", (ev) => {
   function layout() {
     // along -x when the model is wider than deep, else along +z: on the left of the screen either way
     const across = 2 - ROW;
-    let at = Math.ceil(reach / 2) + 4;
+    let at = Math.ceil(reach() / 2) + 4;
     for (const r of refs) {
       if (!on.has(r.key)) continue;
       if (!r.vox) r.vox = decode(r.src);
@@ -546,6 +560,7 @@ window.addEventListener("error", (ev) => {
 
   // Settings and camera survive a reload, per landmark (browser storage; may be unavailable).
   const STORE = `sagas-view:${D.id}`;
+  let pendingTarget = null;
   const TOGGLES = ["edges", "ao", "ground", "carved", "source"];
   let saveTimer = 0;
   function save() {
@@ -563,6 +578,7 @@ window.addEventListener("error", (ev) => {
     if (!k || typeof k !== "object") return null;
     const i = D.sizes.findIndex((s) => s.target === k.target);
     if (i >= 0) S.size = i;
+    else if (Number.isInteger(k.target)) pendingTarget = k.target;
     if (Array.isArray(k.refs)) {
       on.clear();
       for (const key of k.refs) if (D.refs.some((r) => r.key === key)) on.add(key);
@@ -689,7 +705,54 @@ window.addEventListener("error", (ev) => {
   function selectSize(i) {
     if (i < 0 || i >= D.sizes.length) return;
     S.size = i; S.cut = null; S.hover = null; S.sel = S.sel2 = null;
-    sizeChips(); sizeInfo(); cutSlider(); status(); request();
+    sizeChips(); sizeInfo(); cutSlider(); status(); tune(); request();
+  }
+
+  // Any size: live mode (sagas view --serve) builds it on request; a static page has its presets only.
+  const live = !!D.live && location.protocol.startsWith("http");
+  const MAXS = D.max_size || 160;
+  let ticket = 0;
+  const hint = (t) => { $("sizehint").textContent = t; };
+  function tune() {
+    const t = D.sizes[S.size].target;
+    $("sizein").value = t;
+    $("sizeslider").value = t;
+  }
+  function insertSize(entry) {
+    const now = D.sizes[S.size];
+    let i = D.sizes.findIndex((x) => x.target > entry.target);
+    if (i < 0) i = D.sizes.length;
+    D.sizes.splice(i, 0, entry);
+    models.splice(i, 0, { entry, vox: null, gpu: null, meshKey: "", carvedGpu: null, carvedKey: "" });
+    S.size = D.sizes.indexOf(now);
+  }
+  async function goSize(n) {
+    n = Math.round(n);
+    if (!(n >= 4 && n <= MAXS)) { hint(`4 to ${MAXS}`); tune(); return; }
+    const i = D.sizes.findIndex((x) => x.target === n);
+    if (i >= 0) { hint(""); selectSize(i); return; }
+    if (!live) {
+      hint(`not on this page: sagas view ${D.selector} --serve`);
+      tune();
+      return;
+    }
+    const mine = ++ticket;
+    hint(`building ${n}…`);
+    try {
+      const r = await fetch(`size?target=${n}`);
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || r.statusText);
+      if (!D.sizes.some((x) => x.target === n)) insertSize(j);
+      if (mine === ticket) { hint(""); selectSize(D.sizes.findIndex((x) => x.target === n)); }
+      else sizeChips();
+    } catch (e) {
+      if (mine === ticket) { hint(String(e.message || e)); tune(); }
+    }
+  }
+  function step(dir, big) {
+    const t = D.sizes[S.size].target;
+    if (live) { goSize(t + dir * (big ? 4 : 1)); return; }
+    selectSize(S.size + dir);
   }
 
   $("title").textContent = D.title;
@@ -734,6 +797,15 @@ window.addEventListener("error", (ev) => {
       request();
     });
   }
+  $("minus").addEventListener("click", (ev) => step(-1, ev.shiftKey));
+  $("plus").addEventListener("click", (ev) => step(1, ev.shiftKey));
+  $("sizein").addEventListener("change", (ev) => goSize(+ev.target.value));
+  $("sizeslider").addEventListener("input", (ev) => { $("sizein").value = ev.target.value; });
+  $("sizeslider").addEventListener("change", (ev) => goSize(+ev.target.value));
+  $("sizein").max = $("sizeslider").max = MAXS;
+  $("sizeslider").hidden = !live;
+  if (!live) $("sizein").title = `Sizes on this page; any size with sagas view ${D.selector} --serve`;
+  tune();
   $("cut").addEventListener("input", (ev) => {
     const Y = D.sizes[S.size].vox.dims[1], v = +ev.target.value;
     S.cut = v >= Y - 1 ? null : v;
@@ -848,8 +920,9 @@ window.addEventListener("error", (ev) => {
   frame();
   if (savedCam) Object.assign(cam, { yaw: savedCam.yaw, pitch: savedCam.pitch, dist: savedCam.dist, t: savedCam.t.slice() });
   draw();
+  if (pendingTarget != null && live) goSize(pendingTarget);
   // for the browser console and tests: sagasView.selectSize(2); sagasView.cam.yaw = 1; sagasView.draw()
-  window.sagasView = { state: S, cam, refsOn: on, draw, frame, selectSize, pick };
+  window.sagasView = { state: S, cam, refsOn: on, draw, frame, selectSize, goSize, pick };
 })();
 </script>
 </body>
