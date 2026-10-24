@@ -2,9 +2,8 @@
 # the licence) or comments `/intake` to try again; the bot builds the landmark with `sagas intake`,
 # commits it on intake/<issue> with the contributor as co-author and opens the pull request.
 # Pictures follow from CI (pictures.yml); the contributor adjusts with comments (commands.yml).
-#
-# With the SAGAS_BOT_TOKEN secret (a GitHub App or fine-grained token: contents, pull requests,
-# issues) the bot's pushes start CI by themselves; with the default token this workflow starts CI.
+# It pushes with the deploy key SAGAS_DEPLOY_KEY (scripts/setup-repo.sh); a pull request opened with
+# the default token starts no workflow, so this workflow starts CI for the branch.
 name: Intake
 on:
   issues:
@@ -28,15 +27,14 @@ jobs:
     runs-on: ubuntu-latest
     concurrency: intake-${{ github.event.issue.number }}
     env:
-      GH_TOKEN: ${{ secrets.SAGAS_BOT_TOKEN || github.token }}
-      HAS_BOT: ${{ secrets.SAGAS_BOT_TOKEN != '' }}
+      GH_TOKEN: ${{ github.token }}
       N: ${{ github.event.issue.number }}
       REPO: ${{ github.repository }}
     steps:
       - uses: actions/checkout@v7
         with:
           ref: main
-          token: ${{ secrets.SAGAS_BOT_TOKEN || github.token }}
+          ssh-key: ${{ secrets.SAGAS_DEPLOY_KEY }}
       - uses: astral-sh/setup-uv@v10.3.0
       - run: uv sync --locked --project tools
       - name: Build the landmark
@@ -97,5 +95,5 @@ jobs:
             gh pr create -R "$REPO" --head "$branch" --base main --title "Landmark: $title" --body-file "$RUNNER_TEMP/body.md"
             pr=$(gh pr list -R "$REPO" --head "$branch" --state open --json number -q '.[0].number')
           fi
-          if [ "$HAS_BOT" != true ]; then gh workflow run ci.yml -R "$REPO" --ref "$branch"; fi
+          gh workflow run ci.yml -R "$REPO" --ref "$branch"
           gh issue comment "$N" -R "$REPO" --body "Built it: #$pr. Pictures follow there in a few minutes; you can adjust it with comments like \`/size 24\`."

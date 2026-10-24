@@ -39,11 +39,10 @@ tags it `cdb/<pkg>/<version>` and calls `avanti cdb release`. Dev files are left
    repository URL, screenshots from `avanti screenshot mods`, and submit them for review.
 2. Hand a ContentDB token to CI: `avanti secrets setup && avanti secrets push culmat/luanti-sagas`
    ([avanti-luanti](https://github.com/culmat/avanti-luanti)).
-3. Run `scripts/setup-repo.sh`: labels, auto-merge, the ruleset on main (one approving code-owner
-   review, green CI; github-actions may push the generated files), and the `contentdb` environment
-   without reviewers.
-4. Optional: a `SAGAS_BOT_TOKEN` secret (a GitHub App or fine-grained token with contents, pull
-   requests and issues) so the bot's pushes start CI by themselves; without it the bot starts CI.
+3. Run `scripts/setup-repo.sh`: labels, auto-merge, a deploy key for the workflows (secret
+   `SAGAS_DEPLOY_KEY`; it pushes the generated files to main and the bot's branches), the ruleset on
+   main (one approving code-owner review, green CI; deploy keys may push), and the `contentdb`
+   environment without reviewers.
 
 **A new saga** ships in `sagas_pack` right away. Its own package needs to be created on ContentDB once;
 until then `deliver.sh` opens an issue saying so, and the next release after that goes out by itself.

@@ -1,7 +1,8 @@
 # Comment commands on landmark pull requests: `/size 24`, `/site cliff+coast`, `/door +z`, `/help`.
 # Allowed for maintainers and for the contributor the intake bot named in the pull request. The
 # tools come from main (trusted); the pull request branch only provides content. Works on branches
-# of this repository (the bot's intake/* branches); forks change landmark.toml themselves.
+# of this repository (the bot's intake/* branches); forks change landmark.toml themselves. Pushes use
+# the deploy key SAGAS_DEPLOY_KEY, so CI runs on the new commit.
 name: Commands
 on:
   issue_comment:
@@ -18,8 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     concurrency: commands-${{ github.event.issue.number }}
     env:
-      GH_TOKEN: ${{ secrets.SAGAS_BOT_TOKEN || github.token }}
-      HAS_BOT: ${{ secrets.SAGAS_BOT_TOKEN != '' }}
+      GH_TOKEN: ${{ github.token }}
       PR: ${{ github.event.issue.number }}
       REPO: ${{ github.repository }}
       COMMENTER: ${{ github.event.comment.user.login }}
@@ -59,7 +59,7 @@ jobs:
         with:
           ref: ${{ steps.pr.outputs.branch }}
           path: pr
-          token: ${{ secrets.SAGAS_BOT_TOKEN || github.token }}
+          ssh-key: ${{ secrets.SAGAS_DEPLOY_KEY }}
       - uses: astral-sh/setup-uv@v10.3.0
         if: steps.pr.outputs.go
       - name: Apply the commands
@@ -89,7 +89,6 @@ jobs:
             else
               git commit -q -m "$L: ${cmds[*]}" -m "Asked by @$COMMENTER in #$PR"
               git push -q origin "HEAD:$BRANCH"
-              if [ "$HAS_BOT" != true ]; then gh workflow run ci.yml -R "$REPO" --ref "$BRANCH"; fi
               printf 'Done: %s. New pictures follow in a few minutes.\n' "$(tail -n 1 <<<"$out")" > "$RUNNER_TEMP/r.md"
             fi
           else

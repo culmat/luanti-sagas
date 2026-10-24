@@ -18,6 +18,8 @@ permissions:
 
 jobs:
   deliver:
+    # the generated-files commit below starts this workflow again; nothing is left to do then
+    if: ${{ !startsWith(github.event.head_commit.message, 'Build packs and previews') }}
     runs-on: ubuntu-latest
     # holds CONTENTDB_TOKEN; scripts/setup-repo.sh removes its reviewers, so nothing waits here
     environment: contentdb
@@ -25,6 +27,8 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          # deploy keys may push to main past the ruleset (scripts/setup-repo.sh)
+          ssh-key: ${{ secrets.SAGAS_DEPLOY_KEY }}
       - uses: actions/checkout@v7
         with:
           repository: culmat/avanti-luanti
@@ -56,14 +60,11 @@ jobs:
           echo "pushed=$pushed" >> "$GITHUB_OUTPUT"
           echo "release=yes" >> "$GITHUB_OUTPUT"
       - name: Wait for CI, game tests included, on exactly this commit
-        # the bot's commit starts no workflow by itself, so start CI for it
         if: steps.commit.outputs.release
         env:
           GH_TOKEN: ${{ github.token }}
-          PUSHED: ${{ steps.commit.outputs.pushed }}
         run: |
           sha=$(git rev-parse HEAD)
-          if [ "$PUSHED" = yes ]; then gh workflow run ci.yml -R "$GITHUB_REPOSITORY" --ref main; fi
           id=
           for _ in $(seq 60); do
             id=$(gh run list -R "$GITHUB_REPOSITORY" --workflow ci.yml --commit "$sha" --json databaseId -q '.[0].databaseId')
@@ -80,8 +81,3 @@ jobs:
           AVANTI_CONTENTDB_USER: ${{ vars.CONTENTDB_USER || 'culmat' }}
           AVANTI: .avanti/plugins/avanti/bin/avanti
         run: scripts/deliver.sh
-      - name: Refresh the gallery
-        if: steps.commit.outputs.release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh workflow run gallery.yml -R "$GITHUB_REPOSITORY" --ref main || true
