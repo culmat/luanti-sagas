@@ -121,9 +121,14 @@ def build_saga(repo: Repo, saga: str, check: bool = False) -> ThemeBuild:
 
 
 def write_preview(res: buildmod.BuildResult, size: int = 1024) -> Path:
+    """preview.png, rewritten only when the picture changed, so a rebuild on another system doesn't
+    touch every file."""
     path = res.landmark.preview_path
+    img = preview.render(res, size)
+    if preview.same_picture(img, path):
+        return path
     with tempfile.NamedTemporaryFile(suffix=".png", dir=path.parent, delete=False) as tmp:
         tmp_path = Path(tmp.name)
-    preview.write(res, tmp_path, size)
+    img.save(tmp_path, optimize=True)
     tmp_path.replace(path)
     return path

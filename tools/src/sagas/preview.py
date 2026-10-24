@@ -129,5 +129,17 @@ def render(res: BuildResult, size: int = 1024) -> Image.Image:
     return sheet
 
 
+def same_picture(img: Image.Image, path: Path) -> bool:
+    """Whether `path` already shows `img`. PNG bytes differ between zlib versions (macOS and the Linux
+    CI), so pictures are compared by their pixels."""
+    if not path.exists():
+        return False
+    try:
+        with Image.open(path) as old:
+            return old.size == img.size and old.convert("RGB").tobytes() == img.convert("RGB").tobytes()
+    except OSError:
+        return False
+
+
 def write(res: BuildResult, path: Path, size: int = 1024) -> None:
     render(res, size).save(path, optimize=True)

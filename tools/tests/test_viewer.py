@@ -239,3 +239,22 @@ def test_live_server_builds_any_size(repo, no_games):
     finally:
         httpd.shutdown()
         httpd.server_close()
+
+
+def test_preview_is_rewritten_only_when_the_picture_changes(repo, tmp_path):
+    from PIL import Image
+
+    from sagas import pipeline
+
+    landmark = config.load(landmark_toml(repo, "test", "box"))
+    model = legacy.read_txt(box_txt(tmp_path / "box.txt", size=(7, 5, 7)))
+    path = pipeline.write_preview(build.build(landmark, model))
+    with Image.open(path) as img:
+        img.load()
+    img.save(path, compress_level=1)  # same pixels, other bytes (as another zlib makes them)
+    before = path.read_bytes()
+    pipeline.write_preview(build.build(landmark, model))
+    assert path.read_bytes() == before
+    model.occ[:, 4, :] = True  # a roof: the picture changes
+    pipeline.write_preview(build.build(landmark, model))
+    assert path.read_bytes() != before
