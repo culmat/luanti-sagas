@@ -52,8 +52,13 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -q -m "Build packs and previews for ${GITHUB_SHA::7}"
             if ! git push -q origin HEAD:main; then
-              echo "main moved on; the next run releases it"
-              exit 0
+              git fetch -q origin main
+              if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD~1)" ]; then
+                echo "main moved on; the next run releases it"
+                exit 0
+              fi
+              echo "::error::main refused the push: is SAGAS_DEPLOY_KEY set up? (scripts/setup-repo.sh)"
+              exit 1
             fi
             pushed=yes
           fi

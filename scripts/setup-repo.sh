@@ -2,7 +2,7 @@
 # One-time GitHub settings for self-service contributions (run by a maintainer, needs gh with admin
 # rights on the repository). Safe to run again.
 #   - labels from .github/labels.yml
-#   - squash merges with auto-merge, branches deleted after merge
+#   - squash merges with auto-merge, branches deleted after merge; workflows may open pull requests
 #   - a deploy key "sagas-bot" (write access, this repository only) whose private half is the
 #     SAGAS_DEPLOY_KEY secret: the workflows push with it (generated packs to main, bot branches)
 #   - a ruleset on main: one approving review by a code owner and green CI; deploy keys may push,
@@ -21,6 +21,9 @@ sed -n 's/^- { name: "\([^"]*\)", color: "\([^"]*\)", description: "\([^"]*\)" }
 
 echo "merging"
 gh repo edit "$repo" --enable-squash-merge --enable-auto-merge --delete-branch-on-merge >/dev/null
+# intake.yml and scout.yml open pull requests (approvals still need a code owner, see the ruleset)
+gh api -X PUT "repos/$repo/actions/permissions/workflow" \
+	-f default_workflow_permissions=read -F can_approve_pull_request_reviews=true
 
 echo "deploy key for the workflows"
 if gh secret list -R "$repo" | grep -q '^SAGAS_DEPLOY_KEY'; then
