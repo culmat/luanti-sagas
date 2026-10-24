@@ -1,24 +1,32 @@
-name: Model found
-description: Suggest a free 3D model that would make a good landmark
+name: Add a landmark
+description: Suggest a free 3D model. A bot turns it into a landmark and shows you pictures; no install needed.
 title: "Model: "
 labels: ["model-found"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks! Only free licences work: CC0, CC-BY, CC-BY-SA or MIT. No "NC" or "ND".
-        See docs/sources.md for good places to look.
+        Thanks! Fill in what you know; a maintainer checks the licence, then a bot builds the landmark
+        and replies with pictures. You can then adjust it by writing comments like `/size 24`.
+        Only free licences work: CC0, CC-BY, CC-BY-SA or MIT. No "NC" (non-commercial) or "ND" (no derivatives).
+        Good places to look: Sketchfab (filter "downloadable", CC licences), Poly Haven, Smithsonian 3D.
   - type: input
     id: url
     attributes:
-      label: Model URL
+      label: Link to the model
+      description: The page where you found it.
       placeholder: https://sketchfab.com/3d-models/...
     validations:
       required: true
+  - type: textarea
+    id: file
+    attributes:
+      label: Model file (only if the site needs a login to download)
+      description: Download the model (glTF or OBJ, as a zip) and drag the file into this box.
   - type: input
     id: author
     attributes:
-      label: Author (name and profile URL)
+      label: Author (name, and profile link if there is one)
     validations:
       required: true
   - type: dropdown
@@ -36,18 +44,48 @@ body:
   - type: dropdown
     id: saga
     attributes:
-      label: Saga
-      options: [medieval, viking, asian, egyptian, antique, prehistoric, gothic, nautical, dwarven, elven, alpine, creatures, ruins, other]
+      label: Saga (the theme it belongs to)
+      description: See the gallery for what each saga holds. Pick "other" to start a new saga.
+      options: [ruins, antiquity, medieval, viking, asian, egyptian, prehistoric, gothic, nautical, dwarven, elven, alpine, creatures, "other (name it below)"]
+    validations:
+      required: true
+  - type: input
+    id: new_saga
+    attributes:
+      label: New saga (only if you picked "other")
+      placeholder: "Vikings: longhouses, rune stones and ships of the north"
+  - type: input
+    id: title
+    attributes:
+      label: Name of the landmark
+      placeholder: Ruined watchtower
+  - type: dropdown
+    id: size
+    attributes:
+      label: How big in the game?
+      description: A player is 2 nodes tall, most trees 8 to 17. You can change it later.
+      options:
+        - "small, like a hut (about 12 nodes long)"
+        - "like a house (about 20)"
+        - "like a big building (about 32)"
+        - "taller than the trees (about 48)"
+        - "a huge landmark (about 64)"
+        - "not sure (about 32)"
   - type: textarea
     id: hints
     attributes:
       label: Where should it appear?
-      description: In your own words, e.g. "on sea cliffs, built from the local stone, rare".
+      description: In your own words, e.g. "on sea cliffs in the cold north, rare" or "hidden deep in the forest".
+  - type: input
+    id: lore
+    attributes:
+      label: A line of lore (optional)
+      placeholder: "The last watchtower of a forgotten kingdom."
   - type: dropdown
     id: kind
     attributes:
       label: What is it?
-      options: ["photogrammetry scan", "modelled", "game art", "AI-generated (name the tool below)", "not sure"]
+      options: ["photogrammetry scan", "modelled", "game art", "AI-generated (name the tool in the notes)", "not sure"]
   - type: checkboxes
     id: confirm
     attributes:
@@ -56,4 +94,6 @@ body:
         - label: The licence is not non-commercial (NC) or no-derivatives (ND)
           required: true
         - label: It does not show a trademarked character or brand
+          required: true
+        - label: I agree that my suggestion is published under the model's licence, crediting its author and me
           required: true

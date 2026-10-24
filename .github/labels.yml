@@ -12,3 +12,5 @@
 - { name: "saga:egyptian", color: "d4c5f9", description: "Egyptian" }
 - { name: "saga:viking", color: "d4c5f9", description: "Viking" }
 - { name: "bug", color: "b60205", description: "Something is broken" }
+- { name: "accepted", color: "0e8a16", description: "Licence checked: the bot builds the landmark" }
+- { name: "needs-info", color: "d93f0b", description: "The bot needs more from the contributor" }

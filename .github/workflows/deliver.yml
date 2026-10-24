@@ -1,0 +1,87 @@
+# Every push to main goes to players: rebuild what contributors don't commit (stale voxels, packs,
+# previews, the gallery data), commit it, then release each changed package to GitHub and ContentDB
+# with a date version (scripts/deliver.sh). The approved pull request was the only human step.
+name: Deliver
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deliver
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    # holds CONTENTDB_TOKEN; scripts/setup-repo.sh removes its reviewers, so nothing waits here
+    environment: contentdb
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v7
+        with:
+          repository: culmat/avanti-luanti
+          ref: main
+          path: .avanti
+      - uses: astral-sh/setup-uv@v10.3.0
+      - run: uv sync --locked --project tools
+      - name: Sources of landmarks whose voxels may be stale
+        run: uv run --project tools sagas fetch all || true
+      - run: uv run --project tools sagas voxelize all --stale
+      - run: uv run --project tools sagas build
+      - run: uv run --project tools sagas catalog
+      - run: uv run --project tools sagas lint --strict
+      - name: Commit the generated files
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A content mods docs/gallery
+          pushed=no
+          if ! git diff --cached --quiet; then
+            git commit -q -m "Build packs and previews for ${GITHUB_SHA::7}"
+            if ! git push -q origin HEAD:main; then
+              echo "main moved on; the next run releases it"
+              exit 0
+            fi
+            pushed=yes
+          fi
+          echo "pushed=$pushed" >> "$GITHUB_OUTPUT"
+          echo "release=yes" >> "$GITHUB_OUTPUT"
+      - name: Wait for CI, game tests included, on exactly this commit
+        # the bot's commit starts no workflow by itself, so start CI for it
+        if: steps.commit.outputs.release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PUSHED: ${{ steps.commit.outputs.pushed }}
+        run: |
+          sha=$(git rev-parse HEAD)
+          if [ "$PUSHED" = yes ]; then gh workflow run ci.yml -R "$GITHUB_REPOSITORY" --ref main; fi
+          id=
+          for _ in $(seq 60); do
+            id=$(gh run list -R "$GITHUB_REPOSITORY" --workflow ci.yml --commit "$sha" --json databaseId -q '.[0].databaseId')
+            [ -n "$id" ] && break
+            sleep 10
+          done
+          [ -n "$id" ] || { echo "no CI run for $sha (main moved on?); the next run releases"; exit 1; }
+          gh run watch "$id" -R "$GITHUB_REPOSITORY" --exit-status --interval 30 > /dev/null
+      - name: Release changed packages
+        if: steps.commit.outputs.release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CONTENTDB_TOKEN: ${{ secrets.CONTENTDB_TOKEN }}
+          AVANTI_CONTENTDB_USER: ${{ vars.CONTENTDB_USER || 'culmat' }}
+          AVANTI: .avanti/plugins/avanti/bin/avanti
+        run: scripts/deliver.sh
+      - name: Refresh the gallery
+        if: steps.commit.outputs.release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run gallery.yml -R "$GITHUB_REPOSITORY" --ref main || true

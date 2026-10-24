@@ -1,0 +1,22 @@
+# One maintainer approval is the only click: every ready pull request gets auto-merge, so GitHub
+# merges it once the ruleset on main is satisfied (one approving review by a code owner, green CI),
+# and deliver.yml takes it to ContentDB. No pull request code runs here.
+name: Auto-merge
+on:
+  pull_request_target:
+    types: [opened, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  enable:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: gh pr merge "$PR" -R "$REPO" --auto --squash || echo "auto-merge is off in the repository settings (scripts/setup-repo.sh)"

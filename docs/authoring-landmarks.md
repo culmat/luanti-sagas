@@ -143,12 +143,13 @@ Set the chosen size as `target_size`, then `sagas voxelize <saga>/<id> --force` 
 
 ## 6. Check and hand over
 
-- `sagas lint <saga>/<id>` must pass without warnings (L016: rooms without a door);
-  `sagas build --check` must report packs up to date.
-- Commit `landmark.toml`, `voxels.vx.gz`, `preview.png` and `mods/sagas_<saga>/`. Never commit `sources/`.
+- `sagas lint <saga>/<id>` must pass without warnings (L016: rooms without a door).
+- Commit `landmark.toml`, `voxels.vx.gz` and `preview.png`; CI rebuilds the packs in `mods/` and
+  releases them after the merge ([releasing.md](releasing.md)). Never commit `sources/`.
 - In game (optional): `avanti play mods`, then `/saga find <id>`: fresh map is generated around you
   until map generation places your landmark, and you are taken to it (`/saga tour <id>` circles it,
   Space switches the time of day). `/saga place <id>` places it where you point, `/saga sites <id>`
   marks where its site fits. For many placements at once: `avanti survey mods --set sagas_only=<id>
   --set sagas_rarity_scale=0.001 --keep` (see [placement.md](placement.md)).
-- Never publish (ContentDB, forums, upstream issues) without the maintainer's explicit approval.
+- Never publish (ContentDB, forums, upstream issues) yourself: a maintainer's approval of the pull
+  request releases it.

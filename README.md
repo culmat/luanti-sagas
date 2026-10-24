@@ -64,14 +64,14 @@ With the `sagas` privilege: `/saga list`, `/saga place <id>` (at the node you po
 
 More terms (site, exposure, material class, palette, value budget) are in [docs/glossary.md](docs/glossary.md).
 
-## For creators: add a landmark in 15 minutes
+## For creators: add a landmark from your browser
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Four ways in:
-
-1. **Link a model**: a CC0 / CC-BY / CC-BY-SA model plus a `landmark.toml`. Most contributions.
-2. **Build in game** and export it with `/saga export`.
-3. **No install**: voxelize in the browser (MagicaVoxel, drububu.com) and commit the `.vox` / `.txt`.
-4. **Curate**: better materials, placements, lore for existing landmarks.
+No install, no git, no code: fill in the [Add a landmark](https://github.com/culmat/luanti-sagas/issues/new?template=model-found.yml)
+form with a link to a free 3D model and where it belongs, in your own words. A bot builds it and shows
+you pictures, you adjust it with comments like `/size 24`, a maintainer approves, and it reaches
+ContentDB by itself, credited to you. See [CONTRIBUTING.md](CONTRIBUTING.md); for the tools on your
+computer, building in the game or working with a coding agent, see
+[docs/contributing-with-tools.md](docs/contributing-with-tools.md).
 
 Looking for models? [docs/sources.md](docs/sources.md) lists where free, realistic models are
 (museums, Sketchfab CC0/CC-BY scans, 0 A.D. and Millennium A.D. art) and what to avoid.

@@ -21,8 +21,9 @@ or vikings; a landmark is one structure). To create or change a landmark, follow
 
 ## Conventions
 
-- Builds are deterministic; CI runs `sagas build --check`. After changing tools that affect output,
-  rebuild all packs and commit them.
+- Builds are deterministic. Contributors commit `landmark.toml`, voxels and previews; CI rebuilds the
+  packs and `deliver.yml` commits and releases them after each merge (`docs/releasing.md`). Browser
+  contributions go issue form -> `sagas intake` -> PR -> comment commands (`sagas command`).
 - After editing `vocabulary.json` or the palette: `sagas sync-core` (CI checks it).
 - Lua: luacheck clean (`luacheck mods`), stylua formatted (`stylua mods/sagas`), engine API only, every game
   node name inside the guarded tables in `mods/sagas/materials/`. Verify API names in

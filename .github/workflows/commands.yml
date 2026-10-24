@@ -1,0 +1,98 @@
+# Comment commands on landmark pull requests: `/size 24`, `/site cliff+coast`, `/door +z`, `/help`.
+# Allowed for maintainers and for the contributor the intake bot named in the pull request. The
+# tools come from main (trusted); the pull request branch only provides content. Works on branches
+# of this repository (the bot's intake/* branches); forks change landmark.toml themselves.
+name: Commands
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+jobs:
+  run:
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/')
+    runs-on: ubuntu-latest
+    concurrency: commands-${{ github.event.issue.number }}
+    env:
+      GH_TOKEN: ${{ secrets.SAGAS_BOT_TOKEN || github.token }}
+      HAS_BOT: ${{ secrets.SAGAS_BOT_TOKEN != '' }}
+      PR: ${{ github.event.issue.number }}
+      REPO: ${{ github.repository }}
+      COMMENTER: ${{ github.event.comment.user.login }}
+      ROLE: ${{ github.event.comment.author_association }}
+      COMMENT: ${{ github.event.comment.body }}
+    steps:
+      - name: Check who asks, and where
+        id: pr
+        run: |
+          reply() { gh pr comment "$PR" -R "$REPO" --body "$1"; }
+          info=$(gh pr view "$PR" -R "$REPO" --json headRefName,isCrossRepository,body,state)
+          if [ "$(jq -r .state <<<"$info")" != OPEN ]; then exit 0; fi
+          contributor=$(jq -r .body <<<"$info" | grep -o 'intake-author: [A-Za-z0-9-]*' | head -n 1 | cut -d' ' -f2 || true)
+          case "$ROLE" in
+            OWNER | MEMBER | COLLABORATOR) ;;
+            *) if [ "$COMMENTER" != "$contributor" ]; then echo "not allowed: $COMMENTER"; exit 0; fi ;;
+          esac
+          if [ "$(jq -r .isCrossRepository <<<"$info")" = true ]; then
+            reply "Commands work on the bot's branches. In your fork, change \`landmark.toml\` and push; CI rebuilds it."
+            exit 0
+          fi
+          landmark=$(gh pr diff "$PR" -R "$REPO" --name-only \
+            | awk -F/ '/^content\/[a-z0-9_]+\/[a-z0-9_]+\// { print $2 "/" $3 }' | sort -u | head -n 1)
+          if [ -z "$landmark" ]; then reply "This pull request changes no landmark."; exit 0; fi
+          {
+            echo "branch=$(jq -r .headRefName <<<"$info")"
+            echo "landmark=$landmark"
+            echo "go=yes"
+          } >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v7
+        if: steps.pr.outputs.go
+        with:
+          ref: main
+          path: main
+      - uses: actions/checkout@v7
+        if: steps.pr.outputs.go
+        with:
+          ref: ${{ steps.pr.outputs.branch }}
+          path: pr
+          token: ${{ secrets.SAGAS_BOT_TOKEN || github.token }}
+      - uses: astral-sh/setup-uv@v10.3.0
+        if: steps.pr.outputs.go
+      - name: Apply the commands
+        if: steps.pr.outputs.go
+        env:
+          L: ${{ steps.pr.outputs.landmark }}
+          BRANCH: ${{ steps.pr.outputs.branch }}
+        run: |
+          reply() { gh pr comment "$PR" -R "$REPO" --body-file "$1"; }
+          mapfile -t cmds < <(tr -d '\r' <<<"$COMMENT" | grep -E '^/[a-z]+( .{1,200})?$' | head -n 10)
+          [ "${#cmds[@]}" -gt 0 ] || exit 0
+          sagas() { uv run --project main/tools sagas --root pr "$@"; }
+          uv sync --locked --project main/tools
+          sagas fetch "$L" || true
+          if out=$(sagas command "$L" "${cmds[@]}" 2>&1); then
+            if [ "${cmds[0]}" = /help ]; then
+              printf 'Commands, one per line:\n\n%s\n' "$out" > "$RUNNER_TEMP/r.md"
+              reply "$RUNNER_TEMP/r.md"
+              exit 0
+            fi
+            cd pr
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A content
+            if git diff --cached --quiet; then
+              echo "Nothing changed ($out)." > "$RUNNER_TEMP/r.md"
+            else
+              git commit -q -m "$L: ${cmds[*]}" -m "Asked by @$COMMENTER in #$PR"
+              git push -q origin "HEAD:$BRANCH"
+              if [ "$HAS_BOT" != true ]; then gh workflow run ci.yml -R "$REPO" --ref "$BRANCH"; fi
+              printf 'Done: %s. New pictures follow in a few minutes.\n' "$(tail -n 1 <<<"$out")" > "$RUNNER_TEMP/r.md"
+            fi
+          else
+            printf "That didn't work:\n\n\`\`\`\n%s\n\`\`\`\n\nComment \`/help\` for the commands.\n" "$(tail -n 5 <<<"$out")" > "$RUNNER_TEMP/r.md"
+          fi
+          reply "$RUNNER_TEMP/r.md"

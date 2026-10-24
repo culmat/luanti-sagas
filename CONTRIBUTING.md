@@ -1,104 +1,77 @@
 # Contributing
 
-Thank you for helping the Luanti world feel less anonymous. You don't need to code to contribute a landmark.
+You can add a landmark to Luanti worlds from your web browser: no install, no git, no code. You
+need a free [GitHub account](https://github.com/signup) and a 3D model with a free licence. Every
+contribution is welcome and you can do it on your own. A bot does the technical work, a
+maintainer looks at it once, and then it reaches players on ContentDB by itself, credited to you.
 
-A **saga** is a theme (ruins, antiquity, vikings, dragon fantasy); a **landmark** is one structure from one
-3D model inside a saga. More terms: [docs/glossary.md](docs/glossary.md).
+A **saga** is a theme (ruins, antiquity, vikings ...) and a **landmark** is one structure in it, made
+from one 3D model. See what exists in the [gallery](https://culmat.github.io/luanti-sagas/).
 
-## Add a landmark in 15 minutes
+## Add a landmark in your browser
 
-1. **Find a model** you like that has a free licence: CC0, CC-BY or CC-BY-SA (or MIT).
-   No "NC" (non-commercial) and no "ND" (no derivatives): ContentDB does not allow them.
-   [docs/sources.md](docs/sources.md) lists good places to look, and
-   [docs/scouting/](docs/scouting/) holds candidates others found; `sagas scout promote <id>` turns one
-   into a `landmark.toml` for you (then continue at step 4). To search Sketchfab and the Smithsonian yourself,
-   `avanti secrets setup` ([avanti-luanti](https://github.com/culmat/avanti-luanti)) stores your free tokens.
-2. **Set up the tools** (Python 3.12+ and [uv](https://docs.astral.sh/uv/); no Blender needed):
-   ```sh
-   git clone https://github.com/culmat/luanti-sagas && cd luanti-sagas/tools && uv sync && cd ..
-   alias sagas="uv run --project tools sagas"
-   ```
-3. **Scaffold** `content/<saga>/<landmark>/landmark.toml`:
-   ```sh
-   sagas new watchtower --saga medieval --url https://sketchfab.com/3d-models/... \
-       --license CC-BY-4.0 --author "Jane Doe" --file watchtower.zip --member scene.gltf --manual
-   ```
-4. **Get the model**: `sagas fetch medieval/watchtower` downloads it, or for sites that need a login
-   (Sketchfab) download it yourself and run `sagas fetch medieval/watchtower --from ~/Downloads/watchtower.zip`.
-   Downloads stay in `sources/`, which is never committed.
-5. **Look inside**: `sagas inspect medieval/watchtower` shows parts, materials, textures and size.
-6. **Voxelize and build**: `sagas voxelize medieval/watchtower` then `sagas build medieval`.
-   Open `content/medieval/watchtower/preview.png` and adjust `landmark.toml` until it looks right
-   (size, up axis, material rules, ruin options). Rebuild with `sagas voxelize --force`.
-7. **Pick the size**: `sagas view medieval/watchtower` opens a 3D view of the landmark at several
-   sizes next to a player and the trees and houses of your games. Turn it, zoom in, and set the size
-   that reads well as `target_size` ([how to decide](docs/authoring-landmarks.md#5-size-and-detail)).
-8. **Say where it belongs**: fill `[placement]` with your hints, in words (`hints`) and as fields
-   (`site`, `exposure`, `biomes`, `rarity`). See [docs/placement.md](docs/placement.md).
-9. **Check**: `sagas lint medieval/watchtower`.
-10. **Commit** `landmark.toml`, `voxels.vx.gz`, `preview.png` and the regenerated `mods/sagas_medieval/`,
-   then open a pull request. CI rebuilds everything and runs the game tests.
+1. **Find a model** with a free licence: CC0, CC-BY, CC-BY-SA or MIT. "NC" (non-commercial) and "ND"
+   (no derivatives) don't work, and neither do film or game characters and brands. Good places:
+   [Sketchfab](https://sketchfab.com/search?features=downloadable&type=models) (filter by licence),
+   [Poly Haven](https://polyhaven.com/models) and
+   [Smithsonian 3D](https://3d.si.edu/). More in [docs/sources.md](docs/sources.md); ideas others found
+   wait in [docs/scouting/](docs/scouting/).
+2. **Fill in the form** [Add a landmark](https://github.com/culmat/luanti-sagas/issues/new?template=model-found.yml):
+   the link, the author, the licence, the saga, how big it should be and where it belongs, in your own
+   words ("on sea cliffs in the cold north, rare"). If the site needs a login to download (Sketchfab
+   does), download the model and drag the zip into the form.
+3. **Wait for the licence check.** A maintainer looks at the licence and labels the issue `accepted`.
+   The bot then builds your landmark and opens a pull request, a page for this one change.
+4. **Look at the pictures.** A few minutes later the pull request shows your landmark from four
+   sides, and next to a player and the game's trees at several sizes.
+5. **Change it by writing comments**, one command per line:
 
-Try it in game: `avanti play mods --game minetest` (or `mineclonia`, `mineclone2`) opens Luanti
-straight into a creative world that loads `mods/` from your checkout, linked rather than copied
-([avanti-luanti](https://github.com/culmat/avanti-luanti); the world lives in `.dev/`, which is ignored).
-Point at the ground and run `/saga place watchtower`. To see where map generation itself would put it, run `/saga find watchtower`: fresh map is generated around you until it is placed, and you are taken there. Luanti has no hot reload: after `sagas build`
-or a Lua edit, quit and run the command again.
+   | Comment | Does |
+   |---|---|
+   | `/size 24` | longest side in nodes (a player is 2 tall, trees 8 to 17) |
+   | `/bigger`, `/smaller` | a quarter bigger or smaller |
+   | `/site cliff+coast plain` | where it stands, best first ([the words](docs/placement.md)) |
+   | `/rarity rare` | `common`, `rare`, `legendary` or a number |
+   | `/biomes tundra snow` | climate |
+   | `/door +z` | cut a doorway on one side (`+x`, `-x`, `+z`, `-z`), `/door none` keeps it closed |
+   | `/turn 90`, `/up z` | turn it, or stand it up if it lies on its side |
+   | `/title ...`, `/lore ...` | its name and a line of lore |
+   | `/help` | all commands |
 
-## Four ways in
+   The bot answers, rebuilds and posts new pictures.
+6. **Done.** When it looks right, a maintainer approves. It is merged and released to ContentDB on
+   its own, usually within the hour. The release notes and the landmark's credits name you.
 
-| Lane | You provide | Source kind |
-|---|---|---|
-| Link a model | a free model + `landmark.toml` | `mesh` (glTF, OBJ, DAE, STL, PLY) |
-| Build in game | your build, exported with `/saga mark` + `/saga export <name>` | `handbuilt` (the `.mts` from `<world>/sagas/`) |
-| No install | a MagicaVoxel `.vox` or a voxel point list (`x, y, z[, r, g, b]`, e.g. from drububu.com) next to `landmark.toml` | `vox`, `voxels` |
-| Curate | better materials, placement hints, lore for existing landmarks | edit `landmark.toml` |
+## Small changes to existing landmarks
 
-Hand-built landmarks are licensed by you: choose CC0 or CC-BY-SA-4.0 in `landmark.toml`. Copy the exported
-`.mts` next to `landmark.toml` and set `kind = "handbuilt"` and `file = "<name>.mts"`. The tools map the game's
-nodes back to material classes (stairs and slabs become their base material, wool and concrete keep
-their colour), so your build adapts to every game. `sagas voxelize` lists nodes it could not map;
-add a rule such as `match = { part = "mymod:roof_tile" }` with `class = "roof_red"`.
+Better lore, placement or size for a landmark that exists: open its `landmark.toml` in
+[content/](content/) on GitHub, click the pencil, change the text and choose *Propose changes*.
+The fields are explained in [docs/pipeline.md](docs/pipeline.md). CI rebuilds it and shows the
+pictures in your pull request.
 
-## Rules that keep the project publishable
+No model, but an idea? Use the [Landmark idea](https://github.com/culmat/luanti-sagas/issues/new?template=saga-request.yml)
+form. Something broken in the game? The [bug form](https://github.com/culmat/luanti-sagas/issues/new?template=bug.yml).
 
-- **Licences**: every landmark names its source URL, author and SPDX licence. `sagas lint` rejects anything
-  else. If a page says "free" without a licence, ask the author or skip it.
-- **Share-alike stays together**: CC-BY-SA sources make a whole pack CC-BY-SA, so keep them in their own
-  saga (like `antiquity` for 0 A.D. art).
-- **No trademarks or characters** (film dragons, game mascots, brand buildings).
-- **AI**: set `source.ai = "generated"` and name the tool in `notes` when a model was generated with AI.
-- **Fair gameplay**: realistic buildings use material classes; precious classes (gold, emerald) need an
-  explicit, small `value_budget`. Diamond or mese never appear.
-- **Size**: landmarks should fit a mapchunk (72 x 96 x 72 nodes). Bigger ones need `large = true`.
-- **Never commit downloaded models.** Only `landmark.toml`, `voxels.vx.gz`, `preview.png` and generated packs.
+## The rules
 
-## Pull request checklist
+- **Free licences only**, with the author named: CC0, CC-BY, CC-BY-SA or MIT.
+- **Share-alike stays together**: CC-BY-SA models go into a share-alike saga (like `antiquity`).
+- **No trademarks or characters**: no film dragons, game mascots or brand buildings.
+- **Say when AI made it**: choose "AI-generated" in the form and name the tool.
+- **Fair play**: landmarks don't hand out diamonds, mese or piles of gold.
 
-- [ ] Licence is CC0, CC-BY, CC-BY-SA or MIT, with author and URL in `landmark.toml`
-- [ ] `sagas lint` passes and `preview.png` looks right
-- [ ] Size checked next to the game's trees (`sagas view`)
-- [ ] Placement hints describe where the landmark belongs
-- [ ] AI use declared (or `ai = "none"`)
-- [ ] Commits are signed off (`git commit -s`, see DCO below)
+By opening an issue or pull request you agree that your contribution is published under the
+licence of the model (for text and hand-built work: the licence of the saga), crediting you.
 
-## Code contributions
+## More ways in
 
-- Tools: `cd tools && uv run pytest && uv run ruff check . && uv run ruff format --check .`
-- Mod: `luacheck mods`, `stylua --check mods/sagas`, and `avanti test mods`
-  ([avanti-luanti](https://github.com/culmat/avanti-luanti)) for the headless game tests.
-- Play-test while developing: `avanti play mods --game minetest` runs your working copy in game;
-  quit and rerun after each change (`--fresh` for a new map). You start flying fast, with every privilege.
-- Balance: `avanti survey mods --game minetest --set sagas_survey=true --keep` reports how often each
-  landmark appears, how far apart copies are and in which biomes; `/saga tour` in the kept world shows
-  them. See [docs/placement.md](docs/placement.md#testing-a-placement).
-- The vocabulary (classes, sites, biome tags) lives in `tools/src/sagas/data/vocabulary.json`;
-  run `sagas sync-core` after changing it so the mod gets the same copy.
-
-## Developer Certificate of Origin
-
-By signing off a commit (`git commit -s`) you certify that you wrote it or have the right to submit
-it under the project's licences, as described at https://developercertificate.org/.
+| You want to | Read |
+|---|---|
+| work on your computer with the tools and git, try it in the game | [docs/contributing-with-tools.md](docs/contributing-with-tools.md) |
+| let an AI coding agent build it with you | [docs/contributing-with-tools.md#with-a-coding-agent](docs/contributing-with-tools.md#with-a-coding-agent) |
+| build a landmark in the game and export it | [docs/contributing-with-tools.md#build-in-the-game](docs/contributing-with-tools.md#build-in-the-game) |
+| change the mod or the tools (code) | [docs/contributing-with-tools.md#code](docs/contributing-with-tools.md#code) |
+| know how releases work | [docs/releasing.md](docs/releasing.md) |
 
 ## Conduct
 

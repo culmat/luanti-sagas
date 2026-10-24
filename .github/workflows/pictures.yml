@@ -1,0 +1,82 @@
+# After CI: show the pictures of a pull request's landmarks in a comment, so contributors see the
+# result in the browser. Runs with a write token but never runs pull request code: the CI artifact
+# is data (PNG files and a JSON list), checked before use.
+name: Pictures
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  comment:
+    if: github.event.workflow_run.event != 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v7
+        continue-on-error: true
+        with:
+          name: pictures
+          path: pictures
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+      - name: Publish the pictures and comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+          RESULT: ${{ github.event.workflow_run.conclusion }}
+        run: |
+          [ -f pictures/meta.json ] || { echo "no pictures"; exit 0; }
+          pr=$(jq -r '.pr' pictures/meta.json)
+          [[ "$pr" =~ ^[0-9]+$ ]] || { echo "no pull request"; exit 0; }
+          head=$(gh pr view "$pr" -R "$REPO" --json headRefOid -q .headRefOid)
+          [ "$head" = "$SHA" ] || { echo "pictures are for an older commit of #$pr"; exit 0; }
+          mapfile -t landmarks < <(jq -r '.landmarks[]' pictures/meta.json | grep -E '^[a-z0-9_]+/[a-z0-9_]+$' || true)
+          [ "${#landmarks[@]}" -gt 0 ] || exit 0
+
+          dir="pr-$pr/${SHA:0:12}"
+          git init -q pub
+          cd pub
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/$REPO.git"
+          if git fetch -q --depth 1 origin previews; then git checkout -q FETCH_HEAD; else git checkout -q --orphan previews; fi
+          mkdir -p "$dir"
+          find ../pictures -maxdepth 1 -type f -name '*.png' -exec cp {} "$dir/" \;
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "Pictures for #$pr (${SHA:0:12})"
+          git push -q origin HEAD:refs/heads/previews
+          cd ..
+
+          raw="https://raw.githubusercontent.com/$REPO/previews/$dir"
+          {
+            echo "<!-- sagas-pictures -->"
+            echo "### How it looks"
+            [ "$RESULT" = success ] || echo "> Some checks did not pass yet; see the CI run below this pull request."
+            for l in "${landmarks[@]}"; do
+              n=${l/\//-}
+              echo
+              echo "**$l**"
+              echo
+              echo "![$l]($raw/$n.png)"
+              echo
+              echo "Every size next to a player and trees:"
+              echo
+              echo "![$l at several sizes]($raw/$n-sizes.png)"
+            done
+            jq -r '.notes[]' pictures/meta.json | cut -c1-200 | sed 's/^/> /'
+            echo
+            echo "Change it by commenting, one command per line (\`/help\` lists them all):"
+            echo "\`/size 24\` · \`/bigger\` · \`/smaller\` · \`/site cliff+coast\` · \`/rarity rare\` · \`/door +z\`"
+          } > comment.md
+          id=$(gh api "repos/$REPO/issues/$pr/comments" --paginate \
+            --jq '.[] | select(.body | contains("<!-- sagas-pictures -->")) | .id' | head -n 1)
+          if [ -n "$id" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$id" -F body=@comment.md >/dev/null
+          else
+            gh pr comment "$pr" -R "$REPO" --body-file comment.md
+          fi

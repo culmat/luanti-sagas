@@ -1,9 +1,9 @@
-# Release a mod of this monorepo to ContentDB, GitOps style.
+# Re-release one package by hand. Normal releases need no tag: deliver.yml releases every changed
+# package after each merge (docs/releasing.md).
 #
 # Push a tag <package>-v<version>, e.g. sagas-v0.1.0 or sagas_ruins-v0.2.0 (sagas_pack-v... for the
-# modpack). CI checks and packages it and attaches the zip to a GitHub release. The ContentDB step
-# waits for a maintainer's approval in the "contentdb" environment, then tags the package folder's
-# tree (cdb/<pkg>/<version>) and asks ContentDB to import that git ref.
+# modpack). CI checks and packages it and attaches the zip to a GitHub release, then tags the
+# package folder's tree (cdb/<pkg>/<version>) and asks ContentDB to import that git ref.
 # Set up once: create the ContentDB packages with this repository's URL, then
 # `avanti secrets setup && avanti secrets push culmat/luanti-sagas` (token and environment).
 name: Release

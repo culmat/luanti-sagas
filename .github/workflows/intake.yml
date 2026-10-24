@@ -1,0 +1,101 @@
+# "Add a landmark" issue -> pull request. A maintainer labels the issue `accepted` (after a look at
+# the licence) or comments `/intake` to try again; the bot builds the landmark with `sagas intake`,
+# commits it on intake/<issue> with the contributor as co-author and opens the pull request.
+# Pictures follow from CI (pictures.yml); the contributor adjusts with comments (commands.yml).
+#
+# With the SAGAS_BOT_TOKEN secret (a GitHub App or fine-grained token: contents, pull requests,
+# issues) the bot's pushes start CI by themselves; with the default token this workflow starts CI.
+name: Intake
+on:
+  issues:
+    types: [labeled]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: write
+
+jobs:
+  intake:
+    if: >-
+      (github.event_name == 'issues' && github.event.label.name == 'accepted') ||
+      (github.event_name == 'issue_comment' && !github.event.issue.pull_request &&
+       startsWith(github.event.comment.body, '/intake') &&
+       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association))
+    runs-on: ubuntu-latest
+    concurrency: intake-${{ github.event.issue.number }}
+    env:
+      GH_TOKEN: ${{ secrets.SAGAS_BOT_TOKEN || github.token }}
+      HAS_BOT: ${{ secrets.SAGAS_BOT_TOKEN != '' }}
+      N: ${{ github.event.issue.number }}
+      REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          token: ${{ secrets.SAGAS_BOT_TOKEN || github.token }}
+      - uses: astral-sh/setup-uv@v10.3.0
+      - run: uv sync --locked --project tools
+      - name: Build the landmark
+        run: |
+          gh issue view "$N" -R "$REPO" --json number,title,body,author > "$RUNNER_TEMP/issue.json"
+          if ! uv run --project tools sagas intake "$RUNNER_TEMP/issue.json" --summary "$RUNNER_TEMP/summary.json" \
+              > "$RUNNER_TEMP/out.txt" 2>&1; then
+            cat "$RUNNER_TEMP/out.txt"
+            {
+              echo "The bot couldn't build this one yet:"
+              echo
+              echo '```'
+              grep -v '^\s*$' "$RUNNER_TEMP/out.txt" | tail -n 4
+              echo '```'
+              echo
+              echo "Edit the issue (the pencil at the top), then a maintainer comments \`/intake\` to try again."
+            } > "$RUNNER_TEMP/reply.md"
+            gh issue comment "$N" -R "$REPO" --body-file "$RUNNER_TEMP/reply.md"
+            gh issue edit "$N" -R "$REPO" --add-label needs-info || true
+            exit 1
+          fi
+          cat "$RUNNER_TEMP/summary.json"
+      - name: Commit and open the pull request
+        run: |
+          s="$RUNNER_TEMP/summary.json"
+          saga=$(jq -r .saga "$s"); id=$(jq -r .id "$s"); title=$(jq -r .title "$s")
+          author=$(jq -r '.author.login' "$RUNNER_TEMP/issue.json")
+          uid=$(gh api "users/$author" -q .id)
+          branch="intake/$N"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add "content/$saga"
+          git commit -q -m "Add $saga/$id from #$N" -m "Co-authored-by: $author <$uid+$author@users.noreply.github.com>"
+          git push -q -f origin "$branch"
+          {
+            echo "<!-- intake-author: $author -->"
+            echo "Closes #$N. Suggested by @$author; the bot built it with \`sagas intake\`."
+            echo
+            echo "| | |"
+            echo "|---|---|"
+            echo "| Landmark | \`$saga/$id\`$(jq -r 'if .new_saga then " (new saga)" else "" end' "$s") |"
+            echo "| Size | $(jq -r '.dims | join(" x ")' "$s") nodes, $(jq -r .nodes "$s") placed |"
+            echo "| Where | site $(jq -r '.placement.site | join(" or ")' "$s"), $(jq -r '.placement.exposure' "$s"), biomes $(jq -r '.placement.biomes | join(", ")' "$s"), rarity $(jq -r '.placement.rarity' "$s") |"
+            echo "| From your words | $(jq -r '.matched | join(", ") | if . == "" then "nothing matched; defaults used" else . end' "$s") |"
+            jq -r '.notes[] | "\n> " + .' "$s"
+            echo
+            echo "Pictures follow in a comment within a few minutes. Change anything by commenting, one command per line:"
+            echo
+            uv run --project tools python -c "from sagas.edit import HELP; print(HELP)" | sed 's/^/- /'
+            echo
+            echo "A maintainer's approval merges it, and it goes to ContentDB on its own."
+          } > "$RUNNER_TEMP/body.md"
+          pr=$(gh pr list -R "$REPO" --head "$branch" --state open --json number -q '.[0].number')
+          if [ -n "$pr" ]; then
+            gh pr edit "$pr" -R "$REPO" --body-file "$RUNNER_TEMP/body.md"
+          else
+            gh pr create -R "$REPO" --head "$branch" --base main --title "Landmark: $title" --body-file "$RUNNER_TEMP/body.md"
+            pr=$(gh pr list -R "$REPO" --head "$branch" --state open --json number -q '.[0].number')
+          fi
+          if [ "$HAS_BOT" != true ]; then gh workflow run ci.yml -R "$REPO" --ref "$branch"; fi
+          gh issue comment "$N" -R "$REPO" --body "Built it: #$pr. Pictures follow there in a few minutes; you can adjust it with comments like \`/size 24\`."
