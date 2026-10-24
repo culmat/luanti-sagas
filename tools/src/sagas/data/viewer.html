@@ -71,7 +71,7 @@ label .h { color: var(--muted); }
   <h3>Compare with</h3>
   <div id="refs"></div>
   <h3>View</h3>
-  <label><input type="checkbox" id="edges" checked> node edges</label>
+  <label><input type="checkbox" id="edges"> node edges</label>
   <label><input type="checkbox" id="ao" checked> smooth lighting</label>
   <label><input type="checkbox" id="ground" checked> ground</label>
   <label><input type="checkbox" id="carved"> carved air (rooms, doorways)</label>
@@ -357,7 +357,7 @@ window.addEventListener("error", (ev) => {
   gl.bindVertexArray(null);
 
   // ---------------------------------------------------------------- scene
-  const S = { size: Math.max(0, D.sizes.findIndex((s) => s.current)), edges: true, ao: true, ground: true,
+  const S = { size: Math.max(0, D.sizes.findIndex((s) => s.current)), edges: false, ao: true, ground: true,
     carved: false, source: false, cut: null, hover: null, sel: null, sel2: null };
   const models = D.sizes.map((s) => ({ entry: s, vox: null, gpu: null, meshKey: "", carvedGpu: null, carvedKey: "" }));
   const refs = D.refs.map((r) => ({ key: r.key, group: r.group, label: r.label, height: r.height, src: r.vox,
@@ -541,7 +541,39 @@ window.addEventListener("error", (ev) => {
   function request() {
     if (pending) return;
     pending = true;
-    requestAnimationFrame(() => { pending = false; draw(); });
+    requestAnimationFrame(() => { pending = false; draw(); save(); });
+  }
+
+  // Settings and camera survive a reload, per landmark (browser storage; may be unavailable).
+  const STORE = `sagas-view:${D.id}`;
+  const TOGGLES = ["edges", "ao", "ground", "carved", "source"];
+  let saveTimer = 0;
+  function save() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      const keep = { target: D.sizes[S.size].target, refs: [...on], cut: S.cut,
+        cam: { yaw: cam.yaw, pitch: cam.pitch, dist: cam.dist, t: cam.t } };
+      for (const id of TOGGLES) keep[id] = S[id];
+      try { localStorage.setItem(STORE, JSON.stringify(keep)); } catch (e) { /* private window */ }
+    }, 300);
+  }
+  function restore() {
+    let k = null;
+    try { k = JSON.parse(localStorage.getItem(STORE) || "null"); } catch (e) { /* nothing saved */ }
+    if (!k || typeof k !== "object") return null;
+    const i = D.sizes.findIndex((s) => s.target === k.target);
+    if (i >= 0) S.size = i;
+    if (Array.isArray(k.refs)) {
+      on.clear();
+      for (const key of k.refs) if (D.refs.some((r) => r.key === key)) on.add(key);
+    }
+    for (const id of TOGGLES) if (typeof k[id] === "boolean") S[id] = k[id];
+    if (!D.mesh) S.source = false;
+    const Y = D.sizes[S.size].vox.dims[1];
+    S.cut = Number.isInteger(k.cut) && k.cut >= 0 && k.cut < Y - 1 ? k.cut : null;
+    for (const id of TOGGLES) $(id).checked = S[id];
+    const c = k.cam;
+    return c && [c.yaw, c.pitch, c.dist].every(Number.isFinite) && Array.isArray(c.t) && c.t.length === 3 ? c : null;
   }
 
   // ---------------------------------------------------------------- picking
@@ -664,6 +696,7 @@ window.addEventListener("error", (ev) => {
   $("sub").innerHTML = `${esc(D.id)} <span class="muted">· sagas ${esc(D.version)}</span>`;
   $("notes").innerHTML = D.notes.map((n) => `<div class="warn">${esc(n)}</div>`).join("");
   document.title = `${D.title} · sagas view`;
+  const savedCam = restore();
   sizeChips(); sizeInfo(); refList(); cutSlider(); status();
 
   document.addEventListener("click", (ev) => {
@@ -813,6 +846,7 @@ window.addEventListener("error", (ev) => {
 
   layout();
   frame();
+  if (savedCam) Object.assign(cam, { yaw: savedCam.yaw, pitch: savedCam.pitch, dist: savedCam.dist, t: savedCam.t.slice() });
   draw();
   // for the browser console and tests: sagasView.selectSize(2); sagasView.cam.yaw = 1; sagasView.draw()
   window.sagasView = { state: S, cam, refsOn: on, draw, frame, selectSize, pick };
