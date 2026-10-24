@@ -23,6 +23,10 @@ GitHub account.
 
 Installs through brew or scoop don't show these warnings.
 
+**Updating.** `sagaforge upgrade` replaces a downloaded Saga Forge with the newest release, after
+checking it against the release's checksums. Installs through brew or scoop update with `brew upgrade`
+or `scoop update`.
+
 ## First start
 
 Start `sagaforge`. It opens your browser at a local address (only your computer can reach it) and

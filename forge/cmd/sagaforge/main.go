@@ -4,6 +4,7 @@
 //	sagaforge [--port N] [--no-open] [--folder CLONE] [--home DIR]   open the UI
 //	sagaforge setup [--update]                                        install or update the tools here
 //	sagaforge doctor                                                  what is installed, what is missing
+//	sagaforge upgrade                                                 replace this program with the newest release
 //	sagaforge version
 package main
 
@@ -26,6 +27,7 @@ import (
 
 	"github.com/culmat/luanti-sagas/forge/internal/app"
 	"github.com/culmat/luanti-sagas/forge/internal/home"
+	"github.com/culmat/luanti-sagas/forge/internal/setup"
 	"github.com/culmat/luanti-sagas/forge/internal/web"
 )
 
@@ -54,9 +56,12 @@ func run(args []string, out io.Writer) error {
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
-	if cmd == "version" {
+	switch cmd {
+	case "version":
 		fmt.Fprintln(out, "sagaforge", version)
 		return nil
+	case "upgrade":
+		return upgrade(out)
 	}
 	dirs, err := paths.Resolve("sagaforge", "SAGAFORGE_HOME", *homeFlag)
 	if err != nil {
@@ -96,7 +101,7 @@ func run(args []string, out io.Writer) error {
 	case "":
 		return serve(ctx, a, h, *port, !*noOpen, out)
 	default:
-		return fmt.Errorf("unknown command %q (setup, doctor, version)", cmd)
+		return fmt.Errorf("unknown command %q (setup, doctor, upgrade, version)", cmd)
 	}
 }
 
@@ -157,4 +162,33 @@ func serve(ctx context.Context, a *app.App, h home.Home, port int, open bool, ou
 		return nil
 	}
 	return err
+}
+
+func upgrade(out io.Writer) error {
+	exe, err := os.Executable()
+	if err != nil {
+		return err
+	}
+	if exe, err = filepath.EvalSymlinks(exe); err != nil {
+		return err
+	}
+	if how := setup.ManagedBy(exe); how != "" {
+		fmt.Fprintf(out, "this Saga Forge was installed by a package manager: %s\n", how)
+		return nil
+	}
+	ctx := context.Background()
+	client := &http.Client{Timeout: 10 * time.Minute}
+	r, err := setup.LatestRelease(ctx, client, "")
+	if err != nil {
+		return err
+	}
+	if !setup.Newer(r.Version, version) {
+		fmt.Fprintf(out, "Saga Forge %s is the newest (latest release: %s)\n", version, r.Version)
+		return nil
+	}
+	if err := setup.Upgrade(ctx, client, r, exe, func(format string, args ...any) { fmt.Fprintf(out, format+"\n", args...) }); err != nil {
+		return err
+	}
+	fmt.Fprintf(out, "upgraded to Saga Forge %s; start it again\n", r.Version)
+	return nil
 }
