@@ -5,7 +5,8 @@
 #   - squash merges with auto-merge, branches deleted after merge; workflows may open pull requests
 #   - a deploy key "sagas-bot" (write access, this repository only) whose private half is the
 #     SAGAS_DEPLOY_KEY secret: the workflows push with it (generated packs to main, bot branches)
-#   - a ruleset on main: one approving review by a code owner and green CI; deploy keys may push,
+#   - a ruleset on main: one approving review by a code owner and green CI, game tests included (run
+#     this again after changing the games or engines in ci.yml); deploy keys may push,
 #     admins may merge their own pull requests (personal repositories can't let the Actions bot
 #     bypass a ruleset, only organizations can)
 #   - the contentdb environment without required reviewers, so releases go out after the merge
@@ -61,7 +62,14 @@ ruleset=$(
         "strict_required_status_checks_policy": false,
         "required_status_checks": [
           { "context": "tools (ruff, pytest)" },
-          { "context": "content (lint, build, pictures)" } ] } }
+          { "context": "content (lint, build, pictures)" },
+          { "context": "mods / lint" },
+          { "context": "mods / test (minetest, 5.10.0)" },
+          { "context": "mods / test (minetest, 5.17.0)" },
+          { "context": "mods / test (mineclonia, 5.10.0)" },
+          { "context": "mods / test (mineclonia, 5.17.0)" },
+          { "context": "mods / test (mineclone2, 5.10.0)" },
+          { "context": "mods / test (mineclone2, 5.17.0)" } ] } }
   ]
 }
 JSON

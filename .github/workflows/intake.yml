@@ -95,5 +95,7 @@ jobs:
             gh pr create -R "$REPO" --head "$branch" --base main --title "Landmark: $title" --body-file "$RUNNER_TEMP/body.md"
             pr=$(gh pr list -R "$REPO" --head "$branch" --state open --json number -q '.[0].number')
           fi
+          # a pull request opened with the workflow token starts no workflow: no CI, no automerge.yml
+          gh pr merge "$pr" -R "$REPO" --auto --squash || echo "auto-merge is off (scripts/setup-repo.sh)"
           gh workflow run ci.yml -R "$REPO" --ref "$branch"
           gh issue comment "$N" -R "$REPO" --body "Built it: #$pr. Pictures follow there in a few minutes; you can adjust it with comments like \`/size 24\`."

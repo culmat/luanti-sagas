@@ -89,7 +89,6 @@ jobs:
             else
               git commit -q -m "$L: ${cmds[*]}" -m "Asked by @$COMMENTER in #$PR"
               git push -q origin "HEAD:$BRANCH"
-              gh workflow run ci.yml -R "$REPO" --ref "$BRANCH"
               printf 'Done: %s. New pictures follow in a few minutes.\n' "$(tail -n 1 <<<"$out")" > "$RUNNER_TEMP/r.md"
             fi
           else
