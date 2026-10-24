@@ -1,0 +1,17 @@
+{
+	"type": "MODPACK",
+	"title": "Sagas",
+	"short_description": "Landmarks from real 3D models, placed by map generation where they fit: Antiquity, Ruins.",
+	"license": "MIT",
+	"media_license": "CC-BY-SA-3.0",
+	"ai_disclosure": "ASSISTED",
+	"dev_state": "WIP",
+	"tags": [
+		"mapgen",
+		"decorative"
+	],
+	"long_description": "Landmarks from real 3D models (temples, ruins, gates, skeletons ...), placed by map generation where\ntheir site fits: on cliffs, by the coast, in the desert or deep in the forest. They are built from the\nmaterials of the game and the site, in Minetest Game, Mineclonia and VoxeLibre.\n\nEvery saga is its own mod in this modpack: switch off the ones you don't want in the world's mod\nsettings. More settings: rarity, lore messages (`sagas/settingtypes.txt`).\n\n## Sagas: Antiquity\n\nBuildings of the ancient world from the 0 A.D. game art (Wildfire Games, CC-BY-SA 3.0): an Alexandrian lighthouse, Kushite pyramids and the temple of Amun, a Ptolemaic temple, a Greek temple, a Han temple and Briton roundhouses.\n\n| Landmark | Size | Where |\n|---|---|---|\n| Temple on the hill | 39 x 35 x 57 | peak or ridge or plain |\n| Temple of the Han | 33 x 36 x 41 | plain or slope or ridge |\n| Lighthouse of the harbour | 15 x 43 x 27 | cliff+coast or coast |\n| Temple by the river | 34 x 40 x 45 | plain+river or plain |\n| Pyramid of Meroe | 16 x 35 x 28 | plain or slope |\n| Small pyramid | 8 x 19 x 11 | plain or slope |\n| Roundhouse | 12 x 14 x 15 | plain or slope |\n| Temple of Amun | 48 x 41 x 59 | plain+river or plain |\n\nArt licence: CC-BY-SA-3.0.\n\n## Sagas: Ruins\n\nRuined temples, a cathedral, arches and stone circles from the CC0 3TD Fantasy Ruins Pack, the gates of Menlo Castle (Co. Galway, photogrammetry) and a mammoth skeleton from the Smithsonian.\n\n| Landmark | Size | Where |\n|---|---|---|\n| Ruined cathedral | 29 x 20 x 45 | plain or slope |\n| Old foundation | 15 x 8 x 11 | plain or slope |\n| Mammoth skeleton | 20 x 36 x 53 | plain or slope |\n| Gates of Menlo Castle | 47 x 20 x 12 | plain or plain+river or slope |\n| Broken aqueduct arch | 27 x 18 x 13 | plain or slope or river |\n| Speaking stones | 21 x 9 x 19 | plain or ridge |\n| Overgrown temple | 27 x 15 x 26 | plain or ridge or peak |\n| Temple of the four arches | 30 x 24 x 31 | plain or ridge or peak |\n| Ruined wall | 21 x 9 x 2 | cave_mouth+against_rock or slope+against_rock or cliff+against_rock or plain+against_rock |\n\nArt licence: CC0-1.0.\n\nEvery schematic is an adaptation of a freely licensed model; sources are in each saga's ATTRIBUTION.md.\nAdd a landmark from your browser: https://github.com/culmat/luanti-sagas/blob/main/CONTRIBUTING.md",
+	"repo": "https://github.com/culmat/luanti-sagas",
+	"website": "https://culmat.github.io/luanti-sagas/",
+	"issue_tracker": "https://github.com/culmat/luanti-sagas/issues"
+}

@@ -119,12 +119,11 @@ def registry_entry(res: BuildResult) -> str:
     return "\n".join(lines)
 
 
-def pack_files(saga: Saga, results: list[BuildResult], owner: str = "culmat") -> dict[str, bytes]:
+def pack_files(saga: Saga, results: list[BuildResult]) -> dict[str, bytes]:
     """All files of the pack, path relative to the pack dir -> content. Deterministic."""
     results = sorted(results, key=lambda r: r.landmark.id)
     licenses = [r.landmark.source.license for r in results if r.landmark.source.license]
     media = pack_media_license(licenses)
-    ai = "GENERATED" if any(r.landmark.source.ai == "generated" for r in results) else "ASSISTED"
     files: dict[str, bytes] = {}
     files["mod.conf"] = (
         f"name = {saga.pack}\n"
@@ -152,43 +151,55 @@ def pack_files(saga: Saga, results: list[BuildResult], owner: str = "culmat") ->
     files["ATTRIBUTION.md"] = attribution_md(saga, results).encode()
     files["LICENSE"] = license_text(saga, results, media).encode()
     files["README.md"] = readme(saga, results, media).encode()
-    files[".cdb.json"] = (
-        json.dumps(
-            {
-                "type": "MOD",
-                "title": saga.title,
-                "short_description": saga.description[:200],
-                "license": "MIT",
-                "media_license": media,
-                "ai_disclosure": ai,
-                "dev_state": "WIP",
-                "tags": ["mapgen", "decorative"],
-                "long_description": long_description(saga, results),
-                "repo": f"https://github.com/{owner}/luanti-sagas",
-                "issue_tracker": f"https://github.com/{owner}/luanti-sagas/issues",
-            },
-            indent="\t",
-        )
-        + "\n"
-    ).encode()
     return files
 
 
-def long_description(saga: Saga, results: list[BuildResult]) -> str:
+def modpack_cdb(sagas: list[tuple[Saga, list[BuildResult]]], owner: str = "culmat") -> bytes:
+    """mods/.cdb.json: the one ContentDB package, the modpack with the core mod and every saga. A new
+    saga ships with the next release, no new package needed."""
+    every = [r for _, results in sagas for r in results]
+    media = pack_media_license([r.landmark.source.license for r in every if r.landmark.source.license])
+    ai = "GENERATED" if any(r.landmark.source.ai == "generated" for r in every) else "ASSISTED"
     lines = [
-        saga.description,
+        "Landmarks from real 3D models (temples, ruins, gates, skeletons ...), placed by map generation where",
+        "their site fits: on cliffs, by the coast, in the desert or deep in the forest. They are built from the",
+        "materials of the game and the site, in Minetest Game, Mineclonia and VoxeLibre.",
         "",
-        "Requires the **sagas** mod, which places these landmarks during map generation",
-        "where their site fits and builds them from the materials of the game and the site.",
-        "",
-        "| Landmark | Size | Where |",
-        "|---|---|---|",
+        "Every saga is its own mod in this modpack: switch off the ones you don't want in the world's mod",
+        "settings. More settings: rarity, lore messages (`sagas/settingtypes.txt`).",
     ]
-    for r in results:
-        x, y, z = r.size
-        lines.append(f"| {r.landmark.title} | {x} x {y} x {z} | {' or '.join(r.landmark.placement.site)} |")
-    lines += ["", "Every schematic is an adaptation of a freely licensed model; see ATTRIBUTION.md for sources."]
-    return "\n".join(lines)
+    for saga, results in sagas:
+        if not results:
+            continue
+        licenses = [r.landmark.source.license for r in results if r.landmark.source.license]
+        lines += ["", f"## {saga.title}", "", saga.description, "", "| Landmark | Size | Where |", "|---|---|---|"]
+        for r in sorted(results, key=lambda r: r.landmark.id):
+            x, y, z = r.size
+            lines.append(f"| {r.landmark.title} | {x} x {y} x {z} | {' or '.join(r.landmark.placement.site)} |")
+        lines += ["", f"Art licence: {pack_media_license(licenses)}."]
+    lines += [
+        "",
+        "Every schematic is an adaptation of a freely licensed model; sources are in each saga's ATTRIBUTION.md.",
+        f"Add a landmark from your browser: https://github.com/{owner}/luanti-sagas/blob/main/CONTRIBUTING.md",
+    ]
+    meta = {
+        "type": "MODPACK",
+        "title": "Sagas",
+        "short_description": "Landmarks from real 3D models, placed by map generation where they fit: "
+        + ", ".join(saga.title.removeprefix("Sagas: ") for saga, results in sagas if results)
+        + ".",
+        "license": "MIT",
+        "media_license": media,
+        "ai_disclosure": ai,
+        "dev_state": "WIP",
+        "tags": ["mapgen", "decorative"],
+        "long_description": "\n".join(lines),
+        "repo": f"https://github.com/{owner}/luanti-sagas",
+        "website": f"https://{owner}.github.io/luanti-sagas/",
+        "issue_tracker": f"https://github.com/{owner}/luanti-sagas/issues",
+    }
+    meta["short_description"] = meta["short_description"][:200]
+    return (json.dumps(meta, indent="\t") + "\n").encode()
 
 
 def attribution_md(saga: Saga, results: list[BuildResult]) -> str:

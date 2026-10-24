@@ -1,15 +1,13 @@
-# Re-release one package by hand. Normal releases need no tag: deliver.yml releases every changed
-# package after each merge (docs/releasing.md).
+# Release the modpack by hand. Normal releases need no tag: deliver.yml releases after every merge or
+# push to main (docs/releasing.md). There is one ContentDB package: the modpack in mods/.
 #
-# Push a tag <package>-v<version>, e.g. sagas-v0.1.0 or sagas_ruins-v0.2.0 (sagas_pack-v... for the
-# modpack). CI checks and packages it and attaches the zip to a GitHub release, then tags the
-# package folder's tree (cdb/<pkg>/<version>) and asks ContentDB to import that git ref.
-# Set up once: create the ContentDB packages with this repository's URL, then
-# `avanti secrets setup && avanti secrets push culmat/luanti-sagas` (token and environment).
+# Push a tag v<version>, e.g. v2026.10.24.5. CI checks and packages it and attaches the zip to a
+# GitHub release, then tags the modpack folder's tree (cdb/<pkg>/<version>) and asks ContentDB to
+# import that git ref. Set up once: docs/releasing.md.
 name: Release
 on:
   push:
-    tags: ["sagas*-v*"]
+    tags: ["v[0-9]*"]
 
 permissions:
   contents: write
@@ -18,15 +16,12 @@ jobs:
   package:
     runs-on: ubuntu-latest
     outputs:
-      pkg: ${{ steps.tag.outputs.pkg }}
       version: ${{ steps.tag.outputs.version }}
     steps:
       - id: tag
         env:
           TAG: ${{ github.ref_name }}
-        run: |
-          echo "pkg=${TAG%-v*}" >> "$GITHUB_OUTPUT"
-          echo "version=${TAG##*-v}" >> "$GITHUB_OUTPUT"
+        run: echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.3.0
       - run: uv sync --locked --project tools
@@ -34,23 +29,16 @@ jobs:
       - run: uv run --project tools sagas build --check
       - name: Build the zip
         env:
-          PKG: ${{ steps.tag.outputs.pkg }}
           VERSION: ${{ steps.tag.outputs.version }}
         run: |
-          if [ "$PKG" = sagas_pack ]; then name=pack; else name="$PKG"; fi
-          uv run --project tools sagas package "$name" --version "$VERSION" --out dist
+          uv run --project tools sagas package pack --version "$VERSION" --out dist
           ls -l dist
       - uses: softprops/action-gh-release@v3
         with:
           files: dist/*.zip
           generate_release_notes: true
-      - uses: actions/upload-artifact@v7
-        with:
-          name: zip
-          path: dist/*.zip
 
   contentdb:
-    # Runs only after a maintainer approves the "contentdb" environment.
     needs: package
     runs-on: ubuntu-latest
     environment: contentdb
@@ -61,29 +49,19 @@ jobs:
           repository: culmat/avanti-luanti
           ref: main
           path: .avanti
-      - name: Tag the package folder as its own tree
-        # ContentDB imports a git ref from the repository root. The package lives in mods/<pkg>/, so
-        # commit that folder's tree on its own (parent: the release commit) and tag it
-        # cdb/<pkg>/<version>; ContentDB then imports exactly the package, with its .gitattributes.
-        id: tree
-        env:
-          PKG: ${{ needs.package.outputs.pkg }}
-          VERSION: ${{ needs.package.outputs.version }}
-        run: |
-          if [ "$PKG" = sagas_pack ]; then dir=mods; else dir="mods/$PKG"; fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          commit=$(git commit-tree "$(git rev-parse "HEAD:$dir")" -p HEAD -m "$PKG $VERSION: package tree of $GITHUB_SHA")
-          ref="cdb/$PKG/$VERSION"
-          git tag -a "$ref" "$commit" -m "$PKG $VERSION for ContentDB"
-          git push origin "refs/tags/$ref"
-          echo "ref=$ref" >> "$GITHUB_OUTPUT"
-          echo "dir=$dir" >> "$GITHUB_OUTPUT"
-      - name: Create the ContentDB release from that tag
+      - name: Tag the modpack folder as its own tree and release it on ContentDB
+        # ContentDB imports a git ref from the repository root; the modpack lives in mods/, so commit
+        # that folder's tree on its own (parent: the release commit) and tag it cdb/<pkg>/<version>.
         env:
           CONTENTDB_TOKEN: ${{ secrets.CONTENTDB_TOKEN }}
           AVANTI_CONTENTDB_USER: ${{ vars.CONTENTDB_USER || 'culmat' }}
           VERSION: ${{ needs.package.outputs.version }}
-          REF: ${{ steps.tree.outputs.ref }}
-          DIR: ${{ steps.tree.outputs.dir }}
-        run: .avanti/plugins/avanti/bin/avanti cdb release "$REF" "$DIR" --title "$VERSION"
+        run: |
+          pkg=$(sed -n 's/^[[:space:]]*name[[:space:]]*=[[:space:]]*\([^[:space:]]*\).*/\1/p' mods/modpack.conf | head -n 1)
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          commit=$(git commit-tree "$(git rev-parse HEAD:mods)" -p HEAD -m "$pkg $VERSION: package tree of $GITHUB_SHA")
+          ref="cdb/$pkg/$VERSION"
+          git tag -a "$ref" "$commit" -m "$pkg $VERSION for ContentDB"
+          git push origin "refs/tags/$ref"
+          .avanti/plugins/avanti/bin/avanti cdb release "$ref" mods --title "$VERSION"

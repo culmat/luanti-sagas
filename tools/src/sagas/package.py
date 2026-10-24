@@ -10,6 +10,15 @@ DEFAULT_IGNORE = (".git", ".github", "__pycache__", ".DS_Store")
 _EPOCH = (2026, 1, 1, 0, 0, 0)
 
 
+def modpack_name(mods: Path) -> str:
+    """The modpack's name from modpack.conf: the ContentDB package and the zip's top-level folder."""
+    for line in (mods / "modpack.conf").read_text(encoding="utf-8").splitlines():
+        key, _, value = line.partition("=")
+        if key.strip() == "name" and value.strip():
+            return value.strip()
+    return mods.name
+
+
 def export_ignored(mod_dir: Path) -> list[str]:
     """Patterns marked export-ignore in every .gitattributes below mod_dir, relative to mod_dir."""
     out = []

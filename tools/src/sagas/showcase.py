@@ -136,7 +136,7 @@ def write(mods: Path, results: list[BuildResult], check: bool = False) -> list[P
         sc / "init.lua": SHOWCASE_LUA,
         sc / "layout.json": json.dumps(layout, indent=1) + "\n",
         mods / "screenshots" / "shots.json": json.dumps({"viewing_range": VIEW, "shots": shots}, indent=1) + "\n",
-        mods / ".gitattributes": "# Keep screenshot tooling out of the sagas_pack release zip.\n"
+        mods / ".gitattributes": "# Keep screenshot tooling out of the release zip.\n"
         "/tools export-ignore\n/screenshots export-ignore\n",
     }
     written = []

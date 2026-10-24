@@ -338,6 +338,18 @@ def build(
             stale_total.append(str(p.relative_to(r.root)))
         else:
             typer.echo(f"  wrote {p.relative_to(r.root)}")
+    # the one ContentDB package: the modpack (docs/releasing.md)
+    from . import registry
+
+    by_saga = [(s, [x for x in every if x.landmark.saga == s.name]) for s in r.sagas()]
+    cdb = registry.modpack_cdb(by_saga)
+    cdb_path = r.mods / ".cdb.json"
+    if not cdb_path.exists() or cdb_path.read_bytes() != cdb:
+        if check:
+            stale_total.append(str(cdb_path.relative_to(r.root)))
+        else:
+            cdb_path.write_bytes(cdb)
+            typer.echo(f"  wrote {cdb_path.relative_to(r.root)}")
     if check:
         if stale_total:
             for p in stale_total:
@@ -603,7 +615,7 @@ def package_cmd(
 
     r = repo()
     if name == "pack":
-        src, folder = r.mods, "sagas_pack"
+        src, folder = r.mods, package.modpack_name(r.mods)
     else:
         src, folder = r.mods / name, name
         if not (src / "mod.conf").exists():

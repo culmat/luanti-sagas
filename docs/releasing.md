@@ -9,7 +9,7 @@ pull request ──▶ ci.yml rebuilds and checks ──▶ pictures.yml posts p
 (maintainer approves) ──▶ auto-merge ──▶ deliver.yml on main:
     rebuild packs, previews and gallery data, commit them
     wait for CI (game tests included) on exactly that commit
-    release every changed package: GitHub release + ContentDB, version = date
+    release the modpack if it changed: GitHub release + ContentDB, version = date
 ```
 
 | Workflow | When | What |
@@ -20,36 +20,41 @@ pull request ──▶ ci.yml rebuilds and checks ──▶ pictures.yml posts p
 | `commands.yml` | comments starting with `/` | `sagas command`: change size, site, rarity, door ...; rebuild and push |
 | `automerge.yml` | pull request opened | turns on auto-merge: GitHub merges once one code owner approved and CI is green |
 | `deliver.yml` | every push to main, and every 15 minutes | `sagas voxelize --stale`, `build`, `catalog`, commit; CI on that commit; then `scripts/deliver.sh`; the tag `deliver/last` marks what is out |
-| `release.yml` | a manual tag `<pkg>-v<version>` | re-release one package by hand |
+| `release.yml` | a manual tag `v<version>` | release the modpack by hand |
 
 Auto-merge merges in the name of whoever turned it on. For the bot's pull requests that is the
 workflow token, whose merges start no workflow, so `deliver.yml` also runs every 15 minutes and picks
 them up; a run with nothing new ends after a few seconds. Merges by people deliver at once.
 
+## One package
+
+ContentDB gets one package, **culmat/sagas**: the modpack in `mods/` (`modpack.conf` names it) with the
+`sagas` mod and every saga, each its own mod. Players switch off themes they don't want in the world's
+mod settings, and mods that need the API still declare `depends = sagas`. A new saga ships with the
+next release, no new package to create. `sagas build` writes the package's ContentDB details,
+`mods/.cdb.json`: a section per saga with its landmarks and art licence; the package's art licence is
+the strictest of them (CC-BY-SA as soon as one saga is share-alike).
+
 ## Versions
 
-Each package (`sagas`, `sagas_<saga>`, `sagas_pack`) is released when its files changed since its last
-release. The version is the date, `2026.10.24`, then `2026.10.24.2` for a second release that day.
-Release notes list new and updated landmarks and thank their contributors (commit authors and
-`Co-authored-by`). The core mod goes first, then the packs, then the modpack.
+The modpack is released when its exported files changed since the last release. The version is the
+date, tag `v2026.10.24`, then `v2026.10.24.2` for a second release that day. Release notes list new and
+updated landmarks per saga and changes to the `sagas` mod, and thank the contributors (commit authors
+and `Co-authored-by`). Tags of single packages before 2026-10-24 (`sagas_ruins-v...`) are history.
 
-ContentDB imports a git ref: `deliver.sh` commits the package folder (`mods/<pkg>/`) as its own tree,
-tags it `cdb/<pkg>/<version>` and calls `avanti cdb release`. Dev files are left out by the folder's
-`.gitattributes`.
+ContentDB imports a git ref: `deliver.sh` commits the modpack folder (`mods/`) as its own tree, tags it
+`cdb/sagas/<version>` and calls `avanti cdb release`. Dev files are left out by `.gitattributes`.
 
 ## Set up once
 
-1. Create each package on ContentDB (`sagas`, `sagas_ruins`, `sagas_antiquity`, `sagas_pack`) with the
-   repository URL, screenshots from `avanti screenshot mods`, and submit them for review.
+1. Create the package on ContentDB: a modpack named `sagas` with the repository URL, screenshots from
+   `avanti screenshot mods`, and submit it for review.
 2. Hand a ContentDB token to CI: `avanti secrets setup && avanti secrets push culmat/luanti-sagas`
    ([avanti-luanti](https://github.com/culmat/avanti-luanti)).
 3. Run `scripts/setup-repo.sh`: labels, auto-merge, a deploy key for the workflows (secret
    `SAGAS_DEPLOY_KEY`; it pushes the generated files to main and the bot's branches), the ruleset on
    main (one approving code-owner review, green CI; deploy keys may push), and the `contentdb`
    environment without reviewers.
-
-**A new saga** ships in `sagas_pack` right away. Its own package needs to be created on ContentDB once;
-until then `deliver.sh` opens an issue saying so, and the next release after that goes out by itself.
 
 **People with write access** push to any branch, `main` included, without a pull request; the
 ruleset only binds external contributors. A push to main is delivered like a merge: CI with the game

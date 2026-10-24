@@ -45,9 +45,10 @@ flowchart LR
 
 ## For players
 
-Install the **Sagas** mod and one or more saga packs (`sagas_ruins`, `sagas_antiquity`, ...) from ContentDB
-(publication pending), or put the `mods/` folder of this repository into your mods directory as the
-`sagas_pack` modpack. Settings: rarity, disabled sagas, lore messages (see `mods/sagas/settingtypes.txt`).
+Install **Sagas** from ContentDB (publication pending): one modpack with the `sagas` mod and every saga
+(`sagas_ruins`, `sagas_antiquity`, ...), each its own mod, so you can switch off the themes you don't want
+in the world's mod settings. Or put the `mods/` folder of this repository into your mods directory.
+Settings: rarity, disabled sagas, lore messages (see `mods/sagas/settingtypes.txt`).
 
 With the `sagas` privilege: `/saga list`, `/saga place <id>` (at the node you point at),
 `/saga undo`, `/saga here`, `/saga sites <id>` (shows where a landmark would fit), `/saga mark` +
