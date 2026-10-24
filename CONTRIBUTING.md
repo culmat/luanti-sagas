@@ -67,6 +67,7 @@ licence of the model (for text and hand-built work: the licence of the saga), cr
 
 | You want to | Read |
 |---|---|
+| use an app instead: see it in 3D, try sizes, walk around it in Luanti, send it with a click | [docs/saga-forge.md](docs/saga-forge.md) (Saga Forge, new) |
 | work on your computer with the tools and git, try it in the game | [docs/contributing-with-tools.md](docs/contributing-with-tools.md) |
 | let an AI coding agent build it with you | [docs/contributing-with-tools.md#with-a-coding-agent](docs/contributing-with-tools.md#with-a-coding-agent) |
 | build a landmark in the game and export it | [docs/contributing-with-tools.md#build-in-the-game](docs/contributing-with-tools.md#build-in-the-game) |

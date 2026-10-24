@@ -17,6 +17,7 @@ or vikings; a landmark is one structure). To create or change a landmark, follow
 | `mods/sagas/` | Core mod (Lua): materials, sites, engine, large landmarks, commands, tour |
 | `mods/sagas_<saga>/` | Generated packs: never edit by hand, run `sagas build` |
 | `mods/tools/` | Development-only mods, export-ignored from releases: `showcase` (screenshots), `survey` (bridge to `avanti survey`) |
+| `forge/` | Saga Forge, the contributor app (Go); its own notes in `forge/AGENTS.md` |
 | `docs/` | Pipeline, placement, materials, sources, scouting reports, gallery |
 
 ## Conventions

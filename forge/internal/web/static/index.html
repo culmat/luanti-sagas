@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saga Forge</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<header>
+  <a class="brand" href="#/"><img src="icon.svg" alt=""> Saga Forge</a>
+  <nav id="nav">
+    <a href="#/" data-tab="gallery">Landmarks</a>
+    <a href="#/add" data-tab="add">Add a landmark</a>
+    <a href="#/drafts" data-tab="drafts">My work</a>
+    <a href="#/settings" data-tab="settings">Settings</a>
+  </nav>
+  <div id="who"></div>
+</header>
+<main id="main" tabindex="-1"></main>
+<aside id="jobs" hidden>
+  <div class="jobs-head"><strong id="job-title"></strong><button type="button" id="job-close" class="plain" aria-label="Hide">×</button></div>
+  <pre id="job-log" aria-live="polite"></pre>
+</aside>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

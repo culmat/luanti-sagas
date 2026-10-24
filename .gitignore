@@ -18,3 +18,8 @@ __pycache__/
 
 # dev worlds of avanti play, sagas view pages (they embed the installed games' schematics)
 /.dev/
+
+# Saga Forge: a local go.work pointing at sibling checkouts
+/forge/go.work
+/forge/go.work.sum
+/forge/dist/

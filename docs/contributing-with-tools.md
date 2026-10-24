@@ -55,7 +55,8 @@ view` shows both (press O), and the attribution notes the change.
 hints, lint, catalog, view, version); errors come as `{"error": ..., "exit_code": ...}`.
 `sagas add request.json` creates a landmark in one step from the fields of `sagas.intake.Request`
 (title, url, file, license, author, saga or new_saga, size, hints, lore), the same way the issue bot
-does. `sagas view --serve --stdin-lifetime` stops when its stdin closes. Saga Forge uses these.
+does. `sagas view --serve --stdin-lifetime` stops when its stdin closes. [Saga Forge](saga-forge.md)
+uses these; `sagaforge --folder .` runs it on your clone.
 
 ## Try it in the game
 

@@ -26,6 +26,10 @@ gh repo edit "$repo" --enable-squash-merge --enable-auto-merge --delete-branch-o
 # intake.yml and scout.yml open pull requests (approvals still need a code owner, see the ruleset)
 gh api -X PUT "repos/$repo/actions/permissions/workflow" \
 	-f default_workflow_permissions=read -F can_approve_pull_request_reviews=true
+# Pull requests from forks (Saga Forge, the GitHub web editor) run CI without a maintainer's click,
+# except for accounts that are new to GitHub.
+gh api -X PUT "repos/$repo/actions/permissions/fork-pr-contributor-approval" \
+	-f approval_policy=first_time_contributors_new_to_github >/dev/null
 
 echo "deploy key for the workflows"
 if gh secret list -R "$repo" | grep -q '^SAGAS_DEPLOY_KEY'; then
