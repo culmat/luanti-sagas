@@ -2,8 +2,7 @@
 # the licence) or comments `/intake` to try again; the bot builds the landmark with `sagas intake`,
 # commits it on intake/<issue> with the contributor as co-author and opens the pull request.
 # Pictures follow from CI (pictures.yml); the contributor adjusts with comments (commands.yml).
-# It pushes with the deploy key SAGAS_DEPLOY_KEY (scripts/setup-repo.sh); a pull request opened with
-# the default token starts no workflow, so this workflow starts CI for the branch.
+# It pushes with the deploy key SAGAS_DEPLOY_KEY (scripts/setup-repo.sh); its pushes start CI.
 name: Intake
 on:
   issues:
@@ -15,7 +14,6 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
-  actions: write
 
 jobs:
   intake:
@@ -67,7 +65,16 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -B "$branch"
-          git add "content/$saga"
+          pr=$(gh pr list -R "$REPO" --head "$branch" --state open --json number -q '.[0].number')
+          # A pull request opened with the workflow token gets a CI run that waits for approval (the bot
+          # counts as a first-time contributor). So a new pull request starts with landmark.toml alone,
+          # and the voxels follow with a deploy-key push, whose CI run starts normally.
+          if [ -z "$pr" ]; then
+            git add "content/$saga/$id/landmark.toml"
+            [ -f "content/$saga/saga.toml" ] && git add "content/$saga/saga.toml"
+          else
+            git add "content/$saga"
+          fi
           git commit -q -m "Add $saga/$id from #$N" -m "Co-authored-by: $author <$uid+$author@users.noreply.github.com>"
           git push -q -f origin "$branch"
           {
@@ -88,14 +95,15 @@ jobs:
             echo
             echo "A maintainer's approval merges it, and it goes to ContentDB on its own."
           } > "$RUNNER_TEMP/body.md"
-          pr=$(gh pr list -R "$REPO" --head "$branch" --state open --json number -q '.[0].number')
           if [ -n "$pr" ]; then
             gh pr edit "$pr" -R "$REPO" --body-file "$RUNNER_TEMP/body.md"
           else
             gh pr create -R "$REPO" --head "$branch" --base main --title "Landmark: $title" --body-file "$RUNNER_TEMP/body.md"
             pr=$(gh pr list -R "$REPO" --head "$branch" --state open --json number -q '.[0].number')
+            # automerge.yml doesn't see pull requests opened with the workflow token
+            gh pr merge "$pr" -R "$REPO" --auto --squash || echo "auto-merge is off (scripts/setup-repo.sh)"
+            git add "content/$saga"
+            git commit -q -m "Voxels and preview of $saga/$id"
+            git push -q origin "$branch"
           fi
-          # a pull request opened with the workflow token starts no workflow: no CI, no automerge.yml
-          gh pr merge "$pr" -R "$REPO" --auto --squash || echo "auto-merge is off (scripts/setup-repo.sh)"
-          gh workflow run ci.yml -R "$REPO" --ref "$branch"
           gh issue comment "$N" -R "$REPO" --body "Built it: #$pr. Pictures follow there in a few minutes; you can adjust it with comments like \`/size 24\`."
