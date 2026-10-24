@@ -18,11 +18,48 @@ from .repo import Repo, find_root
 app = typer.Typer(
     no_args_is_help=True, add_completion=False, help="Turn 3D models into Luanti landmarks, grouped in sagas."
 )
-state: dict = {"root": None}
+state: dict = {"root": None, "json": False}
+# what Saga Forge (forge/) expects of `sagas --json`; raise it when a change would break Forge
+FORGE_API = 1
 
 
 def repo() -> Repo:
     return find_root(state["root"])
+
+
+def selector_of(landmark: config.Landmark) -> str:
+    """How commands name one landmark (<saga>/<id>); JSON output uses it so programs can pass it back."""
+    return f"{landmark.saga}/{landmark.id}"
+
+
+def _plain(value):
+    if isinstance(value, Path):
+        return str(value)
+    if hasattr(value, "item"):  # numpy scalars
+        return value.item()
+    raise TypeError(f"{type(value).__name__} is not JSON serializable")
+
+
+def emit_json(data: dict) -> None:
+    typer.echo(json.dumps(data, indent=2, default=_plain))
+
+
+class Report:
+    """What a command did: lines for people, and with `sagas --json` one JSON object for programs
+    (Saga Forge) instead, printed by `done`."""
+
+    def __init__(self) -> None:
+        self.results: list[dict] = []
+
+    def line(self, text: str, record: dict | None = None, color: str | None = None, err: bool = False) -> None:
+        if record is not None:
+            self.results.append(record)
+        if text and not state["json"]:
+            typer.secho(text, fg=color, err=err)
+
+    def done(self, **extra) -> None:
+        if state["json"]:
+            emit_json({**extra, "results": self.results})
 
 
 def guarded(fn):
@@ -31,7 +68,10 @@ def guarded(fn):
         try:
             return fn(*args, **kwargs)
         except SagasError as e:
-            typer.secho(f"error: {e}", fg="red", err=True)
+            if state["json"]:
+                emit_json({"error": str(e), "exit_code": e.exit_code})
+            else:
+                typer.secho(f"error: {e}", fg="red", err=True)
             raise typer.Exit(e.exit_code) from None
 
     return wrapper
@@ -40,14 +80,21 @@ def guarded(fn):
 @app.callback()
 def main_options(
     root: Annotated[Path | None, typer.Option(help="Repository root (default: search upwards)")] = None,
+    as_json: Annotated[
+        bool, typer.Option("--json", help="Print one JSON object instead of text (for programs like Saga Forge)")
+    ] = False,
 ):
     state["root"] = root
+    state["json"] = as_json
 
 
 @app.command()
 def version():
     """Print the version."""
-    typer.echo(f"sagas {__version__}")
+    if state["json"]:
+        emit_json({"version": __version__, "forge_api": FORGE_API})
+    else:
+        typer.echo(f"sagas {__version__}")
 
 
 LANDMARK_TEMPLATE = """schema = 1
@@ -193,27 +240,31 @@ def fetch(
     from . import fetch as fetchmod
 
     r = repo()
+    rep = Report()
     missing = 0
     for landmark in r.select(selector):
+        lid, sid = landmark.qualified_id, selector_of(landmark)
         if landmark.source.kind in ("none", "handbuilt"):
             continue
         try:
             path, digest = fetchmod.fetch(landmark, r.sources, src=from_, force=force)
         except SagasError as e:
             missing += 1
-            typer.secho(f"{landmark.qualified_id}: {e}", fg="yellow", err=True)
+            rep.line(f"{lid}: {e}", {"landmark": sid, "status": "missing", "message": str(e)}, "yellow", err=True)
             continue
         for extra_file, _, extra_digest in fetchmod.fetch_extras(landmark, r.sources, force=force):
             recorded = fetchmod.record_extra_sha256(landmark, extra_file, extra_digest)
             note = "sha256 recorded" if recorded else "sha256 ok"
-            typer.echo(f"{landmark.qualified_id}: {extra_file} ({note})")
+            rep.line(f"{lid}: {extra_file} ({note})")
         if landmark.source.manual:
-            typer.echo(f"{landmark.qualified_id}: {path} (manual download, sha256 not recorded)")
+            note = "manual download, sha256 not recorded"
         elif not landmark.source.sha256:
             fetchmod.record_sha256(landmark, digest)
-            typer.echo(f"{landmark.qualified_id}: {path} (sha256 recorded)")
+            note = "sha256 recorded"
         else:
-            typer.echo(f"{landmark.qualified_id}: {path} (sha256 ok)")
+            note = "sha256 ok"
+        rep.line(f"{lid}: {path} ({note})", {"landmark": sid, "status": "ok", "path": path, "sha256": digest})
+    rep.done()
     if missing:
         raise typer.Exit(4)
 
@@ -235,7 +286,7 @@ def inspect(target: str, as_json: Annotated[bool, typer.Option("--json")] = Fals
 
             p = fetchmod.extract_member(p, landmark.source.member, fetchmod.extract_dir(p, landmark.source.member))
     info = load.inspect(load.load_model(p))
-    if as_json:
+    if as_json or state["json"]:
         typer.echo(json.dumps(info, indent=2))
         return
     for k, v in info.items():
@@ -261,38 +312,43 @@ def voxelize(
 ):
     """Source model -> content/<saga>/<id>/voxels.vx.gz."""
     r = repo()
+    rep = Report()
     missing = failed = 0
     for landmark in r.select(selector):
+        lid, sid = landmark.qualified_id, selector_of(landmark)
         if stale:
             try:
                 fresh = pipeline.voxelize(landmark, r)
             except SagasError as e:
-                typer.echo(f"{landmark.qualified_id}: skipped ({e})")
+                rep.line(f"{lid}: skipped ({e})", {"landmark": sid, "status": "skipped", "message": str(e)})
                 continue
             if landmark.vx_path.exists() and pipeline.same_voxels(fresh, voxels.read(landmark.vx_path)):
+                rep.line("", {"landmark": sid, "status": "unchanged"})
                 continue
             voxels.write(fresh, landmark.vx_path)
             x, y, z = fresh.size
-            typer.echo(f"{landmark.qualified_id}: re-voxelized, {x}x{y}x{z}")
+            rep.line(f"{lid}: re-voxelized, {x}x{y}x{z}", {"landmark": sid, "status": "written", "size": fresh.size})
             continue
         if landmark.vx_path.exists() and not force:
-            typer.echo(f"{landmark.qualified_id}: {landmark.vx_path.name} exists (use --force)")
+            rep.line(f"{lid}: {landmark.vx_path.name} exists (use --force)", {"landmark": sid, "status": "exists"})
             continue
         try:
             model = pipeline.voxelize(landmark, r)
         except SagasError as e:
             if e.exit_code == 4:
                 missing += 1
-                typer.secho(str(e), fg="yellow", err=True)
+                rep.line(str(e), {"landmark": sid, "status": "missing", "message": str(e)}, "yellow", err=True)
                 continue
             raise
         except (ValueError, OSError, KeyError) as e:
             failed += 1
-            typer.secho(f"{landmark.qualified_id}: {e}", fg="red", err=True)
+            rep.line(f"{lid}: {e}", {"landmark": sid, "status": "failed", "message": str(e)}, "red", err=True)
             continue
         voxels.write(model, landmark.vx_path)
         x, y, z = model.size
-        typer.echo(f"{landmark.qualified_id}: {x}x{y}x{z}, {model.count} voxels")
+        record = {"landmark": sid, "status": "written", "size": model.size, "voxels": model.count}
+        rep.line(f"{lid}: {x}x{y}x{z}, {model.count} voxels", record)
+    rep.done()
     if failed:
         raise typer.Exit(1)
     if missing:
@@ -308,6 +364,8 @@ def build(
 ):
     """voxels.vx.gz -> mods/sagas_<saga>/ (schematics, registry.lua, licences) and previews."""
     r = repo()
+    rep = Report()
+    written: list[str] = []
     chosen = r.select(selector)
     sagas = sorted({s.saga for s in chosen})
     ids = {s.qualified_id for s in chosen}
@@ -320,15 +378,24 @@ def build(
         for res in tb.results:
             x, y, z = res.size
             note = f"  ! {'; '.join(res.findings)}" if res.findings else ""
-            typer.echo(f"{res.landmark.qualified_id}: {x}x{y}x{z}, {res.node_count} nodes{note}")
+            record = {
+                "landmark": selector_of(res.landmark),
+                "size": res.size,
+                "nodes": res.node_count,
+                "findings": res.findings,
+                "doorway": res.doorway,
+                "sealed": res.sealed,
+            }
+            rep.line(f"{res.landmark.qualified_id}: {x}x{y}x{z}, {res.node_count} nodes{note}", record)
             if res.doorway:
-                typer.echo(f"  {res.doorway}")
+                rep.line(f"  {res.doorway}")
             if res.sealed:
-                typer.echo("  ! rooms have no door (sagas lint shows a doorway box per side)")
+                rep.line("  ! rooms have no door (sagas lint shows a doorway box per side)")
             if not no_preview and res.landmark.qualified_id in ids:
                 pipeline.write_preview(res)
         for p in tb.written:
-            typer.echo(f"  wrote {p.relative_to(r.root)}")
+            written.append(str(p.relative_to(r.root)))
+            rep.line(f"  wrote {p.relative_to(r.root)}")
     # the screenshot scene (mods/tools/showcase) always lists every landmark
     from . import showcase
 
@@ -337,7 +404,8 @@ def build(
         if check:
             stale_total.append(str(p.relative_to(r.root)))
         else:
-            typer.echo(f"  wrote {p.relative_to(r.root)}")
+            written.append(str(p.relative_to(r.root)))
+            rep.line(f"  wrote {p.relative_to(r.root)}")
     # the one ContentDB package: the modpack (docs/releasing.md)
     from . import registry
 
@@ -349,13 +417,15 @@ def build(
             stale_total.append(str(cdb_path.relative_to(r.root)))
         else:
             cdb_path.write_bytes(cdb)
-            typer.echo(f"  wrote {cdb_path.relative_to(r.root)}")
+            written.append(str(cdb_path.relative_to(r.root)))
+            rep.line(f"  wrote {cdb_path.relative_to(r.root)}")
+    rep.done(written=written, stale=stale_total)
     if check:
         if stale_total:
             for p in stale_total:
-                typer.secho(f"stale: {p}", fg="red", err=True)
+                rep.line(f"stale: {p}", color="red", err=True)
             raise typer.Exit(EXIT_DRIFT)
-        typer.echo("packs are up to date")
+        rep.line("packs are up to date")
 
 
 @app.command()
@@ -397,6 +467,9 @@ def view(
         bool, typer.Option("--serve", help="Live mode: a local server builds any size the page asks for")
     ] = False,
     port: Annotated[int, typer.Option(help="Port for --serve (default: any free port)")] = 0,
+    stdin_lifetime: Annotated[
+        bool, typer.Option("--stdin-lifetime", help="With --serve: stop when stdin closes (for Saga Forge)")
+    ] = False,
 ):
     """Turn and zoom a landmark at several sizes, next to the player, trees and houses of your games."""
     import webbrowser
@@ -427,37 +500,53 @@ def view(
         entry = builder.build(size)
         if entry is not None:
             results.append(entry)
-            show(entry)
+            if not state["json"]:
+                show(entry)
+    original = viewer.original_data(builder)
     notes, src = builder.notes, builder.src
     refs = viewer.references(games)
     live = serve and builder.any_size
     if serve and not live:
-        typer.secho("  ! --serve needs the source mesh (sagas fetch): showing the committed size only", fg="yellow")
-    html = viewer.page(viewer.page_data(landmark, results, refs, list(notes), src, live=live))
+        notes.append("--serve needs the source mesh (sagas fetch): showing the committed size only")
+    html = viewer.page(viewer.page_data(landmark, results, refs, list(notes), src, live=live, original=original))
     path = out or viewer.default_path(r, landmark)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(html, encoding="utf-8")
     games_found = sorted({ref.group for ref in refs if ref.group and ref.group != "generic"})
-    typer.echo(
-        f"  compare with: {', '.join(games_found) if games_found else 'stand-in trees (no game found; --games)'}"
-    )
+    rep = Report()
+    rep.line(f"  compare with: {', '.join(games_found) if games_found else 'stand-in trees (no game found; --games)'}")
     for n in notes:
-        typer.secho(f"  ! {n}", fg="yellow")
+        rep.line(f"  ! {n}", color="yellow")
     if png:
-        typer.echo(str(viewer.still(results, refs, png)))
-    should_open = open_page if open_page is not None else sys.stdout.isatty()
+        rep.line(str(viewer.still(results, refs, png)))
+    should_open = open_page if open_page is not None else sys.stdout.isatty() and not state["json"]
+    info = {
+        "landmark": selector_of(landmark),
+        "page": path,
+        "sizes": [s.target for s in results],
+        "current": builder.current,
+        "notes": notes,
+        "games": games_found,
+        "live": live,
+        "original": original is not None,
+    }
     if not serve:
-        typer.echo(str(path))
+        rep.line(str(path))
+        rep.done(**info)
         if should_open:
             webbrowser.open(path.resolve().as_uri())
         return
 
     def ready(url: str) -> None:
-        typer.echo(f"live at {url} (any size on request; Ctrl-C to stop)")
+        if state["json"]:  # one line, so a parent can read it before the server's first request
+            typer.echo(json.dumps({**info, "page": str(path), "url": url}))
+            sys.stdout.flush()
+        else:
+            typer.echo(f"live at {url} (any size on request; Ctrl-C to stop)")
         if should_open:
             webbrowser.open(url)
 
-    viewer.serve(builder, html, port, ready)
+    viewer.serve(builder, html, port, ready, stdin_lifetime)
 
 
 def _one(r: Repo, target: str) -> config.Landmark:
@@ -492,7 +581,10 @@ def set_cmd(
             raise SagasError(f"expected key=value, got {a!r}")
         values[key.strip()] = edit.parse_value(value.strip())
     edit.set_values(landmark.path, values)
-    typer.echo(f"{landmark.path}: " + ", ".join(f"{k} = {v!r}" for k, v in values.items()))
+    if state["json"]:
+        emit_json({"landmark": selector_of(landmark), "path": landmark.path, "values": values})
+    else:
+        typer.echo(f"{landmark.path}: " + ", ".join(f"{k} = {v!r}" for k, v in values.items()))
 
 
 @app.command("command")
@@ -508,7 +600,7 @@ def command_cmd(
     r = repo()
     landmark = _one(r, target)
     if any(line.strip() in ("/help", "help") for line in lines):
-        typer.echo(edit.HELP)
+        emit_json({"help": edit.HELP}) if state["json"] else typer.echo(edit.HELP)
         return
     done = []
     for line in lines:
@@ -521,11 +613,13 @@ def command_cmd(
             box = edit.door_opening(res.suggestions, facing)
             landmark = edit.set_values(landmark.path, {"voxel.openings": [*landmark.voxel.openings, box]})
         done.append(what)
+    result: dict = {"landmark": selector_of(landmark), "done": list(done)}
     if rebuild:
         res = _rebuild(r, landmark)
         x, y, z = res.size
         done.append(f"now {x}x{y}x{z}, {res.node_count} nodes" + (", rooms still without a door" if res.sealed else ""))
-    typer.echo("; ".join(done))
+        result.update(size=res.size, nodes=res.node_count, sealed=res.sealed)
+    emit_json(result) if state["json"] else typer.echo("; ".join(done))
 
 
 @app.command()
@@ -546,12 +640,41 @@ def intake(
     typer.echo(out)
 
 
+@app.command()
+@guarded
+def add(
+    request: Annotated[Path, typer.Argument(help="The new landmark as JSON (fields: sagas.intake.Request)")],
+):
+    """Create a landmark from a request (Saga Forge): landmark.toml, the kept original, voxels, preview."""
+    from . import intake as intakemod
+
+    try:
+        data = json.loads(request.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        raise SagasError(f"{request}: {e}") from None
+    if not isinstance(data, dict):
+        raise SagasError(f"{request}: expected a JSON object")
+    result = intakemod.create_landmark(repo(), intakemod.Request.from_json(data))
+    if state["json"]:
+        emit_json(result.__dict__)
+        return
+    x, y, z = result.dims
+    typer.echo(f"created {result.path}: {x}x{y}x{z}, {result.nodes} nodes")
+    for f in result.files:
+        typer.echo(f"  {f}")
+    for n in result.notes:
+        typer.secho(f"  ! {n}", fg="yellow")
+
+
 @app.command("hints")
 def hints_cmd(text: Annotated[str, typer.Argument(help='e.g. "on sea cliffs in the cold north, rare"')]):
     """Placement fields for a description in your own words."""
     from . import hints
 
     p = hints.suggest(text)
+    if state["json"]:
+        emit_json({"fields": p.fields(), "matched": p.matched})
+        return
     for k, v in p.fields().items():
         typer.echo(f"{k} = {json.dumps(v)}")
     if p.matched:
@@ -575,7 +698,7 @@ def lint_cmd(
     findings += lint.check_packs(chosen)
     if selector == "all":
         findings += lint.check_core(r)
-    if as_json:
+    if as_json or state["json"]:
         typer.echo(lint.to_json(findings))
     else:
         for f in findings:
@@ -596,6 +719,16 @@ def catalog_cmd(
     results = [buildmod.build(s, voxels.read(s.vx_path)) for s in r.landmarks() if s.vx_path.exists()]
     if cdb:
         typer.echo(catalog.cdb_long_description(r.saga(cdb), [x for x in results if x.landmark.saga == cdb]))
+        return
+    if state["json"]:  # read only: the sagas and their landmarks, paths relative to the repository root
+        sagas = [
+            {"id": t.name, "title": t.title, "description": t.description, "supported_games": t.supported_games}
+            for t in r.sagas()
+        ]
+        ordered = sorted(results, key=lambda x: x.landmark.qualified_id)
+        cards = [{**catalog.card(x, r, r.root), "selector": selector_of(x.landmark)} for x in ordered]
+        unbuilt = [selector_of(s) for s in r.landmarks() if not s.vx_path.exists()]
+        emit_json({"sagas": sagas, "landmarks": cards, "unbuilt": unbuilt})
         return
     if site:
         typer.echo(f"wrote {catalog.write_site(r, results, site)}")

@@ -27,9 +27,10 @@ VoxeLibre).
    ```
    or from a candidate in [scouting/](scouting/): `sagas scout promote <id>`. A new saga is a new
    folder `content/<saga>/` with a `saga.toml` (`title`, `description`).
-2. **Get the model**: `sagas fetch medieval/watchtower` downloads it. For sites that need a login,
-   download it yourself and run `sagas fetch medieval/watchtower --from ~/Downloads/watchtower.zip`.
-   Downloads stay in `sources/`, which is never committed.
+2. **Get the model**: `sagas fetch medieval/watchtower` downloads it into `sources/`, which is never
+   committed; `source.url` and `source.sha256` keep the original reachable. For sites that need a
+   login, download it yourself and copy it next to `landmark.toml`: the original stays in the
+   repository (up to 50 MB), so the landmark can always be rebuilt and reworked.
 3. **Look inside**: `sagas inspect medieval/watchtower` shows parts, materials, textures and size.
 4. **Voxelize and look**: `sagas voxelize medieval/watchtower --force`, then
    `sagas view medieval/watchtower --serve` opens the landmark in 3D next to a player and your games'
@@ -39,10 +40,22 @@ VoxeLibre).
    [pipeline.md](pipeline.md). `sagas hints "on sea cliffs in the cold north, rare"` suggests placement
    fields for your words, and `sagas set medieval/watchtower transform.target_size=24` changes a field.
 6. **Check**: `sagas lint medieval/watchtower`.
-7. **Share it**: commit `landmark.toml`, `voxels.vx.gz` and `preview.png`, push to your fork and open a
+7. **Share it**: commit `landmark.toml`, `voxels.vx.gz`, `preview.png` and a kept original, push to your fork and open a
    pull request. You don't need to commit the packs in `mods/`: CI rebuilds them, posts pictures in the
    pull request, and after a maintainer's approval it is merged and released by itself
    ([releasing.md](releasing.md)).
+
+Fixing the model itself (closing a hole, removing a stand) is fine: save the result next to
+`landmark.toml` under a new name and set `source.edited` to it. The original stays as it is, `sagas
+view` shows both (press O), and the attribution notes the change.
+
+## For programs
+
+`sagas --json <command>` prints one JSON object instead of text (fetch, voxelize, build, set, command,
+hints, lint, catalog, view, version); errors come as `{"error": ..., "exit_code": ...}`.
+`sagas add request.json` creates a landmark in one step from the fields of `sagas.intake.Request`
+(title, url, file, license, author, saga or new_saga, size, hints, lore), the same way the issue bot
+does. `sagas view --serve --stdin-lifetime` stops when its stdin closes. Saga Forge uses these.
 
 ## Try it in the game
 

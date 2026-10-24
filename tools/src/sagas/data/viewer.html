@@ -90,11 +90,12 @@ label .h { color: var(--muted); }
   <label><input type="checkbox" id="ground" checked> ground</label>
   <label><input type="checkbox" id="carved"> carved air (rooms, doorways)</label>
   <label id="sourcebox" hidden><input type="checkbox" id="source"> source model instead of nodes <span class="h" id="sourceinfo"></span></label>
+  <label id="originalbox" hidden><input type="checkbox" id="original"> original model (before the edits)</label>
   <label>cut above layer <span id="cutv"></span><input type="range" id="cut" min="0" max="1" value="1"></label>
   <h3>Mouse and keys</h3>
   <div class="muted small">drag: turn · shift-drag or right-drag: move · wheel or pinch: zoom ·
     double-click: zoom to a node · click: node coordinates · shift-click: box for voxel.openings ·
-    1-9: size · M: source model · R: reset view</div>
+    1-9: size · M: source model · O: original model · R: reset view</div>
   <div id="notes" class="muted small"></div>
 </div>
 <div id="status"></div>
@@ -372,8 +373,13 @@ window.addEventListener("error", (ev) => {
 
   // ---------------------------------------------------------------- scene
   const S = { size: Math.max(0, D.sizes.findIndex((s) => s.current)), edges: false, ao: true, ground: true,
-    carved: false, source: false, cut: null, hover: null, sel: null, sel2: null };
-  const models = D.sizes.map((s) => ({ entry: s, vox: null, gpu: null, meshKey: "", carvedGpu: null, carvedKey: "" }));
+    carved: false, source: false, original: false, cut: null, hover: null, sel: null, sel2: null };
+  const slot = (s) => ({ entry: s, vox: null, gpu: null, meshKey: "", carvedGpu: null, carvedKey: "" });
+  let models = D.sizes.map(slot);
+  // the working model, and for a landmark with source.edited the original; D.sizes, models and D.mesh
+  // point to the one shown (useOriginal swaps them)
+  const SETS = { working: { sizes: D.sizes, models, mesh: D.mesh, gpu: null } };
+  if (D.original) SETS.original = { sizes: D.original.sizes, models: D.original.sizes.map(slot), mesh: D.original.mesh, gpu: null };
   const refs = D.refs.map((r) => ({ key: r.key, group: r.group, label: r.label, height: r.height, src: r.vox,
     vox: null, gpu: null, meshKey: "", off: [0, 0, 0] }));
   const on = new Set(D.refs.filter((r) => r.on).map((r) => r.key));
@@ -706,6 +712,25 @@ window.addEventListener("error", (ev) => {
     if (i < 0 || i >= D.sizes.length) return;
     S.size = i; S.cut = null; S.hover = null; S.sel = S.sel2 = null;
     sizeChips(); sizeInfo(); cutSlider(); status(); tune(); request();
+    // Saga Forge shows this page in a frame and offers the shown size as the landmark's size
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: "sagas-size", id: D.id, size: D.sizes[S.size].target, original: S.original }, "*");
+    }
+  }
+  function useOriginal(want) {
+    const to = want && SETS.original ? SETS.original : SETS.working;
+    const from = S.original ? SETS.original : SETS.working;
+    if (to === from) return;
+    const target = D.sizes[S.size].target;
+    from.gpu = sourceMesh;
+    sourceMesh = to.gpu;
+    D.sizes = to.sizes; models = to.models; D.mesh = to.mesh;
+    S.original = to === SETS.original;
+    $("original").checked = S.original;
+    if (!D.mesh) { S.source = false; $("source").checked = false; }
+    const i = D.sizes.findIndex((x) => x.target === target);
+    if (i >= 0 || !live) selectSize(i >= 0 ? i : 0);
+    else goSize(target);
   }
 
   // Any size: live mode (sagas view --serve) builds it on request; a static page has its presets only.
@@ -718,12 +743,12 @@ window.addEventListener("error", (ev) => {
     $("sizein").value = t;
     $("sizeslider").value = t;
   }
-  function insertSize(entry) {
+  function insertSize(entry, set) {
     const now = D.sizes[S.size];
-    let i = D.sizes.findIndex((x) => x.target > entry.target);
-    if (i < 0) i = D.sizes.length;
-    D.sizes.splice(i, 0, entry);
-    models.splice(i, 0, { entry, vox: null, gpu: null, meshKey: "", carvedGpu: null, carvedKey: "" });
+    let i = set.sizes.findIndex((x) => x.target > entry.target);
+    if (i < 0) i = set.sizes.length;
+    set.sizes.splice(i, 0, entry);
+    set.models.splice(i, 0, slot(entry));
     S.size = D.sizes.indexOf(now);
   }
   async function goSize(n) {
@@ -736,13 +761,14 @@ window.addEventListener("error", (ev) => {
       tune();
       return;
     }
-    const mine = ++ticket;
+    const mine = ++ticket, set = S.original ? SETS.original : SETS.working;
     hint(`building ${n}…`);
     try {
-      const r = await fetch(`size?target=${n}`);
+      const r = await fetch(`size?target=${n}${S.original ? "&original=1" : ""}`);
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || r.statusText);
-      if (!D.sizes.some((x) => x.target === n)) insertSize(j);
+      if (!set.sizes.some((x) => x.target === n)) insertSize(j, set);
+      if (set.sizes !== D.sizes) return; // switched between the original and the working model meanwhile
       if (mine === ticket) { hint(""); selectSize(D.sizes.findIndex((x) => x.target === n)); }
       else sizeChips();
     } catch (e) {
@@ -789,6 +815,10 @@ window.addEventListener("error", (ev) => {
   if (D.mesh) {
     $("sourcebox").hidden = false;
     $("sourceinfo").textContent = `(${D.mesh.triangles.toLocaleString("en")} triangles)`;
+  }
+  if (SETS.original) {
+    $("originalbox").hidden = false;
+    $("original").addEventListener("change", (ev) => useOriginal(ev.target.checked));
   }
   for (const id of ["edges", "ao", "ground", "carved", "source"]) {
     $(id).addEventListener("change", (ev) => {
@@ -909,6 +939,7 @@ window.addEventListener("error", (ev) => {
     else if (k === "+" || k === "=") cam.dist = Math.max(1, cam.dist / 1.2);
     else if (k === "-" || k === "_") cam.dist = Math.min(5000, cam.dist * 1.2);
     else if ((k === "m" || k === "M") && D.mesh) { S.source = !S.source; $("source").checked = S.source; S.hover = null; status(); }
+    else if ((k === "o" || k === "O") && SETS.original) { useOriginal(!S.original); return; }
     else if (/^[1-9]$/.test(k)) { selectSize(+k - 1); return; }
     else return;
     ev.preventDefault();
@@ -922,7 +953,7 @@ window.addEventListener("error", (ev) => {
   draw();
   if (pendingTarget != null && live) goSize(pendingTarget);
   // for the browser console and tests: sagasView.selectSize(2); sagasView.cam.yaw = 1; sagasView.draw()
-  window.sagasView = { state: S, cam, refsOn: on, draw, frame, selectSize, goSize, pick };
+  window.sagasView = { state: S, cam, refsOn: on, draw, frame, selectSize, goSize, pick, useOriginal };
 })();
 </script>
 </body>

@@ -128,17 +128,21 @@ def test_intake_from_an_attached_zip(repo, tmp_path):
     assert (s.saga, s.id, s.new_saga) == ("vikings", "old_tower", True)
     lm = config.load(repo.content / "vikings" / "old_tower" / "landmark.toml")
     assert lm.source.manual and lm.source.member == "source/cube.obj" and lm.source.license == "CC-BY-4.0"
-    assert lm.source.mirror == got[0]  # CI fetches the attachment again to rebuild
+    assert lm.source.mirror == got[0] and (lm.dir / "tower.zip").is_file()  # the original stays in the repo
+    assert "content/vikings/old_tower/tower.zip" in s.files and "content/vikings/saga.toml" in s.files
     assert lm.transform.target_size == 12 and lm.placement.site[0] == "cliff+coast"
     assert "issue #7 by @jane" in lm.source.notes and lm.vx_path.exists() and lm.preview_path.exists()
     assert (repo.content / "vikings" / "saga.toml").exists()
 
 
 def test_intake_refusals(repo):
+    (repo.content / "ruins").mkdir()
     with pytest.raises(intake.IntakeError, match="licence"):
         intake.run(repo, 1, "Model: x", issue_body(url="https://a.org/x.glb", license="not sure", saga="ruins"))
     with pytest.raises(intake.IntakeError, match="drag the zip"):
         intake.run(repo, 2, "Model: x", issue_body(url="https://sketchfab.com/x", license="CC0", saga="ruins"))
+    with pytest.raises(intake.IntakeError, match="no saga 'castles'"):
+        intake.run(repo, 3, "Model: x", issue_body(url="https://a.org/x.glb", license="CC0", saga="castles"))
 
 
 def test_intake_cli_writes_a_summary(repo, tmp_path, monkeypatch):

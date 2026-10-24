@@ -367,3 +367,25 @@ core.register_chatcommand("saga", {
 		return false, help()
 	end,
 })
+
+-- sagas_start: a /saga command run for the singleplayer after joining, e.g. "find mammoth_skeleton"
+-- (Saga Forge's "Tour in Luanti" button lands on the landmark this way).
+local start = (core.settings:get("sagas_start") or ""):match("^%s*(.-)%s*$")
+start = start:match("^/saga%s+(.*)$") or start
+if start ~= "" then
+	core.register_on_joinplayer(function(player)
+		if not core.is_singleplayer() then
+			return
+		end
+		local name = player:get_player_name()
+		core.after(2, function()
+			if not core.get_player_by_name(name) then
+				return
+			end
+			local _, msg = core.registered_chatcommands.saga.func(name, start)
+			if msg and msg ~= "" then
+				core.chat_send_player(name, msg)
+			end
+		end)
+	end)
+end

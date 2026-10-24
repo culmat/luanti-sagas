@@ -218,6 +218,10 @@ def attribution_md(saga: Saga, results: list[BuildResult]) -> str:
         author = f"[{s.author}]({s.author_url})" if s.author_url else (s.author or "-")
         lic = f"[{s.license}]({LICENSE_URLS.get(s.license, '')})" if s.license else "-"
         lines.append(f"| `{r.landmark.id}.mts` | {r.landmark.title} | {author} | {src} | {lic} |")
+    edited = [r for r in results if r.landmark.source.edited]
+    if edited:
+        lines += ["", "## Changes to the source models", ""]
+        lines += [f"- `{r.landmark.id}.mts`: the source model was modified before voxelizing." for r in edited]
     if any(r.landmark.source.ai != "none" for r in results):
         lines += ["", "## AI disclosure", ""]
         for r in results:

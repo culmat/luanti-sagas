@@ -46,12 +46,13 @@ Top level: `schema = 1`, `id`, `saga` (both `^[a-z][a-z0-9_]{2,31}$`, matching t
 |---|---|
 | `kind` | `mesh`, `vox`, `voxels` (point list), `handbuilt`, `none` |
 | `url` | Where the model is published. Required unless `manual`. |
-| `manual` | `true` when the site needs a login (Sketchfab): `sagas fetch --from FILE` |
+| `manual` | `true` when the site needs a login (Sketchfab). Keep the download next to landmark.toml and commit it (up to 50 MB), so anyone can rebuild and rework it; `sagas lint` warns (L017) when it is missing |
 | `instructions` | Shown by `sagas fetch` for manual sources |
-| `file` | File name of the download (or a file next to landmark.toml) |
+| `file` | File name of the original: the download, or a file next to landmark.toml |
 | `member` | File inside a zip/tar to load; its folder (textures) is extracted too |
 | `sha256` | Checksum of the download; `sagas fetch` records it (not for manual sources) |
 | `mirror` | A copy of the exact file for manual sources, e.g. the zip attached to the intake issue; `sagas fetch` uses it, so CI can rebuild |
+| `edited` | A hand-tweaked copy of the model next to landmark.toml, voxelized instead of the original. The original stays (`file`, `url`), so rework can start from either and `sagas view` compares both (O key); ATTRIBUTION.md says the model was modified |
 | `extra_files` | `[{ url, file, sha256 }]` downloaded next to `file` (e.g. textures defined elsewhere) |
 | `author`, `author_url`, `license` (SPDX), `license_url`, `notes` | Attribution; licence must be CC0-1.0, CC-BY-3.0/4.0, CC-BY-SA-3.0/4.0 or MIT |
 | `ai` | `none`, `assisted`, `generated` (name the tool in `notes`) |

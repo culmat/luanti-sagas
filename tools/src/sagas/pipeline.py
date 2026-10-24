@@ -13,10 +13,16 @@ from .errors import SagasError, SourceMissing
 from .repo import Repo
 
 
-def source_file(landmark: Landmark, repo: Repo) -> Path:
-    """Where the source file of a landmark is: next to landmark.toml, or in sources/<id>/."""
+def source_file(landmark: Landmark, repo: Repo, original: bool = False) -> Path:
+    """Where the model of a landmark is: `source.edited` next to landmark.toml when set (unless
+    `original`), else the original next to landmark.toml or in sources/."""
     from . import fetch
 
+    if landmark.source.edited and not original:
+        path = landmark.dir / landmark.source.edited
+        if not path.exists():
+            raise SourceMissing(f"{landmark.qualified_id}: source.edited {path.name} not found in {landmark.dir}")
+        return path
     name = landmark.source.file
     if not name:
         raise SagasError(f"{landmark.qualified_id}: source.file is not set")
@@ -29,12 +35,16 @@ def source_file(landmark: Landmark, repo: Repo) -> Path:
     )
 
 
-def load_mesh(landmark: Landmark, repo: Repo):
+def uses_edited(landmark: Landmark, original: bool = False) -> bool:
+    return bool(landmark.source.edited) and not original
+
+
+def load_mesh(landmark: Landmark, repo: Repo, original: bool = False):
     """The source mesh of a `kind = "mesh"` landmark, with `voxel.texture` applied."""
     from . import fetch, load
 
-    path = source_file(landmark, repo)
-    if landmark.source.member:
+    path = source_file(landmark, repo, original)
+    if landmark.source.member and not uses_edited(landmark, original):
         path = fetch.extract_member(path, landmark.source.member, fetch.extract_dir(path, landmark.source.member))
     mesh = load.load_model(path)
     if landmark.voxel.texture or landmark.voxel.alpha == "ignore":
@@ -42,7 +52,7 @@ def load_mesh(landmark: Landmark, repo: Repo):
         if landmark.voxel.texture:
             for cand in (
                 path.parent / landmark.voxel.texture,
-                source_file(landmark, repo).parent / landmark.voxel.texture,
+                source_file(landmark, repo, original).parent / landmark.voxel.texture,
                 landmark.dir / landmark.voxel.texture,
             ):
                 if cand.exists():
@@ -56,14 +66,16 @@ def load_mesh(landmark: Landmark, repo: Repo):
     return mesh
 
 
-def voxelize(landmark: Landmark, repo: Repo) -> voxels.VoxelModel:
+def voxelize(landmark: Landmark, repo: Repo, original: bool = False) -> voxels.VoxelModel:
+    """Voxelize the landmark's model: the edited one when there is one, else (or with `original`) the
+    original."""
     kind = landmark.source.kind
     if kind == "voxels":
-        model = legacy.read_txt(source_file(landmark, repo))
+        model = legacy.read_txt(source_file(landmark, repo, original))
     elif kind == "handbuilt":
         from . import handbuilt
 
-        model, unknown = handbuilt.read_mts(source_file(landmark, repo))
+        model, unknown = handbuilt.read_mts(source_file(landmark, repo, original))
         if unknown:
             import sys
 
@@ -74,14 +86,18 @@ def voxelize(landmark: Landmark, repo: Repo) -> voxels.VoxelModel:
     elif kind == "vox":
         from . import vox
 
-        model = vox.read_vox(source_file(landmark, repo), landmark.transform)
+        model = vox.read_vox(source_file(landmark, repo, original), landmark.transform)
     elif kind == "mesh":
         from . import voxelize as vz
 
-        model = vz.voxelize(load_mesh(landmark, repo), landmark.transform, landmark.voxel)
+        model = vz.voxelize(load_mesh(landmark, repo, original), landmark.transform, landmark.voxel)
     else:
         raise SagasError(f"{landmark.qualified_id}: source.kind {kind!r} cannot be voxelized")
-    if landmark.source.sha256:
+    if uses_edited(landmark, original):
+        from . import fetch
+
+        model.source_sha256 = fetch.sha256_file(source_file(landmark, repo))
+    elif landmark.source.sha256:
         model.source_sha256 = landmark.source.sha256
     return model
 

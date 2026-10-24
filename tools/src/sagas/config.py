@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 import tomllib
 from dataclasses import dataclass, field, fields
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 from . import vocab
@@ -14,6 +14,10 @@ from .errors import ConfigError
 ID_RE = re.compile(r"^[a-z][a-z0-9_]{2,31}$")
 SOURCE_KINDS = ("mesh", "vox", "voxels", "handbuilt", "none")
 AI_VALUES = ("none", "assisted", "generated")
+# files the tools write next to landmark.toml; a committed model must not take their names
+RESERVED_FILES = ("landmark.toml", "voxels.vx.gz", "preview.png")
+# a committed original (or edited) model may be this large; GitHub refuses files over 100 MB
+ORIGINAL_MAX_BYTES = 50 * 1024 * 1024
 UP_VALUES = ("auto", "x", "y", "z", "-x", "-y", "-z")
 ANCHORS = ("bottom-center", "bottom-min", "center")
 VOXEL_MODES = ("shell", "solid")
@@ -50,6 +54,9 @@ class Source:
     notes: str = ""
     extra_files: list[dict] = field(default_factory=list)  # [{url, file, sha256}] fetched next to `file`
     mirror: str = ""  # a copy of the exact file (e.g. attached to the intake issue) for manual sources
+    # a hand-tweaked copy of the model next to landmark.toml, voxelized instead of the original (which
+    # stays: `file`/`url` keep describing it, so rework can always start from or compare with it)
+    edited: str = ""
 
 
 @dataclass
@@ -312,6 +319,9 @@ def validate(s: Landmark) -> None:
     for i, box in enumerate(v.openings):
         if not (isinstance(box, list) and len(box) == 6 and all(isinstance(n, int) and n >= 0 for n in box)):
             raise ConfigError(f"{w}: voxel.openings[{i}] must be [x1, y1, z1, x2, y2, z2] (whole numbers >= 0)")
+    for name, value in (("file", src.file), ("edited", src.edited)):
+        if value and (value != PurePosixPath(value).name or value in RESERVED_FILES):
+            raise ConfigError(f"{w}: source.{name} must be a plain file name other than {', '.join(RESERVED_FILES)}")
     for i, extra in enumerate(src.extra_files):
         if not isinstance(extra, dict) or not extra.get("file") or set(extra) - {"url", "file", "sha256"}:
             raise ConfigError(f"{w}: source.extra_files[{i}] needs file (and url, sha256) only")

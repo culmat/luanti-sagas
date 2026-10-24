@@ -29,3 +29,7 @@ sagas_survey (Survey site fit) bool false
 # Development: place nothing but these landmarks (comma-separated ids, e.g. "sagas_ruins:mammoth_skeleton"),
 # to see in a fresh world where map generation puts them. Combine with a low sagas_rarity_scale.
 sagas_only (Only these landmarks) string
+
+# Development: a /saga command run for the singleplayer after joining, e.g. "find mammoth_skeleton" or
+# "tour" (Saga Forge sets it to land on a landmark).
+sagas_start (Start with) string

@@ -255,14 +255,16 @@ def current_size(landmark: Landmark, committed: voxels.VoxelModel | None) -> int
 class SizeBuilder:
     """Builds the landmark at any size, from the source mesh when it is fetched; without it (or for a
     voxel source) only the committed voxels, which is what ships. `src` is the simplified source
-    model, placed in each size's grid by ModelSize.mesh."""
+    model, placed in each size's grid by ModelSize.mesh. For a landmark with `source.edited`,
+    `original` builds the original model the same way, to compare."""
 
-    def __init__(self, landmark: Landmark, repo: Repo, sizes: list[int] | None = None):
+    def __init__(self, landmark: Landmark, repo: Repo, sizes: list[int] | None = None, committed: bool = True):
         from . import pipeline
 
         self.landmark = landmark
         self.notes: list[str] = []
-        self.committed = voxels.read(landmark.vx_path) if landmark.vx_path.exists() else None
+        self.original: SizeBuilder | None = None
+        self.committed = voxels.read(landmark.vx_path) if committed and landmark.vx_path.exists() else None
         self.current = current_size(landmark, self.committed)
         self.mesh = None
         if landmark.source.kind == "mesh":
@@ -283,6 +285,12 @@ class SizeBuilder:
         t, v = landmark.transform, landmark.voxel
         cells = int(min(256, max(128, 2 * max(self.wanted))))
         self.src = source_mesh(self.mesh, t, v, cells) if live else None
+        if landmark.source.edited and landmark.source.kind == "mesh":
+            unedited = dataclasses.replace(landmark, source=dataclasses.replace(landmark.source, edited=""))
+            try:
+                self.original = SizeBuilder(unedited, repo, self.wanted, committed=False)
+            except SagasError as e:
+                self.notes.append(f"the original model can't be shown: {e}")
 
     @property
     def any_size(self) -> bool:
@@ -551,6 +559,15 @@ def references(roots: list[Path] | None = None) -> list[Reference]:
 # -- page and still -------------------------------------------------------------------------------
 
 
+def original_data(builder: SizeBuilder) -> dict | None:
+    """The original model at the builder's sizes, for a landmark with `source.edited`."""
+    o = builder.original
+    if o is None:
+        return None
+    sizes = [e for e in (o.build(s) for s in o.wanted) if e is not None]
+    return {"sizes": [e.json() for e in sizes], "mesh": o.src.json() if o.src is not None else None}
+
+
 def page_data(
     landmark: Landmark,
     sizes: list[ModelSize],
@@ -558,6 +575,7 @@ def page_data(
     notes: list[str],
     src: SourceMesh | None = None,
     live: bool = False,
+    original: dict | None = None,
 ) -> dict:
     return {
         "id": landmark.qualified_id,
@@ -571,6 +589,7 @@ def page_data(
         "refs": [r.json() for r in refs],
         "notes": notes,
         "mesh": src.json() if src is not None else None,
+        "original": original,
         "version": __version__,
     }
 
@@ -654,7 +673,7 @@ def server(builder: SizeBuilder, html: str, port: int = 0):
     import http.server
     import urllib.parse
 
-    cache: dict[int, bytes] = {}
+    cache: dict[tuple[int, bool], bytes] = {}
 
     class Handler(http.server.BaseHTTPRequestHandler):
         def reply(self, code: int, body: bytes, kind: str) -> None:
@@ -676,19 +695,25 @@ def server(builder: SizeBuilder, html: str, port: int = 0):
             if url.path != "/size":
                 self.fail(404, "not found")
                 return
+            query = urllib.parse.parse_qs(url.query)
             try:
-                n = int(urllib.parse.parse_qs(url.query).get("target", [""])[0])
+                n = int(query.get("target", [""])[0])
             except ValueError:
                 self.fail(400, "target must be a number")
                 return
-            if n not in cache:
-                seen = len(builder.notes)
-                entry = builder.build(n)
+            original = query.get("original", [""])[0] == "1"
+            which = builder.original if original else builder
+            if which is None:
+                self.fail(404, "this landmark has no edited model, so no separate original")
+                return
+            if (n, original) not in cache:
+                seen = len(which.notes)
+                entry = which.build(n)
                 if entry is None:
-                    self.fail(422, "; ".join(builder.notes[seen:]) or f"size {n} cannot be built")
+                    self.fail(422, "; ".join(which.notes[seen:]) or f"size {n} cannot be built")
                     return
-                cache[n] = json.dumps(entry.json(), separators=(",", ":")).encode()
-            self.reply(200, cache[n], "application/json")
+                cache[n, original] = json.dumps(entry.json(), separators=(",", ":")).encode()
+            self.reply(200, cache[n, original], "application/json")
 
         def log_message(self, format: str, *args) -> None:  # noqa: A002 (http.server's name)
             pass
@@ -696,10 +721,24 @@ def server(builder: SizeBuilder, html: str, port: int = 0):
     return http.server.HTTPServer(("127.0.0.1", port), Handler)
 
 
-def serve(builder: SizeBuilder, html: str, port: int, ready: Callable[[str], None]) -> None:
-    """Run the live server until interrupted."""
+def serve(
+    builder: SizeBuilder, html: str, port: int, ready: Callable[[str], None], stdin_lifetime: bool = False
+) -> None:
+    """Run the live server until interrupted, or with `stdin_lifetime` until stdin closes (how a
+    parent such as Saga Forge stops it on every system, Windows included)."""
+    import sys
+    import threading
+
     httpd = server(builder, html, port)
     ready(f"http://127.0.0.1:{httpd.server_address[1]}/")
+    if stdin_lifetime:
+
+        def watch() -> None:
+            while sys.stdin.read(4096):
+                pass
+            httpd.shutdown()
+
+        threading.Thread(target=watch, daemon=True).start()
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

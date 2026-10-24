@@ -9,7 +9,7 @@ from pathlib import Path
 
 from . import palette, vocab
 from .build import BuildResult, fits_chunk
-from .config import LICENSE_ALLOWLIST, SHARE_ALIKE, Landmark
+from .config import LICENSE_ALLOWLIST, ORIGINAL_MAX_BYTES, SHARE_ALIKE, Landmark
 from .repo import Repo
 
 MAX_FILE_BYTES = 2 * 1024 * 1024
@@ -33,6 +33,8 @@ CODES = {
     "L014": "file too large to commit",
     "L015": "very low rarity (more than one per 20 mapchunks)",
     "L016": "rooms are sealed: no way in at ground level",
+    "L017": "the original model can only be downloaded by hand: commit it next to landmark.toml",
+    "L018": "source.edited without a reachable original",
 }
 
 
@@ -89,9 +91,16 @@ def check_saga(landmark: Landmark, built: BuildResult | None = None, strict: boo
         add("L012", f"{landmark.vx_path.name} is missing")
     if not landmark.preview_path.exists():
         add("L010", "preview.png is missing", "warn")
+    models = {src.file, src.edited} - {""}
     for f in landmark.dir.iterdir():
-        if f.is_file() and f.stat().st_size > MAX_FILE_BYTES:
-            add("L014", f"{f.name} is {f.stat().st_size // 1024} KiB (limit {MAX_FILE_BYTES // 1024} KiB)")
+        limit = ORIGINAL_MAX_BYTES if f.name in models else MAX_FILE_BYTES
+        if f.is_file() and f.stat().st_size > limit:
+            add("L014", f"{f.name} is {f.stat().st_size // 1024} KiB (limit {limit // 1024} KiB)")
+    original_here = bool(src.file) and (landmark.dir / src.file).is_file()
+    if src.kind in ("mesh", "vox") and src.manual and not original_here and not src.mirror:
+        add("L017", f"{src.file or 'the model'} is not in the repository; keep the original for rework", "warn")
+    if src.edited and not (original_here or src.url or src.mirror):
+        add("L018", f"source.edited = {src.edited!r} needs the original too (commit it, or set source.url)")
     if landmark.placement.rarity < 20:
         add(
             "L015",
