@@ -116,8 +116,8 @@ def download_section(url: str, attachments: list[str]) -> tuple[dict, str]:
     if PurePosixPath(url.split("?")[0]).suffix.lower() in MODEL_SUFFIXES:
         return {"url": url, "file": PurePosixPath(url.split("?")[0]).name}, ""
     raise IntakeError(
-        "the bot can't download this model from the link. Download it yourself (most sites need a login) "
-        'and drag the zip into the issue\'s "Model file" field, then ask for intake again.'
+        "the bot can't download this model from the link (most sites need a login). Download it yourself "
+        'and drag the zip into the issue\'s "Model file" field.'
     )
 
 
