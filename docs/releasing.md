@@ -51,8 +51,9 @@ tags it `cdb/<pkg>/<version>` and calls `avanti cdb release`. Dev files are left
 **A new saga** ships in `sagas_pack` right away. Its own package needs to be created on ContentDB once;
 until then `deliver.sh` opens an issue saying so, and the next release after that goes out by itself.
 
-**Your own pull requests:** as the only code owner you can't approve yourself; the ruleset lets
-repository admins merge their pull requests directly.
+**People with write access** push to any branch, `main` included, without a pull request; the
+ruleset only binds external contributors. A push to main is delivered like a merge: CI with the game
+tests must pass on that commit before anything is released.
 
 ## Why not a ContentDB webhook
 

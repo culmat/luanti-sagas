@@ -6,9 +6,10 @@
 #   - a deploy key "sagas-bot" (write access, this repository only) whose private half is the
 #     SAGAS_DEPLOY_KEY secret: the workflows push with it (generated packs to main, bot branches)
 #   - a ruleset on main: one approving review by a code owner and green CI, game tests included (run
-#     this again after changing the games or engines in ci.yml); deploy keys may push,
-#     admins may merge their own pull requests (personal repositories can't let the Actions bot
-#     bypass a ruleset, only organizations can)
+#     this again after changing the games or engines in ci.yml). It binds external contributors
+#     only: people with write access (write, maintain, admin roles) and the deploy key push to any
+#     branch directly; deliver.yml still releases only after green CI. (Personal repositories can't
+#     let the Actions bot bypass a ruleset, only organizations can, hence the deploy key.)
 #   - the contentdb environment without required reviewers, so releases go out after the merge
 set -euo pipefail
 repo=${1:-$(gh repo view --json nameWithOwner -q .nameWithOwner)}
@@ -47,7 +48,9 @@ ruleset=$(
   "conditions": { "ref_name": { "include": ["~DEFAULT_BRANCH"], "exclude": [] } },
   "bypass_actors": [
     { "actor_id": null, "actor_type": "DeployKey", "bypass_mode": "always" },
-    { "actor_id": 5, "actor_type": "RepositoryRole", "bypass_mode": "pull_request" }
+    { "actor_id": 2, "actor_type": "RepositoryRole", "bypass_mode": "always" },
+    { "actor_id": 4, "actor_type": "RepositoryRole", "bypass_mode": "always" },
+    { "actor_id": 5, "actor_type": "RepositoryRole", "bypass_mode": "always" }
   ],
   "rules": [
     { "type": "deletion" },
