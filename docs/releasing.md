@@ -19,8 +19,12 @@ pull request ──▶ ci.yml rebuilds and checks ──▶ pictures.yml posts p
 | `pictures.yml` | after CI | preview and "every size next to trees" pictures in one pull request comment (stored on the `previews` branch) |
 | `commands.yml` | comments starting with `/` | `sagas command`: change size, site, rarity, door ...; rebuild and push |
 | `automerge.yml` | pull request opened | turns on auto-merge: GitHub merges once one code owner approved and CI is green |
-| `deliver.yml` | every push to main | `sagas voxelize --stale`, `build`, `catalog`, commit; CI on that commit; then `scripts/deliver.sh` |
+| `deliver.yml` | every push to main, and every 15 minutes | `sagas voxelize --stale`, `build`, `catalog`, commit; CI on that commit; then `scripts/deliver.sh`; the tag `deliver/last` marks what is out |
 | `release.yml` | a manual tag `<pkg>-v<version>` | re-release one package by hand |
+
+Auto-merge merges in the name of whoever turned it on. For the bot's pull requests that is the
+workflow token, whose merges start no workflow, so `deliver.yml` also runs every 15 minutes and picks
+them up; a run with nothing new ends after a few seconds. Merges by people deliver at once.
 
 ## Versions
 

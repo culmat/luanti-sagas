@@ -1,10 +1,17 @@
-# Every push to main goes to players: rebuild what contributors don't commit (stale voxels, packs,
-# previews, the gallery data), commit it, then release each changed package to GitHub and ContentDB
-# with a date version (scripts/deliver.sh). The approved pull request was the only human step.
+# Everything merged to main goes to players: rebuild what contributors don't commit (stale voxels,
+# packs, previews, the gallery data), commit it, wait for CI with the game tests on that commit, then
+# release each changed package to GitHub and ContentDB with a date version (scripts/deliver.sh). The
+# approved pull request was the only human step.
+#
+# Merges by GitHub's auto-merge for the bot's pull requests count as the workflow token's, and those
+# start no workflow; the schedule picks them up. The tag deliver/last marks the last delivered commit,
+# so a scheduled run with nothing new ends after a few seconds.
 name: Deliver
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -17,15 +24,32 @@ permissions:
   actions: write
 
 jobs:
-  deliver:
+  check:
     # the generated-files commit below starts this workflow again; nothing is left to do then
     if: ${{ !startsWith(github.event.head_commit.message, 'Build packs and previews') }}
+    runs-on: ubuntu-latest
+    outputs:
+      new: ${{ steps.new.outputs.new }}
+    steps:
+      - id: new
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" -q .sha)
+          last=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/deliver/last" -q .object.sha 2>/dev/null || true)
+          if [ -n "$last" ]; then last=$(gh api "repos/$GITHUB_REPOSITORY/git/tags/$last" -q .object.sha 2>/dev/null || echo "$last"); fi
+          if [ "$head" = "$last" ]; then echo "nothing new since the last delivery"; else echo "new=yes" >> "$GITHUB_OUTPUT"; fi
+
+  deliver:
+    needs: check
+    if: needs.check.outputs.new
     runs-on: ubuntu-latest
     # holds CONTENTDB_TOKEN; scripts/setup-repo.sh removes its reviewers, so nothing waits here
     environment: contentdb
     steps:
       - uses: actions/checkout@v7
         with:
+          ref: main
           fetch-depth: 0
           # deploy keys may push to main past the ruleset (scripts/setup-repo.sh)
           ssh-key: ${{ secrets.SAGAS_DEPLOY_KEY }}
@@ -48,9 +72,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A content mods docs/gallery
-          pushed=no
           if ! git diff --cached --quiet; then
-            git commit -q -m "Build packs and previews for ${GITHUB_SHA::7}"
+            git commit -q -m "Build packs and previews for $(git rev-parse --short HEAD)"
             if ! git push -q origin HEAD:main; then
               git fetch -q origin main
               if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD~1)" ]; then
@@ -60,9 +83,7 @@ jobs:
               echo "::error::main refused the push: is SAGAS_DEPLOY_KEY set up? (scripts/setup-repo.sh)"
               exit 1
             fi
-            pushed=yes
           fi
-          echo "pushed=$pushed" >> "$GITHUB_OUTPUT"
           echo "release=yes" >> "$GITHUB_OUTPUT"
       - name: Wait for CI, game tests included, on exactly this commit
         if: steps.commit.outputs.release
@@ -70,13 +91,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           sha=$(git rev-parse HEAD)
+          run_of() { gh run list -R "$GITHUB_REPOSITORY" --workflow ci.yml --commit "$sha" --json databaseId -q '.[0].databaseId'; }
           id=
-          for _ in $(seq 60); do
-            id=$(gh run list -R "$GITHUB_REPOSITORY" --workflow ci.yml --commit "$sha" --json databaseId -q '.[0].databaseId')
-            [ -n "$id" ] && break
-            sleep 10
-          done
-          [ -n "$id" ] || { echo "no CI run for $sha (main moved on?); the next run releases"; exit 1; }
+          for _ in $(seq 6); do id=$(run_of); [ -n "$id" ] && break; sleep 10; done
+          if [ -z "$id" ]; then
+            # merged by auto-merge (no push workflow) and nothing generated: start CI here
+            gh workflow run ci.yml -R "$GITHUB_REPOSITORY" --ref main
+            for _ in $(seq 30); do id=$(run_of); [ -n "$id" ] && break; sleep 10; done
+          fi
+          [ -n "$id" ] || { echo "::error::no CI run for $sha"; exit 1; }
           gh run watch "$id" -R "$GITHUB_REPOSITORY" --exit-status --interval 30 > /dev/null
       - name: Release changed packages
         if: steps.commit.outputs.release
@@ -86,3 +109,10 @@ jobs:
           AVANTI_CONTENTDB_USER: ${{ vars.CONTENTDB_USER || 'culmat' }}
           AVANTI: .avanti/plugins/avanti/bin/avanti
         run: scripts/deliver.sh
+      - name: Mark this commit delivered
+        if: steps.commit.outputs.release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git tag -f -a deliver/last -m "last delivered commit" HEAD
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/$GITHUB_REPOSITORY.git" refs/tags/deliver/last
