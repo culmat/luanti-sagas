@@ -226,9 +226,16 @@ end
 
 -- Landmarks are placed from mapgen callbacks (large ones after an extra emerge); the placement
 -- callback tells the search.
+-- Only placements in the searched area count: while the focus is on, map generated elsewhere (around
+-- players, by other mods) may place the landmark too.
+local function in_search(st, pos)
+	local reach = st.radius + TILE
+	return math.abs(pos.x - st.origin.x) <= reach and math.abs(pos.z - st.origin.z) <= reach
+end
+
 sagas.register_on_placed(function(id, anchor)
 	local st = search
-	if st and id == st.id then
+	if st and id == st.id and in_search(st, anchor) then
 		core.after(0, function()
 			stop_search(st, records.at(anchor)[1] or { id = id, anchor = anchor, p1 = anchor, p2 = anchor })
 		end)
