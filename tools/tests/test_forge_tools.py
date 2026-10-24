@@ -136,7 +136,7 @@ def test_json_output(repo):
     assert b["results"][0]["landmark"] == "test/cube" and "mods/sagas_test/registry.lua" in b["written"]
     c = json.loads(run(repo, "--json", "catalog").output)
     assert [x["selector"] for x in c["landmarks"]] == ["test/cube"]
-    assert c["landmarks"][0]["preview"] == "content/test/cube/preview.png"
+    assert c["landmarks"][0]["preview"] == "content/test/cube/preview.png" and c["landmarks"][0]["target_size"] == 10
     assert not (repo.root / "docs" / "gallery").exists()  # read only
     cmd = json.loads(run(repo, "--json", "command", "test/cube", "/size 12").output)
     assert cmd["size"][0] >= 12 and cmd["done"]

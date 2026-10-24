@@ -726,7 +726,17 @@ def catalog_cmd(
             for t in r.sagas()
         ]
         ordered = sorted(results, key=lambda x: x.landmark.qualified_id)
-        cards = [{**catalog.card(x, r, r.root), "selector": selector_of(x.landmark)} for x in ordered]
+        cards = [
+            {
+                **catalog.card(x, r, r.root),
+                "selector": selector_of(x.landmark),
+                "target_size": x.landmark.transform.target_size,
+                "real_size": x.landmark.transform.real_size,
+                "edited": x.landmark.source.edited,
+                "manual": x.landmark.source.manual,
+            }
+            for x in ordered
+        ]
         unbuilt = [selector_of(s) for s in r.landmarks() if not s.vx_path.exists()]
         emit_json({"sagas": sagas, "landmarks": cards, "unbuilt": unbuilt})
         return
